@@ -13,7 +13,7 @@ class Navbar extends React.Component {
   render() {
 
     return (<>
-      <nav className="navbar fixed-bottom navbar-dark bg-dark" id="navbar">
+      <nav className="navbar fixed-bottom navbar-dark bg-dark p-2" id="navbar">
         <div className="w-100 row justify-content-around">
           <i className="fas fa-home text-white"></i>
           <i className="fas fa-search text-white"></i>
