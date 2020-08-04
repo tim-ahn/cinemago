@@ -32,16 +32,11 @@ class HomeSearch extends React.Component {
       </form>
 
       <div className="container">
-        <div className="dropdown show">
-          <a className="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Dropdown link
-          </a>
-          <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <a className="dropdown-item" href="#">Action</a>
-            <a className="dropdown-item" href="#">Another action</a>
-            <a className="dropdown-item" href="#">Something else here</a>
-          </div>
-        </div>
+        <select className="dropdown" name="sort" id="sortDropdown">
+          <option value="popularity">Popularity</option>
+          <option value="rating">Rating</option>
+          <option value="releaseDate">Release Date</option>
+        </select>
         <div className="row">
           {this.props.results.map(item => (
             <MovieLongCard key={item.id} id={item.id} poster_path={item.poster_path} fullInfo={item} />
