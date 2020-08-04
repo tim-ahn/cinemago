@@ -17,8 +17,17 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 ALTER TABLE public.users ALTER COLUMN "userId" DROP DEFAULT;
+ALTER TABLE public.reviews ALTER COLUMN "reviewId" DROP DEFAULT;
+ALTER TABLE public.lists ALTER COLUMN "listId" DROP DEFAULT;
 DROP SEQUENCE public."users_userId_seq";
 DROP TABLE public.users;
+DROP SEQUENCE public."reviews_reviewId_seq";
+DROP TABLE public.reviews;
+DROP TABLE public.movies;
+DROP TABLE public.messages;
+DROP SEQUENCE public."lists_listId_seq";
+DROP TABLE public.lists;
+DROP TABLE public."listItems";
 DROP EXTENSION plpgsql;
 DROP SCHEMA public;
 --
@@ -54,13 +63,114 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: listItems; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public."listItems" (
+    "listId" integer NOT NULL,
+    "movieId" integer NOT NULL
+);
+
+
+--
+-- Name: lists; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.lists (
+    "userId" integer NOT NULL,
+    "listId" integer NOT NULL,
+    type text NOT NULL,
+    name text NOT NULL
+);
+
+
+--
+-- Name: lists_listId_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public."lists_listId_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: lists_listId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public."lists_listId_seq" OWNED BY public.lists."listId";
+
+
+--
+-- Name: messages; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.messages (
+    "senderId" integer NOT NULL,
+    "recipientId" integer NOT NULL,
+    content text NOT NULL,
+    "sentAt" timestamp without time zone
+);
+
+
+--
+-- Name: movies; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.movies (
+    title text NOT NULL,
+    "movieId" integer NOT NULL,
+    description text NOT NULL,
+    "posterURL" text NOT NULL,
+    reviews json NOT NULL,
+    "releaseDate" text NOT NULL
+);
+
+
+--
+-- Name: reviews; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.reviews (
+    "userId" integer NOT NULL,
+    "reviewId" integer NOT NULL,
+    rating integer NOT NULL,
+    content text,
+    "movieId" integer NOT NULL
+);
+
+
+--
+-- Name: reviews_reviewId_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public."reviews_reviewId_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: reviews_reviewId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public."reviews_reviewId_seq" OWNED BY public.reviews."reviewId";
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.users (
     "userId" integer NOT NULL,
-    name text,
-    password text,
+    name text NOT NULL,
+    password text NOT NULL,
     bio text,
     "imageURL" text
 );
@@ -87,6 +197,20 @@ ALTER SEQUENCE public."users_userId_seq" OWNED BY public.users."userId";
 
 
 --
+-- Name: lists listId; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.lists ALTER COLUMN "listId" SET DEFAULT nextval('public."lists_listId_seq"'::regclass);
+
+
+--
+-- Name: reviews reviewId; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.reviews ALTER COLUMN "reviewId" SET DEFAULT nextval('public."reviews_reviewId_seq"'::regclass);
+
+
+--
 -- Name: users userId; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -94,18 +218,73 @@ ALTER TABLE ONLY public.users ALTER COLUMN "userId" SET DEFAULT nextval('public.
 
 
 --
+-- Data for Name: listItems; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public."listItems" ("listId", "movieId") FROM stdin;
+\.
+
+
+--
+-- Data for Name: lists; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.lists ("userId", "listId", type, name) FROM stdin;
+\.
+
+
+--
+-- Data for Name: messages; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.messages ("senderId", "recipientId", content, "sentAt") FROM stdin;
+\.
+
+
+--
+-- Data for Name: movies; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.movies (title, "movieId", description, "posterURL", reviews, "releaseDate") FROM stdin;
+\.
+
+
+--
+-- Data for Name: reviews; Type: TABLE DATA; Schema: public; Owner: -
+--
+
+COPY public.reviews ("userId", "reviewId", rating, content, "movieId") FROM stdin;
+\.
+
+
+--
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.users ("userId", name, password, bio, "imageURL") FROM stdin;
+1	Uzair	anime	I like anime and fast cars. nuff said	\N
 \.
+
+
+--
+-- Name: lists_listId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public."lists_listId_seq"', 1, false);
+
+
+--
+-- Name: reviews_reviewId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public."reviews_reviewId_seq"', 1, false);
 
 
 --
 -- Name: users_userId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."users_userId_seq"', 1, false);
+SELECT pg_catalog.setval('public."users_userId_seq"', 1, true);
 
 
 --
