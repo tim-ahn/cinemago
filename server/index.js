@@ -5,22 +5,24 @@ const db = require('./database');
 const ClientError = require('./client-error');
 const staticMiddleware = require('./static-middleware');
 const sessionMiddleware = require('./session-middleware');
+const fetch = require('node-fetch');
 
 const app = express();
+
+const apiKey = '9dbf824ef684a8b724b9b0e090bb97d9';
 
 app.use(staticMiddleware);
 app.use(sessionMiddleware);
 
 app.use(express.json());
 
-app.get('/api/health-check', (req, res, next) => {
-  db.query(`select 'successfully connected' as "message"`)
-    .then(result => res.json(result.rows[0]))
-    .catch(err => next(err));
-});
+app.post('/api/search', (req, res, next) => {
+  fetch(`https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&query=${req.body.query}&page=1&include_adult=false`)
+    .then(result => result.json()
+    )
+    .then(data => res.json(data.results))
+  ;
 
-app.use('/api', (req, res, next) => {
-  next(new ClientError(`cannot ${req.method} ${req.originalUrl}`, 404));
 });
 
 app.use((err, req, res, next) => {

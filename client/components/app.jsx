@@ -1,25 +1,38 @@
 import React from 'react';
+import HomeSearch from './home-search';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      message: null,
-      isLoading: true
+      view: 'search',
+      results: []
     };
+    this.searchResults = this.searchResults.bind(this);
   }
 
-  componentDidMount() {
-    fetch('/api/health-check')
+  searchResults(query) {
+    fetch('api/search', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ query: query })
+    })
       .then(res => res.json())
-      .then(data => this.setState({ message: data.message || data.error }))
-      .catch(err => this.setState({ message: err.message }))
-      .finally(() => this.setState({ isLoading: false }));
+      .then(data => {
+        this.setState({ results: data });
+      });
+  }
+
+  changeView() {
+
   }
 
   render() {
-    return this.state.isLoading
-      ? <h1>Testing connections...</h1>
-      : <h1>{ this.state.message.toUpperCase() }</h1>;
+    return <>
+      <HomeSearch searchResults={this.searchResults} results={this.state.results}/>
+
+    </>;
   }
 }
