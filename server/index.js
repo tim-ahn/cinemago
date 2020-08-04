@@ -25,6 +25,13 @@ app.post('/api/search', (req, res, next) => {
 
 });
 
+// api/details endpoint
+app.get('/api/details', (req, res, next) => {
+  fetch(`https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&query=${req.body.query}&page=1&include_adult=false`)
+    .then(result => result.json());
+
+});
+
 app.use((err, req, res, next) => {
   if (err instanceof ClientError) {
     res.status(err.status).json({ error: err.message });
