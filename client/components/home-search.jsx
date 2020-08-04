@@ -1,5 +1,5 @@
 import React from 'react';
-import MovieCard from './movie-card';
+import MovieLongCard from './movie-longcard';
 
 class HomeSearch extends React.Component {
   constructor(props) {
@@ -19,12 +19,12 @@ class HomeSearch extends React.Component {
   }
 
   render() {
+    console.log(this.props.results);
 
     return (<>
 
       <form className="container">
-        <h2 >Search</h2>
-
+        <h2 >Search Page</h2>
         <input onChange={this.handleText} value={this.state.text} className="form-control" placeholder="Search for Movies" id="name-line"></input>
 
         <button className="btn btn-primary" onClick={this.handleSubmit}>Search</button>
@@ -32,9 +32,20 @@ class HomeSearch extends React.Component {
       </form>
 
       <div className="container">
-        <div className="row justify-content-center">
+        <div className="dropdown show">
+          <a className="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Dropdown link
+          </a>
+
+          <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <a className="dropdown-item" href="#">Action</a>
+            <a className="dropdown-item" href="#">Another action</a>
+            <a className="dropdown-item" href="#">Something else here</a>
+          </div>
+        </div>
+        <div className="row">
           {this.props.results.map(item => (
-            <MovieCard key={item.id} poster_path={item.poster_path} />
+            <MovieLongCard key={item.id} id={item.id} poster_path={item.poster_path} fullInfo={item} />
           ))}
         </div>
       </div>

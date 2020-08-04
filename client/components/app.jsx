@@ -48,8 +48,8 @@ export default class App extends React.Component {
 
   render() {
     return <>
-      {/* <HomeSearch searchResults={this.searchResults} results={this.state.results} /> */}
-      <HomePage getTrending={this.getTrending} results={this.state.trending} />
+      <HomeSearch searchResults={this.searchResults} results={this.state.results} />
+      {/* <HomePage getTrending={this.getTrending} results={this.state.trending} /> */}
     </>;
   }
 }
