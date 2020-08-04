@@ -7,10 +7,15 @@ class MovieCard extends React.Component {
   }
 
   render() {
-
+    let posterURL;
+    if (this.props.poster_path !== null) {
+      posterURL = `https://image.tmdb.org/t/p/w500${this.props.poster_path}`;
+    } else {
+      posterURL = '../images/image_placeholder.png';
+    }
     return (<>
-      <div className ="w-25" styles={{ backgroundImage: `url(https://image.tmdb.org/t/p/original+${this.props.poster_path})` }}>
-
+      <div className="col-3 m-2">
+        <img src={posterURL} className="card-img"></img>
       </div>
 
     </>);

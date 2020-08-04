@@ -14,26 +14,12 @@ class HomeSearch extends React.Component {
     this.props.searchResults(this.state.text);
   }
 
-  // handleSearch(results) {
-  //   this.setState({
-  //     results: results,
-  //     text: ''
-  //   });
-  // }
-
   handleText(event) {
     this.setState({ text: event.target.value });
   }
 
   render() {
-    let cards;
-    if (this.props.results !== undefined) {
-      cards =
-        this.props.results.map(item => (
-          <MovieCard key={item.id} poster_path={item.poster_path} />
-        ));
 
-    }
     return (<>
 
       <form className="container">
@@ -44,7 +30,15 @@ class HomeSearch extends React.Component {
         <button className="btn btn-primary" onClick={this.handleSubmit}>Search</button>
 
       </form>
-      {cards}
+
+      <div className="container">
+        <div className="row justify-content-center">
+          {this.props.results.map(item => (
+            <MovieCard key={item.id} poster_path={item.poster_path} />
+          ))}
+        </div>
+      </div>
+
     </>);
   }
 }
