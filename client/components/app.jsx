@@ -1,6 +1,7 @@
 import React from 'react';
 import HomeSearch from './home-search';
 import HomePage from './home-page';
+import Navbar from './navbar';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -50,6 +51,7 @@ export default class App extends React.Component {
     return <>
       {/* <HomeSearch searchResults={this.searchResults} results={this.state.results} /> */}
       <HomePage getTrending={this.getTrending} results={this.state.trending} />
+      <Navbar/>
     </>;
   }
 }
