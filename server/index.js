@@ -21,8 +21,24 @@ app.post('/api/search', (req, res, next) => {
     .then(result => result.json()
     )
     .then(data => res.json(data.results))
-  ;
+    .catch(err => next(err));
 
+});
+
+app.post('/api/home', (req, res, next) => {
+  if (req.body.category === 'trending') {
+    fetch(`https://api.themoviedb.org/3/trending/movie/day?api_key=${apiKey}`)
+      .then(result => result.json()
+      )
+      .then(data => res.json(data.results))
+      .catch(err => next(err));
+  } else {
+    fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=${apiKey}&language=en-US&page=1`)
+      .then(result => result.json()
+      )
+      .then(data => res.json(data.results))
+      .catch(err => next(err));
+  }
 });
 
 app.use((err, req, res, next) => {

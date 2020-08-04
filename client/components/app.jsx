@@ -1,14 +1,17 @@
 import React from 'react';
 import HomeSearch from './home-search';
+import HomePage from './home-page';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       view: 'search',
-      results: []
+      results: [],
+      trending: []
     };
     this.searchResults = this.searchResults.bind(this);
+    this.getTrending = this.getTrending.bind(this);
   }
 
   searchResults(query) {
@@ -25,14 +28,28 @@ export default class App extends React.Component {
       });
   }
 
+  getTrending(category) {
+    fetch('api/home', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ category: category })
+    })
+      .then(res => res.json())
+      .then(data => {
+        this.setState({ trending: data });
+      });
+  }
+
   changeView() {
 
   }
 
   render() {
     return <>
-      <HomeSearch searchResults={this.searchResults} results={this.state.results}/>
-
+      {/* <HomeSearch searchResults={this.searchResults} results={this.state.results} /> */}
+      <HomePage getTrending={this.getTrending} results={this.state.trending} />
     </>;
   }
 }
