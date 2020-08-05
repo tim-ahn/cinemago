@@ -16,7 +16,7 @@ export default class App extends React.Component {
     this.changeView = this.changeView.bind(this);
   }
 
-  searchResults(query) {
+  searchResults(query, category) {
     fetch('api/search', {
       method: 'POST',
       headers: {
@@ -26,6 +26,19 @@ export default class App extends React.Component {
     })
       .then(res => res.json())
       .then(data => {
+        if (category === 'popularity') {
+          data.sort(function (a, b) {
+            return b.popularity - a.popularity;
+          });
+        } else if (category === 'rating') {
+          data.sort(function (a, b) {
+            return b.vote_average - a.vote_average;
+          });
+        } else {
+          data.sort(function (a, b) {
+            return parseInt(b.release_date.substr(0, 4)) - parseInt(a.release_date.substr(0, 4));
+          });
+        }
         this.setState({ results: data });
       });
   }
@@ -58,7 +71,7 @@ export default class App extends React.Component {
     return <>
       {pageView}
 
-      <Navbar changeView={this.changeView}/>
+      <Navbar changeView={this.changeView} />
     </>;
   }
 }
