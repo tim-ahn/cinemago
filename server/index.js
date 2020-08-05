@@ -98,25 +98,28 @@ app.post('/api/lists/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.post('/api/lists/add/:listId', (req, res, next) => {
-  const id = req.params.listId;
-  const name = req.body.movieId;
-  const sql = `
-    insert into "listItems" ("listId", "movieId")
-    values ($1, $2)
-    returning *
-  `;
-  const params = [id, name];
-  db.query(sql, params)
-    .then(result => {
-      if (result.rows.length < 1) {
-        next(new ClientError(`cannot ${req.method} ${req.originalUrl}`, 404));
-      } else {
-        res.json(result.rows);
-      }
-    })
-    .catch(err => next(err));
-});
+// // app.post('/api/lists/add/:listId', (req, res, next) => {
+// //   const id = req.params.listId;
+// //   const name = req.body.movieId;
+// //   const sql1 = `    insert into "listItems" ("listId", "movieId")
+// //     values ($1, $2)
+// /;/     returning * `
+// //   const sql2 = `
+// //     insert into "listItems" ("listId", "movieId")
+// //     values ($1, $2)
+// //     returning *
+// //   `;
+// //   const params = [id, name];
+// //   db.query(sql, params)
+// //     .then(result => {
+// //       if (result.rows.length < 1) {
+// //         next(new ClientError(`cannot ${req.method} ${req.originalUrl}`, 404));
+// //       } else {
+// //         res.json(result.rows);
+// //       }
+// //     })
+// //     .catch(err => next(err));
+// // });
 
 app.use((err, req, res, next) => {
   if (err instanceof ClientError) {
