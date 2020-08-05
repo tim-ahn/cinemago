@@ -21,6 +21,7 @@ app.post('/api/search', (req, res, next) => {
   fetch(`https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&query=${req.body.query}&page=1&include_adult=false`)
     .then(result => result.json()
     )
+    .catch(error => next(error))
     .then(data => res.json(data.results));
 });
 
