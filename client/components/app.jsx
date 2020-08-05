@@ -97,6 +97,10 @@ export default class App extends React.Component {
       });
   }
 
+  getMovieDetails(movieId) {
+    fetch('/api/details/:movieId');
+  }
+
   changeView(newPage) {
     this.setState({ view: newPage });
   }
@@ -109,6 +113,8 @@ export default class App extends React.Component {
       pageView = <HomeSearch searchResults={this.searchResults} results={this.state.results} />;
     } else if (this.state.view === 'list') {
       pageView = <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} deleteList={this.deleteList} />;
+    } else if (this.state.view === 'details') {
+      pageView = <MovieDetails/>;
     }
     return <>
       {pageView}
