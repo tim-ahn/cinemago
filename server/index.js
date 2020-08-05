@@ -21,7 +21,7 @@ app.post('/api/search', (req, res, next) => {
     .then(result => result.json()
     )
     .then(data => res.json(data.results))
-    .catch(err => next(err));
+    .catch(error => next(error));
 });
 
 /* get request for api/details endpoint

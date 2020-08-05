@@ -4,9 +4,6 @@ import HomePage from './home-page';
 import Navbar from './navbar';
 import UserLists from './user-lists';
 import MovieDetails from './movie-details';
-import HomePage from './home-page';
-import Navbar from './navbar';
-import UserLists from './user-lists';
 
 export default class App extends React.Component {
   constructor(props) {
