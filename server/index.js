@@ -158,6 +158,7 @@ app.post('/api/lists/add/:listId', (req, res, next) => {
   returning * `;
 
   const params = [id, movieId];
+  // checks if movie is already in that users list, if it isnt then add to list table
   db.query(sql1, params)
     .then(result => {
       if (result.rows.length < 1) {
@@ -166,6 +167,7 @@ app.post('/api/lists/add/:listId', (req, res, next) => {
             if (result2.rows.length < 1) {
               next(new ClientError('some error occurred', 404));
             } else {
+              // checks if movie is already in movies list, if it isnt then add to movies table
               return db.query(sql3, [movieId])
                 .then(result3 => {
                   if (result3.rows.length < 1) {
@@ -179,6 +181,26 @@ app.post('/api/lists/add/:listId', (req, res, next) => {
           });
       } else {
         next(new ClientError('movie is already in users list ', 404));
+      }
+    })
+    .catch(err => next(err));
+});
+
+app.get('/api/listItems/:listId', (req, res, next) => {
+  const id = req.params.listId;
+  const sql = `
+    select *
+      from "listItems"
+      join "movies" using ("movieId")
+    where "listId" = $1
+  `;
+  const params = [id];
+  db.query(sql, params)
+    .then(result => {
+      if (result.rows.length < 1) {
+        next(new ClientError('no items in list', 404));
+      } else {
+        res.json(result.rows);
       }
     })
     .catch(err => next(err));

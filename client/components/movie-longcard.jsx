@@ -7,7 +7,6 @@ class MovieLongCard extends React.Component {
   }
 
   render() {
-    console.log(this.props);
     let posterURL;
     if (this.props.poster_path !== null) {
       posterURL = `https://image.tmdb.org/t/p/w500${this.props.poster_path}`;
@@ -32,7 +31,7 @@ class MovieLongCard extends React.Component {
             <h4 className="card-subtitle mb-2 text-muted">Rating:{this.props.fullInfo.vote_average}</h4>
             <h4 className="card-subtitle mb-2 text-muted">Release Year:{year}</h4>
             <p className="card-text">{this.props.fullInfo.overview}</p>
-            <button className="btn btn-secondary" onClick={() => { this.props.addItemToList(4, this.props.fullInfo); }}>
+            <button className="btn btn-secondary" onClick={() => { this.props.addItemToList(1, this.props.fullInfo); }}>
               Add item to list
             </button>
           </div>

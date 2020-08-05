@@ -23,6 +23,7 @@ export default class ListCard extends React.Component {
   }
 
   render() {
+    console.log(this.props);
     if (this.props.item.type === 'custom') {
       return (<>
         <div className="col-11 m-2 border">
@@ -39,7 +40,7 @@ export default class ListCard extends React.Component {
               </ModalFooter>
             </Modal>
           </div>
-          <button className="btn btn-secondary m-2" onClick={() => { this.props.changeView('listContent'); }}>View List Content</button>
+          <button className="btn btn-secondary m-2" onClick={() => { this.props.getItemsInList(this.props.item.listId); }}>View List Content</button>
           <div>
             <Button color="danger" onClick={() => this.deleteModal()}>Delete Modal</Button>
             <Modal isOpen={this.state.deleteModalShow} toggle={() => this.deleteModal()} >
@@ -71,7 +72,7 @@ export default class ListCard extends React.Component {
               </ModalFooter>
             </Modal>
           </div>
-          <button className="btn btn-secondary m-2" onClick={() => { this.props.changeView('listContent'); }}>View List Content</button>
+          <button className="btn btn-secondary m-2" onClick={() => { this.props.getItemsInList(this.props.item.listId, this.props.item.name); }}>View List Content</button>
         </div>
 
       </>);

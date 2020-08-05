@@ -15,7 +15,8 @@ export default class App extends React.Component {
       results: [],
       trending: [],
       lists: [],
-      listId: null,
+      viewListItems: [],
+      currentListName: '',
       userId: 1 // Hardcoded for now, will be set after user logs in and will be helpful in fetching to backend
     };
     this.searchResults = this.searchResults.bind(this);
@@ -25,6 +26,7 @@ export default class App extends React.Component {
     this.changeView = this.changeView.bind(this);
     this.deleteList = this.deleteList.bind(this);
     this.addItemToList = this.addItemToList.bind(this);
+    this.getItemsInList = this.getItemsInList.bind(this);
   }
 
   searchResults(query, category) {
@@ -121,8 +123,13 @@ export default class App extends React.Component {
       });
   }
 
-  getItemsInList() {
-
+  getItemsInList(listId, listName) {
+    fetch(`/api/listItems/${listId}`)
+      .then(res => res.json())
+      .then(data =>
+        this.setState({ viewListItems: data })
+      ).then(data => this.changeView('listContent'))
+      .then(data => this.setState({ currentListName: listName }));
   }
 
   changeView(newPage) {
@@ -136,11 +143,11 @@ export default class App extends React.Component {
     } else if (this.state.view === 'search') {
       pageView = <HomeSearch searchResults={this.searchResults} results={this.state.results} addItemToList={this.addItemToList} />;
     } else if (this.state.view === 'list') {
-      pageView = <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} deleteList={this.deleteList} changeView={this.changeView} />;
+      pageView = <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} deleteList={this.deleteList} changeView={this.changeView} getItemsInList={this.getItemsInList} />;
     } else if (this.state.view === 'user') {
       pageView = <UserProfile />; // insert userId when relavent
     } else if (this.state.view === 'listContent') {
-      pageView = <ListItems />;
+      pageView = <ListItems viewListItems={this.state.viewListItems} listName={this.state.currentListName} />;
     }
     return <>
       {pageView}
