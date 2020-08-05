@@ -60,6 +60,44 @@ app.get('/api/lists/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.delete('/api/lists/:listId', (req, res, next) => {
+  const id = req.params.listId;
+  const sql = `
+      delete from "lists" where "listId" = $1
+      returning *
+  `;
+  const params = [id];
+  db.query(sql, params)
+    .then(result => {
+      if (result.rows.length < 1) {
+        next(new ClientError(`cannot ${req.method} ${req.originalUrl}`, 404));
+      } else {
+        res.json(result.rows);
+      }
+    })
+    .catch(err => next(err));
+});
+
+app.post('/api/lists/:userId', (req, res, next) => {
+  const id = req.params.userId;
+  const name = req.body.name;
+  const sql = `
+    insert into "lists" ("userId", "type","name")
+    values ($1, 'custom', $2)
+    returning *
+  `;
+  const params = [id, name];
+  db.query(sql, params)
+    .then(result => {
+      if (result.rows.length < 1) {
+        next(new ClientError(`cannot ${req.method} ${req.originalUrl}`, 404));
+      } else {
+        res.json(result.rows);
+      }
+    })
+    .catch(err => next(err));
+});
+
 app.use((err, req, res, next) => {
   if (err instanceof ClientError) {
     res.status(err.status).json({ error: err.message });
