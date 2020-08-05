@@ -6,6 +6,7 @@ const ClientError = require('./client-error');
 const staticMiddleware = require('./static-middleware');
 const sessionMiddleware = require('./session-middleware');
 const fetch = require('node-fetch');
+const promise = require('promise');
 
 const app = express();
 
@@ -20,10 +21,45 @@ app.post('/api/search', (req, res, next) => {
   fetch(`https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&query=${req.body.query}&page=1&include_adult=false`)
     .then(result => result.json()
     )
-    .then(data => res.json(data.results))
-    .catch(err => next(err));
-
+    .then(data => res.json(data.results));
 });
+
+/* get request for api/details endpoint
+notes: need to include name to reviews too. grab it from users table using userId?
+*/
+app.get('/api/details/:movieId', (req, res, next) => {
+  const movieId = 496243; // need to figure out how to grab dynamically
+
+  promise.all([
+    fetch(`https://api.themoviedb.org/3/movie/${movieId}/reviews?api_key=${apiKey}&language=en-US&page=1`)
+      .then(res => res.json()),
+    fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US`)
+      .then(res => res.json())
+  ])
+    .then(data => {
+      res.json(data);
+    })
+    .catch(error => next(error));
+
+  // const sql = `
+  //     select "rating", "content"
+  //     from "reviews"
+  //     where "movieId" = $1
+  //   `;
+
+  // const params = [movieId];
+  // db.query(sql, params)
+  //   .then(result => {
+  //     const review = result.rows[0];
+  //     if (!review) {
+  //       next(new ClientError('No reviews currently exist', 404));
+  //     } else {
+  //       res.status(200).json(review);
+  //     }
+  //   })
+  //   .catch(error => next(error));
+});
+// end feature: user-can-view-details
 
 app.post('/api/home', (req, res, next) => {
   if (req.body.category === 'trending') {
