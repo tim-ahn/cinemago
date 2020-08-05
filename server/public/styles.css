@@ -9,7 +9,7 @@ button.focus,button:active.focus,button.active.focus {
     outline: none;
 }
 .movieReviewCard {
-  width: 20%;
+  width: 40%;
   height: 8rem;
   border-style: solid;
   border-color: black;

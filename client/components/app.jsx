@@ -112,8 +112,9 @@ export default class App extends React.Component {
       pageView = <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} deleteList={this.deleteList} />;
     }
     return <>
-      {pageView}
+      {/* {pageView} */}
       {/* <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} deleteList={this.deleteList} /> */}
+      <WriteReview />
       <Navbar changeView={this.changeView} />
     </>;
   }

@@ -41,6 +41,10 @@ app.post('/api/home', (req, res, next) => {
   }
 });
 
+app.post('/api/reviews', (req, res, next) => {
+  res.json({ text: 'something' });
+});
+
 app.get('/api/lists/:userId', (req, res, next) => {
   const id = req.params.userId;
   const sql = `
