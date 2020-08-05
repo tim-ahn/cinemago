@@ -109,13 +109,12 @@ export default class App extends React.Component {
     } else if (this.state.view === 'search') {
       pageView = <HomeSearch searchResults={this.searchResults} results={this.state.results} />;
     } else if (this.state.view === 'list') {
-      pageView = <UserLists getUserLists={this.getUserLists} lists={this.state.lists} />;
+      pageView = <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} deleteList={this.deleteList} />;
     } else if (this.state.view === 'user') {
       pageView = <UserProfile />; // insert userId when relavent
     }
     return <>
       {pageView}
-      {/* <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} deleteList={this.deleteList} /> */}
       <Navbar changeView={this.changeView} />
     </>;
   }
