@@ -23,12 +23,11 @@ class WriteReview extends React.Component {
 
     fetch('/api/movie/review', {
       method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ content: this.state.content, rating: this.state.rating })
     })
       .then(response => response.json())
-      .then(review => {
-        this.setState({ content: review });
-      });
+      .then(review => this.setState({ content: review }));
   }
 
   handleText(event) {
