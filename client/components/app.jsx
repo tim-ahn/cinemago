@@ -4,6 +4,7 @@ import MovieDetails from './movie-details';
 import HomePage from './home-page';
 import Navbar from './navbar';
 import UserLists from './user-lists';
+import UserProfile from './user-profile';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -108,7 +109,9 @@ export default class App extends React.Component {
     } else if (this.state.view === 'search') {
       pageView = <HomeSearch searchResults={this.searchResults} results={this.state.results} />;
     } else if (this.state.view === 'list') {
-      pageView = <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} deleteList={this.deleteList} />;
+      pageView = <UserLists getUserLists={this.getUserLists} lists={this.state.lists} />;
+    } else if (this.state.view === 'user') {
+      pageView = <UserProfile/>; // insert userId when relavent
     }
     return <>
       {pageView}
