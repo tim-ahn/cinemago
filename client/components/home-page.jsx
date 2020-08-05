@@ -29,7 +29,7 @@ class HomePage extends React.Component {
     }
 
     return (<>
-      <h1>Home Page- placeholder</h1>
+      <h1>Home Page</h1>
       <div className="container">
         <ul className="nav nav-tabs">
           <li className="nav-item">

@@ -1,11 +1,11 @@
 require('dotenv/config');
 const express = require('express');
-
 const db = require('./database');
 const ClientError = require('./client-error');
 const staticMiddleware = require('./static-middleware');
 const sessionMiddleware = require('./session-middleware');
 const fetch = require('node-fetch');
+const promise = require('promise');
 
 const app = express();
 
@@ -21,9 +21,45 @@ app.post('/api/search', (req, res, next) => {
     .then(result => result.json()
     )
     .then(data => res.json(data.results))
-    .catch(err => next(err));
-
+    .catch(error => next(error));
 });
+
+/* get request for api/details endpoint
+notes: need to include name to reviews too. grab it from users table using userId?
+*/
+app.get('/api/details/:movieId', (req, res, next) => {
+  const movieId = 496243; // need to figure out how to grab dynamically
+
+  promise.all([
+    fetch(`https://api.themoviedb.org/3/movie/${movieId}/reviews?api_key=${apiKey}&language=en-US&page=1`)
+      .then(res => res.json()),
+    fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US`)
+      .then(res => res.json())
+  ])
+    .then(data => {
+      res.json(data);
+    })
+    .catch(error => next(error));
+
+  // const sql = `
+  //     select "rating", "content"
+  //     from "reviews"
+  //     where "movieId" = $1
+  //   `;
+
+  // const params = [movieId];
+  // db.query(sql, params)
+  //   .then(result => {
+  //     const review = result.rows[0];
+  //     if (!review) {
+  //       next(new ClientError('No reviews currently exist', 404));
+  //     } else {
+  //       res.status(200).json(review);
+  //     }
+  //   })
+  //   .catch(error => next(error));
+});
+// end feature: user-can-view-details
 
 app.post('/api/home', (req, res, next) => {
   if (req.body.category === 'trending') {
@@ -97,6 +133,48 @@ app.post('/api/lists/:userId', (req, res, next) => {
         next(new ClientError(`cannot ${req.method} ${req.originalUrl}`, 404));
       } else {
         res.json(result.rows);
+      }
+    })
+    .catch(err => next(err));
+});
+
+app.post('/api/lists/add/:listId', (req, res, next) => {
+  const id = req.params.listId;
+  const movieId = req.body.movieId;
+  const sql1 = `select * from "listItems"
+  where "listId" = $1 and "movieId" = $2`;
+
+  const sql2 = `
+  insert into "listItems"("listId", "movieId")
+  values($1, $2)
+  returning *
+    `;
+
+  const sql3 = `select * from "movies"
+  where "movieId" = $1`;
+
+  const params = [id, movieId];
+  db.query(sql1, params)
+    .then(result => {
+      if (result.rows.length < 1) {
+        db.query(sql2, params)
+          .then(result2 => {
+            if (result2.rows.length < 1) {
+              next(new ClientError('some error occurred', 404));
+            } else {
+              db.query(sql3, [movieId])
+                .then(result3 => {
+                  if (result3.rows.length < 1) {
+                    // db.query(sql4)
+                  } else {
+                    next(new ClientError('movie is already in list ', 404));
+                  }
+                });
+              // res.json(result.rows);
+            }
+          });
+      } else {
+        next(new ClientError('movie is already in list ', 404));
       }
     })
     .catch(err => next(err));

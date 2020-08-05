@@ -33,23 +33,23 @@ export default class UserLists extends React.Component {
   render() {
 
     return (<>
-      <h1>My Lists</h1>
-      <div>
-        <Button color="primary" onClick={() => this.toggleModal()}>Create a Custom List</Button>
-        <Modal isOpen={this.state.modalShow} toggle={() => this.toggleModal()} >
-          <ModalHeader toggle={() => this.toggleModal()}>What is the name of your new list?</ModalHeader>
-          <ModalBody>
-            <form className="container">
-              <input onChange={this.handleText} value={this.state.text} className="form-control" placeholder="Name of new list" id="listName"></input>
-            </form>
-          </ModalBody>
-          <ModalFooter>
-            <Button color="primary" onClick={() => this.handleSubmit(event)}>Create new list</Button>{' '}
-            <Button color="secondary" onClick={() => this.toggleModal()}>Cancel</Button>
-          </ModalFooter>
-        </Modal>
-      </div>
-      <div className="row justify-content-center">
+      <div className="container mt-2 justify-content-center">
+        <h1>My Lists</h1>
+        <div>
+          <Button color="primary" onClick={() => this.toggleModal()}>Create a Custom List</Button>
+          <Modal isOpen={this.state.modalShow} toggle={() => this.toggleModal()} >
+            <ModalHeader toggle={() => this.toggleModal()}>What is the name of your new list?</ModalHeader>
+            <ModalBody>
+              <form className="container">
+                <input onChange={this.handleText} value={this.state.text} className="form-control" placeholder="Name of new list" id="listName"></input>
+              </form>
+            </ModalBody>
+            <ModalFooter>
+              <Button color="primary" onClick={() => this.handleSubmit(event)}>Create new list</Button>{' '}
+              <Button color="secondary" onClick={() => this.toggleModal()}>Cancel</Button>
+            </ModalFooter>
+          </Modal>
+        </div>
         {this.props.lists.map(item => (
           <ListCard key={item.listId} id={item.listId} item={item} deleteList={this.props.deleteList} />
         ))}
