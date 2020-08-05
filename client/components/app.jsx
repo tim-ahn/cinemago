@@ -1,12 +1,14 @@
 import React from 'react';
 import HomeSearch from './home-search';
+import MovieDetails from './movie-details';
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       view: 'search',
-      results: []
+      results: [],
+      details: []
     };
     this.searchResults = this.searchResults.bind(this);
   }
@@ -25,6 +27,14 @@ export default class App extends React.Component {
       });
   }
 
+  getMovieDetails() {
+    fetch('api/details')
+      .then(res => res.json())
+      .then(data => {
+        this.setState({ details: data });
+      });
+  }
+
   changeView() {
 
   }
@@ -32,7 +42,7 @@ export default class App extends React.Component {
   render() {
     return <>
       <HomeSearch searchResults={this.searchResults} results={this.state.results}/>
-
+      <MovieDetails results={this.state.results} getMovieDetails={this.getMovieDetails} />
     </>;
   }
 }
