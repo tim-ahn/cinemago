@@ -1,5 +1,6 @@
 import React from 'react';
 import HomeSearch from './home-search';
+import MovieDetails from './movie-details';
 import HomePage from './home-page';
 import Navbar from './navbar';
 import UserLists from './user-lists';
@@ -18,7 +19,9 @@ export default class App extends React.Component {
     this.searchResults = this.searchResults.bind(this);
     this.getTrending = this.getTrending.bind(this);
     this.getUserLists = this.getUserLists.bind(this);
+    this.createNewList = this.createNewList.bind(this);
     this.changeView = this.changeView.bind(this);
+    this.deleteList = this.deleteList.bind(this);
   }
 
   searchResults(query, category) {
@@ -71,6 +74,30 @@ export default class App extends React.Component {
       });
   }
 
+  createNewList(name) {
+    fetch(`api/lists/${this.state.userId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ name: name })
+    })
+      .then(res => res.json())
+      .then(data => {
+        this.getUserLists();
+      });
+  }
+
+  deleteList(listId) {
+    fetch(`/api/lists/${listId}`, {
+      method: 'DELETE'
+
+    }).then(res => res.json())
+      .then(data => {
+        this.getUserLists();
+      });
+  }
+
   changeView(newPage) {
     this.setState({ view: newPage });
   }
@@ -88,6 +115,7 @@ export default class App extends React.Component {
     }
     return <>
       {pageView}
+      {/* <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} deleteList={this.deleteList} /> */}
       <Navbar changeView={this.changeView} />
     </>;
   }
