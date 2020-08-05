@@ -2,6 +2,7 @@ import React from 'react';
 import HomeSearch from './home-search';
 import HomePage from './home-page';
 import Navbar from './navbar';
+import UserLists from './user-lists';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -9,10 +10,13 @@ export default class App extends React.Component {
     this.state = {
       view: 'home',
       results: [],
-      trending: []
+      trending: [],
+      lists: [],
+      userId: 1 // Hardcoded for now, will be set after user logs in and will be helpful in fetching to backend
     };
     this.searchResults = this.searchResults.bind(this);
     this.getTrending = this.getTrending.bind(this);
+    this.getUserLists = this.getUserLists.bind(this);
     this.changeView = this.changeView.bind(this);
   }
 
@@ -57,6 +61,15 @@ export default class App extends React.Component {
       });
   }
 
+  getUserLists() {
+
+    fetch(`/api/lists/${this.state.userId}`)
+      .then(res => res.json())
+      .then(data => {
+        this.setState({ lists: data });
+      });
+  }
+
   changeView(newPage) {
     this.setState({ view: newPage });
   }
@@ -67,10 +80,11 @@ export default class App extends React.Component {
       pageView = <HomePage getTrending={this.getTrending} results={this.state.trending} />;
     } else if (this.state.view === 'search') {
       pageView = <HomeSearch searchResults={this.searchResults} results={this.state.results} />;
+    } else if (this.state.view === 'list') {
+      pageView = <UserLists getUserLists={this.getUserLists} lists={this.state.lists} />;
     }
     return <>
       {pageView}
-
       <Navbar changeView={this.changeView} />
     </>;
   }
