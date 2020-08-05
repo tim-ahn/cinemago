@@ -21,8 +21,7 @@ app.post('/api/search', (req, res, next) => {
   fetch(`https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&query=${req.body.query}&page=1&include_adult=false`)
     .then(result => result.json()
     )
-    .then(data => res.json(data.results))
-  ;
+    .then(data => res.json(data.results));
 });
 
 /* get request for api/details endpoint
@@ -59,8 +58,80 @@ app.get('/api/details/:movieId', (req, res, next) => {
   //     }
   //   })
   //   .catch(error => next(error));
+});
+// end feature: user-can-view-details
 
-  // end feature: user-can-view-details
+app.post('/api/home', (req, res, next) => {
+  if (req.body.category === 'trending') {
+    fetch(`https://api.themoviedb.org/3/trending/movie/day?api_key=${apiKey}`)
+      .then(result => result.json()
+      )
+      .then(data => res.json(data.results))
+      .catch(err => next(err));
+  } else {
+    fetch(`https://api.themoviedb.org/3/movie/top_rated?api_key=${apiKey}&language=en-US&page=1`)
+      .then(result => result.json()
+      )
+      .then(data => res.json(data.results))
+      .catch(err => next(err));
+  }
+});
+
+app.get('/api/lists/:userId', (req, res, next) => {
+  const id = req.params.userId;
+  const sql = `
+    select *
+      from "lists"
+    where "userId" = $1
+  `;
+  const params = [id];
+  db.query(sql, params)
+    .then(result => {
+      if (result.rows.length < 1) {
+        next(new ClientError(`cannot ${req.method} ${req.originalUrl}`, 404));
+      } else {
+        res.json(result.rows);
+      }
+    })
+    .catch(err => next(err));
+});
+
+app.delete('/api/lists/:listId', (req, res, next) => {
+  const id = req.params.listId;
+  const sql = `
+      delete from "lists" where "listId" = $1
+      returning *
+  `;
+  const params = [id];
+  db.query(sql, params)
+    .then(result => {
+      if (result.rows.length < 1) {
+        next(new ClientError(`cannot ${req.method} ${req.originalUrl}`, 404));
+      } else {
+        res.json(result.rows);
+      }
+    })
+    .catch(err => next(err));
+});
+
+app.post('/api/lists/:userId', (req, res, next) => {
+  const id = req.params.userId;
+  const name = req.body.name;
+  const sql = `
+    insert into "lists" ("userId", "type","name")
+    values ($1, 'custom', $2)
+    returning *
+  `;
+  const params = [id, name];
+  db.query(sql, params)
+    .then(result => {
+      if (result.rows.length < 1) {
+        next(new ClientError(`cannot ${req.method} ${req.originalUrl}`, 404));
+      } else {
+        res.json(result.rows);
+      }
+    })
+    .catch(err => next(err));
 });
 
 app.use((err, req, res, next) => {
