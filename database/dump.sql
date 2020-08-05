@@ -230,6 +230,10 @@ COPY public."listItems" ("listId", "movieId") FROM stdin;
 --
 
 COPY public.lists ("userId", "listId", type, name) FROM stdin;
+1	1	favorites	My Favorites
+1	2	watch	My Watch List
+2	3	favorites	My Favorites
+2	4	watch	My Watch List
 \.
 
 
@@ -263,6 +267,7 @@ COPY public.reviews ("userId", "reviewId", rating, content, "movieId") FROM stdi
 
 COPY public.users ("userId", name, password, bio, "imageURL") FROM stdin;
 1	Uzair	anime	I like anime and fast cars. nuff said	\N
+2	Cody	coding	I like coding and teaching. nuff said	\N
 \.
 
 
@@ -270,7 +275,7 @@ COPY public.users ("userId", name, password, bio, "imageURL") FROM stdin;
 -- Name: lists_listId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."lists_listId_seq"', 1, false);
+SELECT pg_catalog.setval('public."lists_listId_seq"', 6, true);
 
 
 --
@@ -284,7 +289,7 @@ SELECT pg_catalog.setval('public."reviews_reviewId_seq"', 1, false);
 -- Name: users_userId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."users_userId_seq"', 1, true);
+SELECT pg_catalog.setval('public."users_userId_seq"', 2, true);
 
 
 --
