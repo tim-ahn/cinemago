@@ -77,7 +77,6 @@ app.post('/api/home', (req, res, next) => {
   }
 });
 
-
 app.get('/api/users/:userId', (req, res, next) => {
   const id = req.params.userId;
   const sql = `
