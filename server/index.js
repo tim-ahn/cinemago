@@ -137,6 +137,10 @@ app.post('/api/lists/:userId', (req, res, next) => {
 app.post('/api/lists/add/:listId', (req, res, next) => {
   const id = req.params.listId;
   const movieId = req.body.movieId;
+  const title = req.body.title;
+  const description = req.body.description;
+  const posterURL = req.body.posterURL;
+  const releaseDate = req.body.release_date;
   const sql1 = `select * from "listItems"
   where "listId" = $1 and "movieId" = $2`;
 
@@ -149,28 +153,32 @@ app.post('/api/lists/add/:listId', (req, res, next) => {
   const sql3 = `select * from "movies"
   where "movieId" = $1`;
 
+  const sql4 = `insert into "movies" ("title", "movieId", "description", "posterURL", "reviews", "releaseDate")
+  values($1, $2, $3, $4, $5, $6)
+  returning * `;
+
   const params = [id, movieId];
   db.query(sql1, params)
     .then(result => {
       if (result.rows.length < 1) {
-        db.query(sql2, params)
+        return db.query(sql2, params)
           .then(result2 => {
             if (result2.rows.length < 1) {
               next(new ClientError('some error occurred', 404));
             } else {
-              db.query(sql3, [movieId])
+              return db.query(sql3, [movieId])
                 .then(result3 => {
                   if (result3.rows.length < 1) {
-                    // db.query(sql4)
+                    db.query(sql4, [title, movieId, description, posterURL, { reviews: 'not yet' }, releaseDate])
+                      .then(result4 => res.json(result4.rows));
                   } else {
-                    next(new ClientError('movie is already in list ', 404));
+                    next(new ClientError('movie already in movies table', 404));
                   }
                 });
-              // res.json(result.rows);
             }
           });
       } else {
-        next(new ClientError('movie is already in list ', 404));
+        next(new ClientError('movie is already in users list ', 404));
       }
     })
     .catch(err => next(err));
