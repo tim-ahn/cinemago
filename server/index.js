@@ -77,6 +77,29 @@ app.post('/api/home', (req, res, next) => {
   }
 });
 
+
+app.get('/api/users/:userId', (req, res, next) => {
+  const id = req.params.userId;
+  const sql = `
+    select "users"."userId",
+      "users"."name",
+      "users"."bio",
+      "users"."imageURL"
+      from "users"
+    where "userId" = $1
+  `;
+  const params = [id];
+  db.query(sql, params)
+    .then(result => {
+      if (result.rows.length < 1) {
+        next(new ClientError(`user ${id} not found `, 404));
+      } else {
+        res.json(result.rows[0]);
+      }
+    })
+    .catch(err => next(err));
+});
+
 app.post('/api/reviews', (req, res, next) => {
   res.json({ text: 'something' });
 });
