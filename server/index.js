@@ -159,8 +159,14 @@ app.post('/api/lists/add/:listId', (req, res, next) => {
               next(new ClientError('some error occurred', 404));
             } else {
               db.query(sql3, [movieId])
-                .then();
-              res.json(result.rows);
+                .then(result3 => {
+                  if (result3.rows.length < 1) {
+                    // db.query(sql4)
+                  } else {
+                    next(new ClientError('movie is already in list ', 404));
+                  }
+                });
+              // res.json(result.rows);
             }
           });
       } else {
