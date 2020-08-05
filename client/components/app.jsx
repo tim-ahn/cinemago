@@ -8,7 +8,7 @@ export default class App extends React.Component {
     this.state = {
       view: 'search',
       results: [],
-      details: []
+      params: {}
     };
     this.searchResults = this.searchResults.bind(this);
   }
@@ -35,14 +35,22 @@ export default class App extends React.Component {
       });
   }
 
-  changeView() {
-
+  setToDescriptionView(name, params) {
+    this.setState({
+      view: 'description',
+      params: params
+    });
   }
 
   render() {
-    return <>
-      <HomeSearch searchResults={this.searchResults} results={this.state.results}/>
-      <MovieDetails results={this.state.results} getMovieDetails={this.getMovieDetails} />
-    </>;
+    if (this.state.view === 'search') {
+      return (
+        <HomeSearch searchResults={this.searchResults} results={this.state.results} />
+      );
+    } else if (this.state.view === 'description') {
+      return (
+        <MovieDetails results={this.state.results} getMovieDetails={this.getMovieDetails} />
+      );
+    }
   }
 }
