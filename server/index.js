@@ -99,8 +99,20 @@ app.get('/api/users/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-app.post('/api/reviews', (req, res, next) => {
-  res.json({ text: 'something' });
+// user can write review
+app.post('/api/reviews/:movieId', (req, res, next) => {
+  const movieId = req.params.movieId;
+  const sql = `
+    insert into "reviews" ("userId", "reviewId", "rating", "content", "movieId" )
+    values ($1, $2, $3, $4, $5)
+    returning *;
+  `;
+  const params = [movieId];
+  db.query(sql, params)
+    .then(result => {
+      res.status(201).json(result);
+    })
+    .catch(err => next(err));
 });
 
 app.get('/api/lists/:userId', (req, res, next) => {
