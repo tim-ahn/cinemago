@@ -34,7 +34,6 @@ export default class UserLists extends React.Component {
 
     return (<>
       <h1>My Lists</h1>
-
       <div>
         <Button color="primary" onClick={() => this.toggleModal()}>Create a Custom List</Button>
         <Modal isOpen={this.state.modalShow} toggle={() => this.toggleModal()} >
@@ -52,7 +51,7 @@ export default class UserLists extends React.Component {
       </div>
       <div className="row justify-content-center">
         {this.props.lists.map(item => (
-          <ListCard key={item.listId} id={item.listId} item={item} />
+          <ListCard key={item.listId} id={item.listId} item={item} deleteList={this.props.deleteList} />
         ))}
       </div>
 

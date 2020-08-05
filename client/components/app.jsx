@@ -19,6 +19,7 @@ export default class App extends React.Component {
     this.getUserLists = this.getUserLists.bind(this);
     this.createNewList = this.createNewList.bind(this);
     this.changeView = this.changeView.bind(this);
+    this.deleteList = this.deleteList.bind(this);
   }
 
   searchResults(query, category) {
@@ -85,6 +86,16 @@ export default class App extends React.Component {
       });
   }
 
+  deleteList(listId) {
+    fetch(`/api/lists/${listId}`, {
+      method: 'DELETE'
+
+    }).then(res => res.json())
+      .then(data => {
+        this.getUserLists();
+      });
+  }
+
   changeView(newPage) {
     this.setState({ view: newPage });
   }
@@ -96,11 +107,11 @@ export default class App extends React.Component {
     } else if (this.state.view === 'search') {
       pageView = <HomeSearch searchResults={this.searchResults} results={this.state.results} />;
     } else if (this.state.view === 'list') {
-      pageView = <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} />;
+      pageView = <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} deleteList={this.deleteList} />;
     }
     return <>
       {/* {pageView} */}
-      <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} />
+      <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} deleteList={this.deleteList} />
       <Navbar changeView={this.changeView} />
     </>;
   }
