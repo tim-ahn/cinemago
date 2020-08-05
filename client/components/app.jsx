@@ -98,7 +98,11 @@ export default class App extends React.Component {
   }
 
   getMovieDetails(movieId) {
-    fetch('/api/details/:movieId');
+    fetch(`/api/details/${movieId}`)
+      .then(res => res.json())
+      .then(data => {
+
+      });
   }
 
   changeView(newPage) {

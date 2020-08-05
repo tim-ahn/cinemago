@@ -29,7 +29,7 @@ app.post('/api/search', (req, res, next) => {
 notes: need to include name to reviews too. grab it from users table using userId?
 */
 app.get('/api/details/:movieId', (req, res, next) => {
-  const movieId = req.params.movieId; // need to figure out how to grab dynamically
+  const movieId = req.params.movieId;
 
   promise.all([
     fetch(`https://api.themoviedb.org/3/movie/${movieId}/reviews?api_key=${apiKey}&language=en-US&page=1`)
