@@ -1,5 +1,8 @@
 import React from 'react';
 import HomeSearch from './home-search';
+import HomePage from './home-page';
+import Navbar from './navbar';
+import UserLists from './user-lists';
 import MovieDetails from './movie-details';
 
 export default class App extends React.Component {
