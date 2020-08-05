@@ -69,6 +69,7 @@ export default class App extends React.Component {
       pageView = <HomeSearch searchResults={this.searchResults} results={this.state.results} />;
     }
     return <>
+      {pageView}
       <HomeSearch searchResults={this.searchResults} results={this.state.results} />
       {/* <HomePage getTrending={this.getTrending} results={this.state.trending} /> */}
       <Navbar changeView={this.changeView} />
