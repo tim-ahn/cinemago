@@ -13,6 +13,12 @@ class MovieLongCard extends React.Component {
     } else {
       posterURL = '../images/image_placeholder.png';
     }
+    let year;
+    if (this.props.fullInfo.release_date) {
+      year = this.props.fullInfo.release_date.substr(0, 4);
+    } else {
+      year = 'Not Available';
+    }
     return (<>
       <div >
         <div className="row m-2 border">
@@ -23,7 +29,7 @@ class MovieLongCard extends React.Component {
             <h1 className="card-title">{this.props.fullInfo.original_title}</h1>
             <h4 className="card-subtitle mb-2 text-muted">Popularity:{this.props.fullInfo.popularity}</h4>
             <h4 className="card-subtitle mb-2 text-muted">Rating:{this.props.fullInfo.vote_average}</h4>
-            <h4 className="card-subtitle mb-2 text-muted">Release Year:{this.props.fullInfo.release_date.substr(0, 4)}</h4>
+            <h4 className="card-subtitle mb-2 text-muted">Release Year:{year}</h4>
             <p className="card-text">{this.props.fullInfo.overview}</p>
             <button>
               <svg width="3em" height="3em" viewBox="0 0 16 16" className="bi bi-file-earmark-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
