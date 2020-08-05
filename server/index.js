@@ -77,6 +77,7 @@ app.post('/api/home', (req, res, next) => {
   }
 });
 
+
 app.get('/api/users/:userId', (req, res, next) => {
   const id = req.params.userId;
   const sql = `
@@ -97,6 +98,10 @@ app.get('/api/users/:userId', (req, res, next) => {
       }
     })
     .catch(err => next(err));
+});
+
+app.post('/api/reviews', (req, res, next) => {
+  res.json({ text: 'something' });
 });
 
 app.get('/api/lists/:userId', (req, res, next) => {

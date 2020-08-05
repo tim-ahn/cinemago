@@ -1,6 +1,7 @@
 import React from 'react';
 import HomeSearch from './home-search';
 import HomePage from './home-page';
+import WriteReview from './write-review';
 import Navbar from './navbar';
 import UserLists from './user-lists';
 import MovieDetails from './movie-details';
@@ -103,6 +104,7 @@ export default class App extends React.Component {
   }
 
   render() {
+    // eslint-disable-next-line no-unused-vars
     let pageView;
     if (this.state.view === 'home') {
       pageView = <HomePage getTrending={this.getTrending} results={this.state.trending} />;
@@ -114,7 +116,9 @@ export default class App extends React.Component {
       pageView = <UserProfile />; // insert userId when relavent
     }
     return <>
+
       {pageView}
+
       <Navbar changeView={this.changeView} />
     </>;
   }
