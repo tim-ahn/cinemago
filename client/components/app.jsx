@@ -1,21 +1,26 @@
 import React from 'react';
 import HomeSearch from './home-search';
 import HomePage from './home-page';
+<<<<<<< HEAD
 import WriteReview from './write-review';
+=======
+import Navbar from './navbar';
+>>>>>>> 7e9e769680f06a1b0d8936775c082a903b60a7fa
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: 'search',
+      view: 'home',
       results: [],
       trending: []
     };
     this.searchResults = this.searchResults.bind(this);
     this.getTrending = this.getTrending.bind(this);
+    this.changeView = this.changeView.bind(this);
   }
 
-  searchResults(query) {
+  searchResults(query, category) {
     fetch('api/search', {
       method: 'POST',
       headers: {
@@ -25,6 +30,19 @@ export default class App extends React.Component {
     })
       .then(res => res.json())
       .then(data => {
+        if (category === 'popularity') {
+          data.sort(function (a, b) {
+            return b.popularity - a.popularity;
+          });
+        } else if (category === 'rating') {
+          data.sort(function (a, b) {
+            return b.vote_average - a.vote_average;
+          });
+        } else {
+          data.sort(function (a, b) {
+            return parseInt(b.release_date.substr(0, 4)) - parseInt(a.release_date.substr(0, 4));
+          });
+        }
         this.setState({ results: data });
       });
   }
@@ -43,15 +61,21 @@ export default class App extends React.Component {
       });
   }
 
-  changeView() {
-
+  changeView(newPage) {
+    this.setState({ view: newPage });
   }
 
   render() {
+    let pageView;
+    if (this.state.view === 'home') {
+      pageView = <HomePage getTrending={this.getTrending} results={this.state.trending} />;
+    } else if (this.state.view === 'search') {
+      pageView = <HomeSearch searchResults={this.searchResults} results={this.state.results} />;
+    }
     return <>
-      {/* <HomeSearch searchResults={this.searchResults} results={this.state.results} /> */}
-      {/* <HomePage getTrending={this.getTrending} results={this.state.trending} /> */}
+      {pageView}
       <WriteReview />
+      <Navbar changeView={this.changeView} />
     </>;
   }
 }
