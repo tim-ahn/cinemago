@@ -1,11 +1,8 @@
 import React from 'react';
 import HomeSearch from './home-search';
 import HomePage from './home-page';
-<<<<<<< HEAD
 import WriteReview from './write-review';
-=======
 import Navbar from './navbar';
->>>>>>> 7e9e769680f06a1b0d8936775c082a903b60a7fa
 
 export default class App extends React.Component {
   constructor(props) {
@@ -66,6 +63,7 @@ export default class App extends React.Component {
   }
 
   render() {
+    // eslint-disable-next-line no-unused-vars
     let pageView;
     if (this.state.view === 'home') {
       pageView = <HomePage getTrending={this.getTrending} results={this.state.trending} />;
@@ -73,9 +71,9 @@ export default class App extends React.Component {
       pageView = <HomeSearch searchResults={this.searchResults} results={this.state.results} />;
     }
     return <>
-      {pageView}
+      {/* {pageView} */}
       <WriteReview />
-      <Navbar changeView={this.changeView} />
+      {/* <Navbar changeView={this.changeView} /> */}
     </>;
   }
 }
