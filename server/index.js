@@ -41,6 +41,25 @@ app.post('/api/home', (req, res, next) => {
   }
 });
 
+app.get('/api/lists/:userId', (req, res, next) => {
+  const id = req.params.userId;
+  const sql = `
+    select *
+      from "lists"
+    where "userId" = $1
+  `;
+  const params = [id];
+  db.query(sql, params)
+    .then(result => {
+      if (result.rows.length < 1) {
+        next(new ClientError(`cannot ${req.method} ${req.originalUrl}`, 404));
+      } else {
+        res.json(result.rows);
+      }
+    })
+    .catch(err => next(err));
+});
+
 app.use((err, req, res, next) => {
   if (err instanceof ClientError) {
     res.status(err.status).json({ error: err.message });
