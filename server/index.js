@@ -99,7 +99,6 @@ app.get('/api/users/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-<<<<<<< HEAD
 // user can write review
 app.post('/api/reviews/:movieId', (req, res, next) => {
   const movieId = req.params.movieId;
@@ -107,38 +106,39 @@ app.post('/api/reviews/:movieId', (req, res, next) => {
   const reviewId = req.body.reviewId;
   const rating = req.body.rating;
   const reviewContent = req.body.content;
+
+  if (movieId < 1 || isNaN(movieId)) {
+    res.status(400).json({ error: 'invalid id' });
+    return;
+  }
+
+  if (!userId || !reviewId || !rating || !reviewContent) {
+    res.status(400).json({ error: 'missing content' });
+    return;
+  }
+
   const sql = `
     insert into "reviews" ("userId", "reviewId", "rating", "content", "movieId" )
     values ($1, $2, $3, $4, $5)
     returning *;
   `;
-  const params = [userId, reviewId, rating, reviewContent, movieId];
-  db.query(sql, params)
-    .then(result => {
-      res.status(201).json({ message: result });
-    })
-    .catch(err => next(err));
-=======
-app.patch('/api/users/:userId', (req, res, next) => {
-  const id = req.params.userId;
-  if (!req.body.bio) {
-    throw (new ClientError('bio is needed', 400));
-  }
-  const sql = `
-    update "users"
-    set "bio" = $2
-    where "userId" = $1
-  `;
-  const params = [id, req.body.bio];
-  db.query(sql, params)
-    .then(result => res.sendStatus(200))
-    .catch(err => next(err));
-});
 
-app.post('/api/reviews', (req, res, next) => {
-  res.json({ text: 'something' });
->>>>>>> b73342950922d4e73f1bed511b059ca4f1698b08
+  const params = [userId, reviewId, rating, reviewContent, movieId];
+
+  db.query(sql, params)
+    .then(response => {
+      if (!response.rows[0]) {
+        res.status(404).json({ error: 'cannot review movie' });
+      } else {
+        res.status(201).json({ message: response.rows[0] });
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ error: 'an unexpected error occurred' });
+    });
 });
+// end of user can write review
 
 app.get('/api/lists/:userId', (req, res, next) => {
   const id = req.params.userId;
