@@ -311,7 +311,6 @@ app.delete('/api/listItems/:listId/:movieId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-// ROUGH CODE OUTLINE FOR LOGGING IN AND SIGNING UP
 // User can Login
 app.post('/api/login/', (req, res, next) => {
   const email = req.body.email;
@@ -348,30 +347,42 @@ app.post('/api/login/', (req, res, next) => {
 });
 
 // User can sign up
-// app.post('/api/signup/', (req, res, next) => {
-//   const { userName, email, password } = req.body;
-//   const params = [userName, email, password];
-//   const sql = `
-//     INSERT INTO "user" ("userName", "email", "password")
-//          VALUES ($1, $2, $3)
-//          RETURNING *;
-//   `;
-//   db.query(sql, params)
-//     .then(result => {
-//       const newUser = result.rows[0];
-//       if (!newUser) {
-//         return res.status(400).json({
-//           error: `Failed to create user ${userName}`
-//         });
-//       } else {
-//         req.session.userId = newUser.userId;
-//         return res.json(newUser);
-//       }
-//     })
-//     .catch(err => {
-//       return res.send({ message: err.message });
-//     });
-// });
+app.post('/api/signup/', (req, res, next) => {
+  const name = req.body.name;
+  const email = req.body.email;
+  const password = req.body.password;
+  const params = [email];
+  const sql = `
+    select *
+    from "users"
+    where "email" = $1
+  `;
+  const sql2 = `
+    insert into "users" ("name", "email", "password")
+         values ($1, $2, $3)
+         returning *;
+  `;
+  db.query(sql, params)
+    .then(result => {
+      const newUser = result.rows[0];
+      if (newUser) {
+        return res.status(400).json({
+          error: 'email already taken'
+        });
+      } else {
+        db.query(sql2, [name, email, password])
+          .then(result => {
+            userInfo = result.rows[0];
+            req.session.userInfo = userInfo;
+            return res.json(req.session);
+          });
+
+      }
+    })
+    .catch(err => {
+      return res.send({ message: err.message });
+    });
+});
 
 app.use((err, req, res, next) => {
   if (err instanceof ClientError) {
