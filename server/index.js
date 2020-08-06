@@ -130,7 +130,7 @@ app.post('/api/reviews/:movieId', (req, res, next) => {
       if (!response.rows[0]) {
         res.status(404).json({ error: 'cannot review movie' });
       } else {
-        res.status(201).json({ message: response.rows[0] });
+        res.status(201).json(response.rows[0]);
       }
     })
     .catch(err => {
