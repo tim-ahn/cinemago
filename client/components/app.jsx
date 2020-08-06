@@ -12,7 +12,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: 'home',
+      view: 'home', // change to login if want to use login page,
       results: [],
       trending: [],
       lists: [],
@@ -30,10 +30,31 @@ export default class App extends React.Component {
     this.addItemToList = this.addItemToList.bind(this);
     this.getItemsInList = this.getItemsInList.bind(this);
     this.removeItemsInList = this.removeItemsInList.bind(this);
+    this.logIn = this.logIn.bind(this);
   }
 
-  componentDidMount() {
-    this.getUserLists();
+  logIn(email, password) {
+    fetch('api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email: email, password: password })
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.message === 'wrong email or password') {
+          return data.message;
+        } else {
+          this.setState({ userId: data.userInfo.userId, view: 'home' });
+          return data.message;
+        }
+      }).then(data => {
+        if (data.message !== 'wrong email or password') {
+          this.getUserLists();
+        }
+      }
+      );
   }
 
   searchResults(query, category) {
@@ -131,14 +152,12 @@ export default class App extends React.Component {
   }
 
   getItemsInList(listId, listName) {
-    console.log('hi');
     fetch(`/api/listItems/${listId}`)
       .then(res => res.json())
       .then(data =>
         this.setState({ viewListItems: data })
       ).then(data => this.changeView('listContent'))
-      .then(data => this.setState({ currentListName: listName, currentListId: listId }))
-      .then(data => console.log(this.state.currentListId));
+      .then(data => this.setState({ currentListName: listName, currentListId: listId }));
   }
 
   removeItemsInList(listId, movieId) {
@@ -168,12 +187,21 @@ export default class App extends React.Component {
     } else if (this.state.view === 'review') {
       pageView = <WriteReview />;
     }
-    return <>
+    // else if (this.state.view === 'login') {
+    //   pageView = <LoginPage logIn={this.logIn} />;
+    // }
 
-      {pageView}
-      {/* <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} deleteList={this.deleteList} changeView={this.changeView} />; */}
-      {/* <HomeSearch searchResults={this.searchResults} results={this.state.results} addItemToList={this.addItemToList} lists={this.state.lists} /> */}
-      <Navbar changeView={this.changeView} />
-    </>;
+    if (this.state.view === 'login') {
+      return (
+        <LoginPage logIn={this.logIn} />
+      );
+    } else {
+      return <>
+
+        {pageView}
+        <Navbar changeView={this.changeView} />
+      </>;
+    }
+
   }
 }

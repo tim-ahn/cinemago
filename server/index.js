@@ -351,35 +351,39 @@ app.delete('/api/listItems/:listId/:movieId', (req, res, next) => {
 
 // ROUGH CODE OUTLINE FOR LOGGING IN AND SIGNING UP
 // User can Login
-// app.post('/api/login/', (req, res, next) => {
-//   const userName  = req.body.userName;
-//   const value = [userName];
-//   const sql = `
-//   select *
-//   from "user"
-//   where "userName" = $1;`;
-//   db.query(sql, value)
-//     .then(result => {
-//       const userObject = result && result.rows && result.rows[0];
-//       if (!userObject) {
-//         const sql2 = `
-//         insert into "user" ("userName")
-//                     values ($1)
-//                     returning *`;
-//         const value2 = [`${userName}`];
-//         db.query(sql2, value2).then(data => {
-//           req.session.userInfo = data.rows[0];
-//           return res.json(req.session);
-//         });
-//       } else {
-//         req.session.userInfo = userObject;
-//         return res.json(req.session);
-//       }
-//     })
-//     .catch(err => {
-//       return res.send({ message: err });
-//     });
-// });
+app.post('/api/login/', (req, res, next) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  const value = [email, password];
+  const sql = `
+  select *
+  from "users"
+  where "email" = $1 and "password" = $2
+  `;
+
+  db.query(sql, value)
+    .then(result => {
+      const userInfo = result.rows[0];
+      if (!userInfo) {
+        // const sql2 = `
+        // insert into "users" ("email", "password")
+        //             values ($1, $2)
+        //             returning *`;
+        // const value2 = [email, password];
+        // db.query(sql2, value2).then(result2 => {
+        //   req.session.userInfo = result2.rows[0];
+        //   return res.json(req.session);
+        // });
+        res.json({ message: 'wrong email or password' });
+      } else {
+        req.session.userInfo = userInfo;
+        return res.json(req.session);
+      }
+    })
+    .catch(err => {
+      return res.send({ message: err });
+    });
+});
 
 // User can sign up
 // app.post('/api/signup/', (req, res, next) => {
