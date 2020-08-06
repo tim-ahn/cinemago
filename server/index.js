@@ -314,28 +314,29 @@ app.delete('/api/listItems/:listId/:movieId', (req, res, next) => {
 // ROUGH CODE OUTLINE FOR LOGGING IN AND SIGNING UP
 // User can Login
 app.post('/api/login/', (req, res, next) => {
-  const name = req.body.name;
+  const email = req.body.email;
   const password = req.body.password;
-  const value = [name];
+  const value = [email, password];
   const sql = `
   select *
   from "users"
-  where "name" = $1
+  where "email" = $1 and "password" = $2
   `;
 
   db.query(sql, value)
     .then(result => {
       const userInfo = result.rows[0];
       if (!userInfo) {
-        const sql2 = `
-        insert into "users" ("name", "password")
-                    values ($1, $2)
-                    returning *`;
-        const value2 = [name, password];
-        db.query(sql2, value2).then(result2 => {
-          req.session.userInfo = result2.rows[0];
-          return res.json(req.session);
-        });
+        // const sql2 = `
+        // insert into "users" ("email", "password")
+        //             values ($1, $2)
+        //             returning *`;
+        // const value2 = [email, password];
+        // db.query(sql2, value2).then(result2 => {
+        //   req.session.userInfo = result2.rows[0];
+        //   return res.json(req.session);
+        // });
+        res.json({ message: 'wrong email or password' });
       } else {
         req.session.userInfo = userInfo;
         return res.json(req.session);
