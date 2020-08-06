@@ -131,14 +131,12 @@ export default class App extends React.Component {
   }
 
   getItemsInList(listId, listName) {
-    console.log('hi');
     fetch(`/api/listItems/${listId}`)
       .then(res => res.json())
       .then(data =>
         this.setState({ viewListItems: data })
       ).then(data => this.changeView('listContent'))
-      .then(data => this.setState({ currentListName: listName, currentListId: listId }))
-      .then(data => console.log(this.state.currentListId));
+      .then(data => this.setState({ currentListName: listName, currentListId: listId }));
   }
 
   removeItemsInList(listId, movieId) {
