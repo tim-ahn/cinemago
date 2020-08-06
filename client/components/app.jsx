@@ -18,6 +18,7 @@ export default class App extends React.Component {
       lists: [],
       viewListItems: [],
       currentListName: '',
+      currentListId: null,
       userId: 1 // Hardcoded for now, will be set after user logs in and will be helpful in fetching to backend
     };
     this.searchResults = this.searchResults.bind(this);
@@ -28,6 +29,7 @@ export default class App extends React.Component {
     this.deleteList = this.deleteList.bind(this);
     this.addItemToList = this.addItemToList.bind(this);
     this.getItemsInList = this.getItemsInList.bind(this);
+    this.removeItemsInList = this.removeItemsInList.bind(this);
   }
 
   componentDidMount() {
@@ -129,12 +131,21 @@ export default class App extends React.Component {
   }
 
   getItemsInList(listId, listName) {
+    console.log('hi');
     fetch(`/api/listItems/${listId}`)
       .then(res => res.json())
       .then(data =>
         this.setState({ viewListItems: data })
       ).then(data => this.changeView('listContent'))
-      .then(data => this.setState({ currentListName: listName }));
+      .then(data => this.setState({ currentListName: listName, currentListId: listId }))
+      .then(data => console.log(this.state.currentListId));
+  }
+
+  removeItemsInList(listId, movieId) {
+    fetch(`/api/listItems/${listId}/${movieId}`, {
+      method: 'DELETE'
+    }).then(res => res.json())
+      .then(data => this.getItemsInList(listId, this.state.currentListName));
   }
 
   changeView(newPage) {
@@ -153,7 +164,7 @@ export default class App extends React.Component {
     } else if (this.state.view === 'user') {
       pageView = <UserProfile userId={this.state.userId} changeView={this.changeView} />; // insert userId when relavent
     } else if (this.state.view === 'listContent') {
-      pageView = <ListItems viewListItems={this.state.viewListItems} listName={this.state.currentListName} changeView={this.changeView} />;
+      pageView = <ListItems viewListItems={this.state.viewListItems} listName={this.state.currentListName} listId={this.state.currentListId} changeView={this.changeView} removeItemsInList={this.removeItemsInList} />;
     }
     return <>
 

@@ -23,7 +23,6 @@ export default class ListCard extends React.Component {
   }
 
   render() {
-    console.log(this.props);
     if (this.props.item.type === 'custom') {
       return (<>
         <div className="col-11 m-2 border">

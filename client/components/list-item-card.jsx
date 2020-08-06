@@ -1,6 +1,22 @@
 import React from 'react';
+import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
 
 export default class ListItemCard extends React.Component {
+
+  constructor(props) {
+    super(props);
+    this.state = { removeModalShow: false };
+    this.removeModal = this.removeModal.bind(this);
+  }
+
+  removeModal() {
+    this.setState((prevState, props) => { return { removeModalShow: !prevState.removeModalShow }; });
+  }
+
+  remove() {
+    this.props.removeItemsInList(this.props.listId, this.props.id);
+    this.removeModal();
+  }
 
   render() {
     let posterURL;
@@ -25,7 +41,18 @@ export default class ListItemCard extends React.Component {
             <h1 className="card-title">{this.props.fullInfo.title}</h1>
             <h4 className="card-subtitle mb-2 text-muted">Release Year:{year}</h4>
             <p className="card-text">{this.props.fullInfo.description}</p>
+            <Button color="danger" onClick={() => this.removeModal()} className="m-2">Remove</Button>
+            <Modal isOpen={this.state.removeModalShow} toggle={() => this.removeModal()} >
+              <ModalBody>
+                Are you sure you want to remove this movie?
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" onClick={() => { this.remove(); }}>Remove From List</Button>{' '}
+                <Button color="secondary" onClick={() => this.removeModal()}>Cancel</Button>
+              </ModalFooter>
+            </Modal>
           </div>
+
         </div>
 
       </div>
