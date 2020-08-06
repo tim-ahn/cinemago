@@ -14,7 +14,7 @@ class MovieCard extends React.Component {
       posterURL = '../images/image_placeholder.png';
     }
     return (<>
-      <div className="col-3 m-2">
+      <div className="col-3 m-2 white">
         <img src={posterURL} className="card-img"></img>
       </div>
 

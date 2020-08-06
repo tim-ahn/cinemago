@@ -25,7 +25,7 @@ export default class ListCard extends React.Component {
   render() {
     if (this.props.item.type === 'custom') {
       return (<>
-        <div className="col-11 m-2 border">
+        <div className="col-11 m-2 border white">
           <h3>{this.props.item.name}</h3>
           <div>
             <Button color="secondary" onClick={() => this.searchModal()} className="m-2">Add To list</Button>
@@ -57,7 +57,7 @@ export default class ListCard extends React.Component {
     } else {
       return (<>
 
-        <div className="col-11 m-2 border">
+        <div className="col-11 m-2 border white">
           <h3>{this.props.item.name}</h3>
           <div>
             <Button color="secondary" onClick={() => this.searchModal()} className="m-2">Add To list</Button>

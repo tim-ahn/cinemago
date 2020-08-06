@@ -41,7 +41,7 @@ class MovieLongCard extends React.Component {
     }
     return (<>
       <div >
-        <div className="row m-2 border">
+        <div className="row m-2 border white">
           <div className="col m-2">
             <img src={posterURL} className="card-img" styles=""></img>
           </div>
