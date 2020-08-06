@@ -12,8 +12,9 @@ export default class ListItems extends React.Component {
       return (<>
 
         <div className="container">
-          <div className="row">
+          <div className="row mt-1">
             <h2>{this.props.listName}</h2>
+            <button className="btn-secondary" onClick={() => { this.props.changeView('list'); }}>Go Back to Lists</button>
             {this.props.viewListItems.map(item => {
               return <ListItemCard key={item.movieId} id={item.movieId} poster_path={item.posterURL} fullInfo={item} />;
             })}
@@ -23,8 +24,9 @@ export default class ListItems extends React.Component {
     } else {
       return (<>
         <div className="container">
-          <div className="row">
+          <div className="row mt-1">
             <h2>{this.props.listName}</h2>
+            <button className="btn-secondary" onClick={() => { this.props.changeView('list'); }}>Go Back to Lists</button>
           </div>
         </div>
       </>);

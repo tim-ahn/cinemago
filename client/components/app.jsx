@@ -153,7 +153,7 @@ export default class App extends React.Component {
     } else if (this.state.view === 'user') {
       pageView = <UserProfile userId={this.state.userId} changeView={this.changeView} />; // insert userId when relavent
     } else if (this.state.view === 'listContent') {
-      pageView = <ListItems viewListItems={this.state.viewListItems} listName={this.state.currentListName} />;
+      pageView = <ListItems viewListItems={this.state.viewListItems} listName={this.state.currentListName} changeView={this.changeView} />;
     }
     return <>
 
