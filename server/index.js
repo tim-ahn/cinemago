@@ -100,15 +100,27 @@ app.get('/api/users/:userId', (req, res, next) => {
     })
     .catch(err => next(err));
 });
+<<<<<<< HEAD
+=======
+
+
+
+
+>>>>>>> 5d92a011538806576f093c88eb33b1c27748630b
 // PATCH request to update user details
 app.patch('/api/users/:userId', (req, res, next) => {
   const id = req.params.userId;
   if (!req.body.bio) {
     throw (new ClientError('bio is needed', 400));
   }
+<<<<<<< HEAD
 
 
 // user can write review
+=======
+  
+// POST request for user can write review
+>>>>>>> 5d92a011538806576f093c88eb33b1c27748630b
 app.post('/api/reviews/:movieId', (req, res, next) => {
   const movieId = req.params.movieId;
   const userId = req.body.userId;
@@ -124,8 +136,13 @@ app.post('/api/reviews/:movieId', (req, res, next) => {
   if (!userId || !reviewId || !rating || !reviewContent) {
     res.status(400).json({ error: 'missing content' });
     return;
+<<<<<<< HEAD
 
 
+=======
+  }
+  
+>>>>>>> 5d92a011538806576f093c88eb33b1c27748630b
   const sql = `
     insert into "reviews" ("userId", "reviewId", "rating", "content", "movieId" )
     values ($1, $2, $3, $4, $5)
