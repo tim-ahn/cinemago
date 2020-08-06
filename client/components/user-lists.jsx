@@ -36,7 +36,7 @@ export default class UserLists extends React.Component {
       <div className="container mt-2 justify-content-center">
         <h1>My Lists</h1>
         <div>
-          <Button color="primary" onClick={() => this.toggleModal()}>Create a Custom List</Button>
+          <Button color="primary" onClick={() => this.toggleModal()}>Create a Custom List  +</Button>
           <Modal isOpen={this.state.modalShow} toggle={() => this.toggleModal()} >
             <ModalHeader toggle={() => this.toggleModal()}>What is the name of your new list?</ModalHeader>
             <ModalBody>
@@ -51,7 +51,7 @@ export default class UserLists extends React.Component {
           </Modal>
         </div>
         {this.props.lists.map(item => (
-          <ListCard key={item.listId} id={item.listId} item={item} deleteList={this.props.deleteList} />
+          <ListCard key={item.listId} id={item.listId} item={item} deleteList={this.props.deleteList} changeView={this.props.changeView} getItemsInList={this.props.getItemsInList} />
         ))}
       </div>
 

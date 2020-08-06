@@ -1,9 +1,6 @@
 import React from 'react';
 
 export default class MovieDetails extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   handleClick(event) {
     this.props.changeView('search');

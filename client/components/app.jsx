@@ -1,10 +1,12 @@
 import React from 'react';
 import HomeSearch from './home-search';
 import HomePage from './home-page';
+import WriteReview from './write-review';
 import Navbar from './navbar';
 import UserLists from './user-lists';
 import MovieDetails from './movie-details';
 import UserProfile from './user-profile';
+import ListItems from './list-Items';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -15,6 +17,9 @@ export default class App extends React.Component {
       trending: [],
       lists: [],
       details: [],
+      viewListItems: [],
+      currentListName: '',
+      currentListId: null,
       userId: 1 // Hardcoded for now, will be set after user logs in and will be helpful in fetching to backend
     };
     this.searchResults = this.searchResults.bind(this);
@@ -24,6 +29,13 @@ export default class App extends React.Component {
     this.changeView = this.changeView.bind(this);
     this.deleteList = this.deleteList.bind(this);
     this.getMovieDetails = this.getMovieDetails.bind(this);
+    this.addItemToList = this.addItemToList.bind(this);
+    this.getItemsInList = this.getItemsInList.bind(this);
+    this.removeItemsInList = this.removeItemsInList.bind(this);
+  }
+
+  componentDidMount() {
+    this.getUserLists();
   }
 
   searchResults(query, category) {
@@ -107,7 +119,44 @@ export default class App extends React.Component {
         this.setState({ details: data });
       })
       .then(data => this.changeView('details'));
+  }
 
+  addItemToList(listId, movieDetails) {
+    fetch(`/api/lists/add/${listId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        movieId: movieDetails.id,
+        title: movieDetails.title,
+        description: movieDetails.overview,
+        posterURL: movieDetails.poster_path,
+        release_date: movieDetails.release_date
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        return data;
+      });
+  }
+
+  getItemsInList(listId, listName) {
+    console.log('hi');
+    fetch(`/api/listItems/${listId}`)
+      .then(res => res.json())
+      .then(data =>
+        this.setState({ viewListItems: data })
+      ).then(data => this.changeView('listContent'))
+      .then(data => this.setState({ currentListName: listName, currentListId: listId }))
+      .then(data => console.log(this.state.currentListId));
+  }
+
+  removeItemsInList(listId, movieId) {
+    fetch(`/api/listItems/${listId}/${movieId}`, {
+      method: 'DELETE'
+    }).then(res => res.json())
+      .then(data => this.getItemsInList(listId, this.state.currentListName));
   }
 
   changeView(newPage) {
@@ -115,21 +164,27 @@ export default class App extends React.Component {
   }
 
   render() {
+    // eslint-disable-next-line no-unused-vars
     let pageView;
     if (this.state.view === 'home') {
       pageView = <HomePage getTrending={this.getTrending} results={this.state.trending} />;
     } else if (this.state.view === 'search') {
-      pageView = <HomeSearch searchResults={this.searchResults} results={this.state.results} changeView={this.changeView} getMovieDetails={this.getMovieDetails}/>;
+      pageView = <HomeSearch searchResults={this.searchResults} results={this.state.results} changeView={this.changeView} getMovieDetails={this.getMovieDetails} addItemToList={this.addItemToList} lists={this.state.lists}/>;
       // <HomeSearch searchResults={this.searchResults} results={this.state.results} />;
     } else if (this.state.view === 'list') {
-      pageView = <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} deleteList={this.deleteList} />;
+      pageView = <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} deleteList={this.deleteList} changeView={this.changeView} getItemsInList={this.getItemsInList} />;
     } else if (this.state.view === 'details') {
       pageView = <MovieDetails changeView={this.changeView} movieId ={this.props.id} details={this.state.details}/>;
     } else if (this.state.view === 'user') {
-      pageView = <UserProfile />; // insert userId when relavent
+      pageView = <UserProfile userId={this.state.userId} changeView={this.changeView} />; // insert userId when relavent
+    } else if (this.state.view === 'listContent') {
+      pageView = <ListItems viewListItems={this.state.viewListItems} listName={this.state.currentListName} listId={this.state.currentListId} changeView={this.changeView} removeItemsInList={this.removeItemsInList} />;
     }
     return <>
+
       {pageView}
+      {/* <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} deleteList={this.deleteList} changeView={this.changeView} />; */}
+      {/* <HomeSearch searchResults={this.searchResults} results={this.state.results} addItemToList={this.addItemToList} lists={this.state.lists} /> */}
       <Navbar changeView={this.changeView} />
     </>;
   }

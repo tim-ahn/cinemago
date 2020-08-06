@@ -1,13 +1,29 @@
 import React from 'react';
+import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
 
 class MovieLongCard extends React.Component {
   constructor(props) {
     super(props);
+    this.state = { addModalShow: false, dropdownOpen: false, listId: null };
+    this.addModal = this.addModal.bind(this);
     this.handleClick = this.handleClick.bind(this);
+  }
+
+  componentDidMount() {
+    this.setState({ listId: this.props.lists[0].listId });
   }
 
   handleClick(event) {
     this.props.getMovieDetails(this.props.id);
+  }
+
+  addModal() {
+    this.setState((prevState, props) => { return { addModalShow: !prevState.addModalShow }; });
+  }
+
+  add() {
+    this.props.addItemToList(this.state.listId, this.props.fullInfo);
+    this.addModal();
   }
 
   render() {
@@ -35,13 +51,28 @@ class MovieLongCard extends React.Component {
             <h4 className="card-subtitle mb-2 text-muted">Rating:{this.props.fullInfo.vote_average}</h4>
             <h4 className="card-subtitle mb-2 text-muted">Release Year:{year}</h4>
             <p className="card-text">{this.props.fullInfo.overview}</p>
-            <button>
-              <svg width="3em" height="3em" viewBox="0 0 16 16" className="bi bi-file-earmark-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path d="M9 1H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h5v-1H4a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1h5v2.5A1.5 1.5 0 0 0 10.5 6H13v2h1V6L9 1z" />
-                <path fillRule="evenodd" d="M13.5 10a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1H13v-1.5a.5.5 0 0 1 .5-.5z" />
-                <path fillRule="evenodd" d="M13 12.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0v-2z" />
-              </svg>
-            </button>
+            <div>
+              <Button color="secondary" onClick={() => this.addModal()} className="m-2">Add To list</Button>
+              <Modal isOpen={this.state.addModalShow} toggle={() => this.addModal()} >
+                <ModalBody>
+
+                  <label htmlFor="lists">Which list would you like to add to?</label>
+
+                  <select name="lists" id="userLists" onChange={() => this.setState({ listId: parseInt(event.target.value) })}>
+                    {this.props.lists.map(item => {
+                      return <option key={item.listId} value={item.listId}> {item.name}</option>;
+                    })}
+                  </select>
+                </ModalBody>
+                <ModalFooter>
+                  <Button color="primary" onClick={() => { this.add(); }}>Add to List</Button>{' '}
+                  <Button color="secondary" onClick={() => this.addModal()}>Cancel</Button>
+                </ModalFooter>
+              </Modal>
+            </div>
+            {/* <button className="btn btn-secondary" onClick={() => { this.props.addItemToList(1, this.props.fullInfo); }}>
+              Add item to list
+            </button> */}
           </div>
         </div>
 
