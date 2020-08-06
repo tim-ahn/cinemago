@@ -30,9 +30,16 @@ class UserProfile extends React.Component {
   }
 
   saveBioEdit() {
-    // fetch()
-    this.setState({ editBio: false });
-
+    const fetchURL = '/api/users/' + this.props.userId;
+    fetch(fetchURL, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ bio: this.state.profile.bio })
+    })
+      .then(result => this.setState({ editBio: false }))
+      .catch(err => console.error(err));
   }
 
   onBioChange() {

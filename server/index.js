@@ -99,6 +99,7 @@ app.get('/api/users/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+<<<<<<< HEAD
 // user can write review
 app.post('/api/reviews/:movieId', (req, res, next) => {
   const movieId = req.params.movieId;
@@ -117,6 +118,26 @@ app.post('/api/reviews/:movieId', (req, res, next) => {
       res.status(201).json({ message: result });
     })
     .catch(err => next(err));
+=======
+app.patch('/api/users/:userId', (req, res, next) => {
+  const id = req.params.userId;
+  if (!req.body.bio) {
+    throw (new ClientError('bio is needed', 400));
+  }
+  const sql = `
+    update "users"
+    set "bio" = $2
+    where "userId" = $1
+  `;
+  const params = [id, req.body.bio];
+  db.query(sql, params)
+    .then(result => res.sendStatus(200))
+    .catch(err => next(err));
+});
+
+app.post('/api/reviews', (req, res, next) => {
+  res.json({ text: 'something' });
+>>>>>>> b73342950922d4e73f1bed511b059ca4f1698b08
 });
 
 app.get('/api/lists/:userId', (req, res, next) => {
@@ -247,6 +268,64 @@ app.get('/api/listItems/:listId', (req, res, next) => {
     })
     .catch(err => next(err));
 });
+
+// ROUGH CODE OUTLINE FOR LOGGING IN AND SIGNING UP
+// User can Login
+// app.post('/api/login/', (req, res, next) => {
+//   const userName  = req.body.userName;
+//   const value = [userName];
+//   const sql = `
+//   select *
+//   from "user"
+//   where "userName" = $1;`;
+//   db.query(sql, value)
+//     .then(result => {
+//       const userObject = result && result.rows && result.rows[0];
+//       if (!userObject) {
+//         const sql2 = `
+//         insert into "user" ("userName")
+//                     values ($1)
+//                     returning *`;
+//         const value2 = [`${userName}`];
+//         db.query(sql2, value2).then(data => {
+//           req.session.userInfo = data.rows[0];
+//           return res.json(req.session);
+//         });
+//       } else {
+//         req.session.userInfo = userObject;
+//         return res.json(req.session);
+//       }
+//     })
+//     .catch(err => {
+//       return res.send({ message: err });
+//     });
+// });
+
+// User can sign up
+// app.post('/api/signup/', (req, res, next) => {
+//   const { userName, email, password } = req.body;
+//   const params = [userName, email, password];
+//   const sql = `
+//     INSERT INTO "user" ("userName", "email", "password")
+//          VALUES ($1, $2, $3)
+//          RETURNING *;
+//   `;
+//   db.query(sql, params)
+//     .then(result => {
+//       const newUser = result.rows[0];
+//       if (!newUser) {
+//         return res.status(400).json({
+//           error: `Failed to create user ${userName}`
+//         });
+//       } else {
+//         req.session.userId = newUser.userId;
+//         return res.json(newUser);
+//       }
+//     })
+//     .catch(err => {
+//       return res.send({ message: err.message });
+//     });
+// });
 
 app.use((err, req, res, next) => {
   if (err instanceof ClientError) {
