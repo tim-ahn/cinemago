@@ -62,7 +62,7 @@ class HomeSearch extends React.Component {
         </ButtonDropdown>
         <div className="row">
           {this.props.results.map(item => (
-            <MovieLongCard key={item.id} id={item.id} poster_path={item.poster_path} fullInfo={item} />
+            <MovieLongCard key={item.id} id={item.id} poster_path={item.poster_path} fullInfo={item} changeView={this.props.changeView} getMovieDetails={this.props.getMovieDetails}/>
           ))}
         </div>
       </div>

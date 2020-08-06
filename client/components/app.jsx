@@ -23,6 +23,7 @@ export default class App extends React.Component {
     this.createNewList = this.createNewList.bind(this);
     this.changeView = this.changeView.bind(this);
     this.deleteList = this.deleteList.bind(this);
+    this.getMovieDetails = this.getMovieDetails.bind(this);
   }
 
   searchResults(query, category) {
@@ -99,6 +100,16 @@ export default class App extends React.Component {
       });
   }
 
+  getMovieDetails(movieId) {
+    fetch(`/api/details/${movieId}`)
+      .then(res => res.json())
+      .then(data => {
+        this.setState({ details: data });
+      })
+      .then(data => this.changeView('details'));
+
+  }
+
   changeView(newPage) {
     this.setState({ view: newPage });
   }
@@ -108,16 +119,12 @@ export default class App extends React.Component {
     if (this.state.view === 'home') {
       pageView = <HomePage getTrending={this.getTrending} results={this.state.trending} />;
     } else if (this.state.view === 'search') {
-      pageView =
-      <div>
-        <MovieDetails results={this.state.results} />;
-        <HomeSearch searchResults={this.searchResults} results={this.state.results} />;
-      </div>;
+      pageView = <HomeSearch searchResults={this.searchResults} results={this.state.results} changeView={this.changeView} getMovieDetails={this.getMovieDetails}/>;
       // <HomeSearch searchResults={this.searchResults} results={this.state.results} />;
     } else if (this.state.view === 'list') {
       pageView = <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} deleteList={this.deleteList} />;
     } else if (this.state.view === 'details') {
-      pageView = <MovieDetails/>;
+      pageView = <MovieDetails changeView={this.changeView} movieId ={this.props.id} details={this.state.details}/>;
     } else if (this.state.view === 'user') {
       pageView = <UserProfile />; // insert userId when relavent
     }

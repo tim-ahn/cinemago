@@ -1,9 +1,13 @@
 import React from 'react';
 
 class MovieLongCard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
 
   handleClick(event) {
-    // this.props.
+    this.props.getMovieDetails(this.props.id);
   }
 
   render() {
@@ -21,7 +25,7 @@ class MovieLongCard extends React.Component {
     }
     return (<>
       <div >
-        <div className="row m-2 border">
+        <div className="row m-2 border" onClick={() => this.handleClick(event)}>
           <div className="col m-2">
             <img src={posterURL} className="card-img" styles=""></img>
           </div>
