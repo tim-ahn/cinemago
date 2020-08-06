@@ -148,6 +148,45 @@ app.post('/api/reviews/:movieId', (req, res, next) => {
     });
 });
 
+// PUT request for User Can Edit Own Review
+app.put('/api/reviews/:reviewId', (req, res, next) => {
+  const reviewId = req.body.reviewId
+  const rating = req.body.rating
+  const reviewContent = req.body.content
+
+
+  if (reviewId < 1 || isNaN(reviewId)) {
+    res.status(400).json({error: 'invalid review id'})
+    return;
+  }
+  if(!reviewId || !rating || !reviewContent) {
+    res.status(400).json({error: 'missing required information'})
+    return;
+  }
+
+  const sql = `
+  update "reviews"
+    set "rating" = $1, "content" = $2
+    where "reviewId" = $3
+    returning *
+  `;
+
+  const params = [rating, reviewContent, movieId]
+
+  db.query(sql, params)
+    .then(response => {
+      if(!response.rows[0]) {
+        res.status(404).json({error: 'cannot find movie with id'})
+      } else {
+        res.status(200).json(response.rows[0])
+      }
+    })
+    .catch(err => {
+      console.error(err)
+      res.status(500).json({error: 'an unexpected error occurred'})
+    })
+}); // end of PUT request for User Can Edit Own Review
+
 app.get('/api/lists/:userId', (req, res, next) => {
   const id = req.params.userId;
   const sql = `
