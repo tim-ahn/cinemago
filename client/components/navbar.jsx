@@ -31,10 +31,10 @@ class Navbar extends React.Component {
 
       <nav className="navbar fixed-bottom navbar-dark bg-dark p-2" id="navbar">
         <div className="w-100 row justify-content-around">
-          <i onClick={this.handleClick} className={`fas fa-home ${homeColor}`} value="home"></i>
-          <i onClick={this.handleClick} className={`fas fa-search ${searchColor}`} value="search"></i>
-          <i onClick={this.handleClick} className={`fas fa-heart ${heartColor}`} value="list"></i>
-          <i onClick={this.handleClick} className={`fas fa-user ${userColor}`} value="user"></i>
+          <i onClick={this.handleClick} className={`fas fa-home ${homeColor} pointer`} value="home"></i>
+          <i onClick={this.handleClick} className={`fas fa-search ${searchColor} pointer`} value="search"></i>
+          <i onClick={this.handleClick} className={`fas fa-heart ${heartColor} pointer`} value="list"></i>
+          <i onClick={this.handleClick} className={`fas fa-user ${userColor} pointer`} value="user"></i>
         </div>
       </nav>
 
