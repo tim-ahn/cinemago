@@ -61,6 +61,7 @@ app.get('/api/details/:movieId', (req, res, next) => {
 });
 // end feature: user-can-view-details
 
+// GET request for home page to get trending or top rated movies
 app.post('/api/home', (req, res, next) => {
   if (req.body.category === 'trending') {
     fetch(`https://api.themoviedb.org/3/trending/movie/day?api_key=${apiKey}`)
@@ -77,6 +78,7 @@ app.post('/api/home', (req, res, next) => {
   }
 });
 
+// GET request to get user details
 app.get('/api/users/:userId', (req, res, next) => {
   const id = req.params.userId;
   const sql = `
@@ -99,6 +101,7 @@ app.get('/api/users/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+// PATCH request to update user details
 app.patch('/api/users/:userId', (req, res, next) => {
   const id = req.params.userId;
   if (!req.body.bio) {
@@ -138,6 +141,7 @@ app.get('/api/lists/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+// DELETE request to delete a list
 app.delete('/api/lists/:listId', (req, res, next) => {
   const id = req.params.listId;
   const sql = `
@@ -156,6 +160,7 @@ app.delete('/api/lists/:listId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+// POST request to create a new list
 app.post('/api/lists/:userId', (req, res, next) => {
   const id = req.params.userId;
   const name = req.body.name;
@@ -176,6 +181,7 @@ app.post('/api/lists/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+// POST request to add a movie to a list
 app.post('/api/lists/add/:listId', (req, res, next) => {
   const id = req.params.listId;
   const movieId = req.body.movieId;
@@ -228,6 +234,7 @@ app.post('/api/lists/add/:listId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+// GET request to get all movies in a list
 app.get('/api/listItems/:listId', (req, res, next) => {
   const id = req.params.listId;
   const sql = `
@@ -241,6 +248,26 @@ app.get('/api/listItems/:listId', (req, res, next) => {
     .then(result => {
       if (result.rows.length < 1) {
         next(new ClientError('no items in list', 404));
+      } else {
+        res.json(result.rows);
+      }
+    })
+    .catch(err => next(err));
+});
+
+app.delete('/api/listItems/:listId/:movieId', (req, res, next) => {
+  const listId = req.params.listId;
+  const movieId = req.params.movieId;
+  const sql = `
+    delete from "listItems"
+    where "listId" = $1 and "movieId" = $2
+    returning *
+  `;
+  const params = [listId, movieId];
+  db.query(sql, params)
+    .then(result => {
+      if (result.rows.length < 1) {
+        next(new ClientError('item not found to delete', 404));
       } else {
         res.json(result.rows);
       }
