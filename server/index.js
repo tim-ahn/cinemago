@@ -99,6 +99,22 @@ app.get('/api/users/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.patch('/api/users/:userId', (req, res, next) => {
+  const id = req.params.userId;
+  if (!req.body.bio) {
+    throw (new ClientError('bio is needed', 400));
+  }
+  const sql = `
+    update "users"
+    set "bio" = $2
+    where "userId" = $1
+  `;
+  const params = [id, req.body.bio];
+  db.query(sql, params)
+    .then(result => res.sendStatus(200))
+    .catch(err => next(err));
+});
+
 app.post('/api/reviews', (req, res, next) => {
   res.json({ text: 'something' });
 });
