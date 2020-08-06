@@ -1,9 +1,10 @@
 import React from 'react';
 import HomeSearch from './home-search';
-import MovieDetails from './movie-details';
 import HomePage from './home-page';
 import Navbar from './navbar';
 import UserLists from './user-lists';
+import MovieDetails from './movie-details';
+import UserProfile from './user-profile';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -13,6 +14,7 @@ export default class App extends React.Component {
       results: [],
       trending: [],
       lists: [],
+      details: [],
       userId: 1 // Hardcoded for now, will be set after user logs in and will be helpful in fetching to backend
     };
     this.searchResults = this.searchResults.bind(this);
@@ -97,14 +99,6 @@ export default class App extends React.Component {
       });
   }
 
-  getMovieDetails(movieId) {
-    fetch(`/api/details/${movieId}`)
-      .then(res => res.json())
-      .then(data => {
-
-      });
-  }
-
   changeView(newPage) {
     this.setState({ view: newPage });
   }
@@ -114,15 +108,21 @@ export default class App extends React.Component {
     if (this.state.view === 'home') {
       pageView = <HomePage getTrending={this.getTrending} results={this.state.trending} />;
     } else if (this.state.view === 'search') {
-      pageView = <HomeSearch searchResults={this.searchResults} results={this.state.results} />;
+      pageView =
+      <div>
+        <MovieDetails results={this.state.results} />;
+        <HomeSearch searchResults={this.searchResults} results={this.state.results} />;
+      </div>;
+      // <HomeSearch searchResults={this.searchResults} results={this.state.results} />;
     } else if (this.state.view === 'list') {
       pageView = <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} deleteList={this.deleteList} />;
     } else if (this.state.view === 'details') {
       pageView = <MovieDetails/>;
+    } else if (this.state.view === 'user') {
+      pageView = <UserProfile />; // insert userId when relavent
     }
     return <>
       {pageView}
-      {/* <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} deleteList={this.deleteList} /> */}
       <Navbar changeView={this.changeView} />
     </>;
   }
