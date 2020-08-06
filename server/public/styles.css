@@ -1,7 +1,12 @@
 .card-img{
-
   object-fit: cover;
+}
+.mini-text{
+  font-size: .7rem;
+}
 
+.pointer{
+  cursor: pointer;
 }
 
 button:focus,button:active:focus,button.active:focus,
