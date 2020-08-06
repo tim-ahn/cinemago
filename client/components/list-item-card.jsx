@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
+import WriteReview from './write-review';
 
 export default class ListItemCard extends React.Component {
 
@@ -41,6 +42,7 @@ export default class ListItemCard extends React.Component {
             <h1 className="card-title">{this.props.fullInfo.title}</h1>
             <h4 className="card-subtitle mb-2 text-muted">Release Year:{year}</h4>
             <p className="card-text">{this.props.fullInfo.description}</p>
+            <button color="primary" onClick={() => this.props.changeView('review')} >Write a Review</button>
             <Button color="danger" onClick={() => this.removeModal()} className="m-2">Remove</Button>
             <Modal isOpen={this.state.removeModalShow} toggle={() => this.removeModal()} >
               <ModalBody>

@@ -180,7 +180,7 @@ app.put('/api/reviews/:reviewId', (req, res, next) => {
     returning *
   `;
 
-  const params = [rating, reviewContent, movieId];
+  const params = [rating, reviewContent, reviewId];
 
   db.query(sql, params)
     .then(response => {
