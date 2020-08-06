@@ -172,7 +172,8 @@ CREATE TABLE public.users (
     name text NOT NULL,
     password text NOT NULL,
     bio text,
-    "imageURL" text
+    "imageURL" text,
+    email text NOT NULL
 );
 
 
@@ -222,10 +223,6 @@ ALTER TABLE ONLY public.users ALTER COLUMN "userId" SET DEFAULT nextval('public.
 --
 
 COPY public."listItems" ("listId", "movieId") FROM stdin;
-4	27205
-4	64956
-1	27205
-1	299536
 \.
 
 
@@ -238,7 +235,6 @@ COPY public.lists ("userId", "listId", type, name) FROM stdin;
 1	2	watch	My Watch List
 2	3	favorites	My Favorites
 2	4	watch	My Watch List
-1	24	custom	Cool Movies
 \.
 
 
@@ -255,10 +251,6 @@ COPY public.messages ("senderId", "recipientId", content, "sentAt") FROM stdin;
 --
 
 COPY public.movies (title, "movieId", description, "posterURL", reviews, "releaseDate") FROM stdin;
-hi	3	hi	/dddd	{"hi":"hi"}	2020
-Inception	27205	Cobb, a skilled thief who commits corporate espionage by infiltrating the subconscious of his targets is offered a chance to regain his old life as payment for a task considered to be impossible: "inception", the implantation of another person's idea into a target's subconscious.	/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg	{"reviews":"not yet"}	2010-07-15
-Inception: The Cobol Job	64956	The Cobol Job is a fourteen-minute animated prequel to Christopher Nolan’s award-winning movie: Inception, detailing the heist on Mr. Kaneda's mind by Nash, Cobb, Arthur, and several Cobol Engineering thugs.	/sNxqwtyHMNQwKWoFYDqcYTui5Ok.jpg	{"reviews":"not yet"}	2010-12-07
-Avengers: Infinity War	299536	As the Avengers and their allies have continued to protect the world from threats too large for any one hero to handle, a new danger has emerged from the cosmic shadows: Thanos. A despot of intergalactic infamy, his goal is to collect all six Infinity Stones, artifacts of unimaginable power, and use them to inflict his twisted will on all of reality. Everything the Avengers have fought for has led up to this moment - the fate of Earth and existence itself has never been more uncertain.	/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg	{"reviews":"not yet"}	2018-04-25
 \.
 
 
@@ -274,9 +266,10 @@ COPY public.reviews ("userId", "reviewId", rating, content, "movieId") FROM stdi
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.users ("userId", name, password, bio, "imageURL") FROM stdin;
-1	Uzair	anime	I like anime and fast cars. nuff said	\N
-2	Cody	coding	I like coding and teaching. nuff said	\N
+COPY public.users ("userId", name, password, bio, "imageURL", email) FROM stdin;
+1	Uzair	anime	I like anime and fast cars. nuff said	\N	uzair@gmail.com
+2	Cody	coding	I like coding and teaching. nuff said	\N	cody@gmail.com
+3	testDude	anime	\N	\N	test@gmail.com
 \.
 
 
@@ -284,7 +277,7 @@ COPY public.users ("userId", name, password, bio, "imageURL") FROM stdin;
 -- Name: lists_listId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."lists_listId_seq"', 25, true);
+SELECT pg_catalog.setval('public."lists_listId_seq"', 29, true);
 
 
 --
@@ -298,7 +291,7 @@ SELECT pg_catalog.setval('public."reviews_reviewId_seq"', 1, false);
 -- Name: users_userId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."users_userId_seq"', 2, true);
+SELECT pg_catalog.setval('public."users_userId_seq"', 3, true);
 
 
 --

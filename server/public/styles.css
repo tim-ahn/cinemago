@@ -28,3 +28,20 @@ button.focus,button:active.focus,button.active.focus {
   border-color: black;
   border-width: 2px;
 }
+
+/* .login {
+  height: 90%;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+} */
+
+.form-login {
+  display: flex;
+  flex-direction: column;
+}
+
+.loginTitle {
+  text-align: center;
+}
