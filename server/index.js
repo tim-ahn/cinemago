@@ -107,6 +107,15 @@ app.patch('/api/users/:userId', (req, res, next) => {
   if (!req.body.bio) {
     throw (new ClientError('bio is needed', 400));
   }
+  const sql = `
+    update "users"
+    set "bio" = $2
+    where "userId" = $1
+  `;
+  const params = [id, req.body.bio];
+  db.query(sql, params)
+    .then(result => res.sendStatus(200))
+    .catch(err => next(err));
 });
 
 // POST request for user can write review
