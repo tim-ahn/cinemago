@@ -30,6 +30,10 @@ export default class App extends React.Component {
     this.getItemsInList = this.getItemsInList.bind(this);
   }
 
+  componentDidMount() {
+    this.getUserLists();
+  }
+
   searchResults(query, category) {
     fetch('api/search', {
       method: 'POST',
@@ -143,19 +147,19 @@ export default class App extends React.Component {
     if (this.state.view === 'home') {
       pageView = <HomePage getTrending={this.getTrending} results={this.state.trending} />;
     } else if (this.state.view === 'search') {
-      pageView = <HomeSearch searchResults={this.searchResults} results={this.state.results} addItemToList={this.addItemToList} />;
+      pageView = <HomeSearch searchResults={this.searchResults} results={this.state.results} addItemToList={this.addItemToList} lists={this.state.lists} />;
     } else if (this.state.view === 'list') {
       pageView = <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} deleteList={this.deleteList} changeView={this.changeView} getItemsInList={this.getItemsInList} />;
     } else if (this.state.view === 'user') {
       pageView = <UserProfile userId={this.state.userId} changeView={this.changeView} />; // insert userId when relavent
     } else if (this.state.view === 'listContent') {
-      pageView = <ListItems viewListItems={this.state.viewListItems} listName={this.state.currentListName} />;
+      pageView = <ListItems viewListItems={this.state.viewListItems} listName={this.state.currentListName} changeView={this.changeView} />;
     }
     return <>
 
       {pageView}
       {/* <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} deleteList={this.deleteList} changeView={this.changeView} />; */}
-
+      {/* <HomeSearch searchResults={this.searchResults} results={this.state.results} addItemToList={this.addItemToList} lists={this.state.lists} /> */}
       <Navbar changeView={this.changeView} />
     </>;
   }
