@@ -16,10 +16,12 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: 'login', // change to login if want to use login page,
+      view: 'home', // change to login if want to use login page,
       results: [],
+      otherUsers: [],
       trending: [],
       lists: [],
+      details: [],
       viewListItems: [],
       currentListName: '',
       currentListId: null,
@@ -31,12 +33,14 @@ export default class App extends React.Component {
     this.createNewList = this.createNewList.bind(this);
     this.changeView = this.changeView.bind(this);
     this.deleteList = this.deleteList.bind(this);
+    this.getMovieDetails = this.getMovieDetails.bind(this);
     this.addItemToList = this.addItemToList.bind(this);
     this.getItemsInList = this.getItemsInList.bind(this);
     this.removeItemsInList = this.removeItemsInList.bind(this);
     this.logIn = this.logIn.bind(this);
     this.signUp = this.signUp.bind(this);
     this.logOut = this.logOut.bind(this);
+    this.searchUsers = this.searchUsers.bind(this);
   }
 
   logIn(email, password) {
@@ -164,6 +168,15 @@ export default class App extends React.Component {
       });
   }
 
+  getMovieDetails(movieId) {
+    fetch(`/api/details/${movieId}`)
+      .then(res => res.json())
+      .then(data => {
+        this.setState({ details: data });
+      })
+      .then(data => this.changeView('details'));
+  }
+
   addItemToList(listId, movieDetails) {
     fetch(`/api/lists/add/${listId}`, {
       method: 'POST',
@@ -200,6 +213,15 @@ export default class App extends React.Component {
       .then(data => this.getItemsInList(listId, this.state.currentListName));
   }
 
+  searchUsers(query) {
+    fetch(`/api/search/users/${this.state.userId}`)
+      .then(res => res.json())
+      .then(data => {
+        const result = data.filter(user => user.name.toLowerCase().includes(query) || user.email.toLowerCase().includes(query));
+        this.setState({ otherUsers: result });
+      });
+  }
+
   changeView(newPage) {
     this.setState({ view: newPage });
   }
@@ -208,17 +230,22 @@ export default class App extends React.Component {
     // eslint-disable-next-line no-unused-vars
     // let pageView;
     // if (this.state.view === 'home') {
-    //   pageView = <HomePage getTrending={this.getTrending} results={this.state.trending} getUserLists={this.getUserLists} />;
+    //   pageView = <HomePage getTrending={this.getTrending} results={this.state.trending} getMovieDetails={this.getMovieDetails} getUserLists={this.getUserLists} />;
     // } else if (this.state.view === 'search') {
-    //   pageView = <HomeSearch searchResults={this.searchResults} results={this.state.results} addItemToList={this.addItemToList} lists={this.state.lists} />;
+    //   pageView = <HomeSearch searchResults={this.searchResults} results={this.state.results} addItemToList={this.addItemToList} getMovieDetails={this.getMovieDetails} lists={this.state.lists} searchUsers={this.searchUsers} otherUsers={this.state.otherUsers} />;
     // } else if (this.state.view === 'list') {
     //   pageView = <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} deleteList={this.deleteList} changeView={this.changeView} getItemsInList={this.getItemsInList} />;
+    // } else if (this.state.view === 'details') {
+    //   pageView = <MovieDetails changeView={this.changeView} details={this.state.details} />;
     // } else if (this.state.view === 'user') {
     //   pageView = <UserProfile userId={this.state.userId} changeView={this.changeView} />; // insert userId when relavent
     // } else if (this.state.view === 'listContent') {
     //   pageView = <ListItems viewListItems={this.state.viewListItems} listName={this.state.currentListName} listId={this.state.currentListId} changeView={this.changeView} removeItemsInList={this.removeItemsInList} />;
     // } else if (this.state.view === 'review') {
     //   pageView = <WriteReview />;
+    // }
+    // else if (this.state.view === 'login') {
+    //   pageView = <LoginPage logIn={this.logIn} />;
     // }
     // // else if (this.state.view === 'login') {
     // //   pageView = <LoginPage logIn={this.logIn} />;

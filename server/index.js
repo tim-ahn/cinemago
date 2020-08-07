@@ -28,12 +28,16 @@ app.post('/api/search', (req, res, next) => {
 notes: need to include name to reviews too. grab it from users table using userId?
 */
 app.get('/api/details/:movieId', (req, res, next) => {
-  const movieId = 496243; // need to figure out how to grab dynamically
+  const movieId = req.params.movieId;
 
   promise.all([
     fetch(`https://api.themoviedb.org/3/movie/${movieId}/reviews?api_key=${apiKey}&language=en-US&page=1`)
       .then(res => res.json()),
     fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US`)
+      .then(res => res.json()),
+    fetch(`https://api.themoviedb.org/3/movie/${movieId}/recommendations?api_key=${apiKey}&language=en-US&page=1`)
+      .then(res => res.json()),
+    fetch(`https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${apiKey}&language=en-US`)
       .then(res => res.json())
   ])
     .then(data => {
@@ -440,7 +444,7 @@ app.post('/api/logOut/', (req, res, next) => {
 });
 
 // get all other users besides userId (yourself)
-app.post('/api/search/users/:userId', (req, res, next) => {
+app.get('/api/search/users/:userId', (req, res, next) => {
   const userId = req.params.userId;
   const sql = `
     select "name", "bio", "email", "imageURL"
