@@ -543,10 +543,12 @@ app.delete('/api/reviews/:reviewId', (req, res, next) => {
 app.get('/api/messages/:userId', (req, res, next) => {
   const userId = req.params.userId;
   const sql = `
-    select *
+    select "senderId", "content", "sentAt", "name"
     from "messages"
+    join "users" on "users"."userId" = "messages"."senderId"
     where "recipientId" = $1
   `;
+
   const params = [userId];
   db.query(sql, params)
     .then(result => {
