@@ -120,12 +120,13 @@ class HomeSearch extends React.Component {
               <Button className="my-2 ml-1" color="secondary" onClick={this.toggleGenreMenu}>Genres</Button>
               <Collapse isOpen={this.state.genreMenuOpen}>
                 <Card>
-                  <CardBody>
+                  <CardBody className="px-3 pt-3 pb-1">
                     <ButtonGroup className="flex-wrap">
                       {genreList.map(genre => (
-                        <Button outline color="success" key={genre.id} onClick={() => this.genreButtonClick(genre.id)} active={this.state.genreSelected.has(genre.id)}>{genre.name}</Button>
+                        <Button outline color="info" key={genre.id} onClick={() => this.genreButtonClick(genre.id)} active={this.state.genreSelected.has(genre.id)}>{genre.name}</Button>
                       ))}
                     </ButtonGroup>
+                    <p className="mini-text text-muted mb-0">Note: Strict Type Filtering</p>
                   </CardBody>
                 </Card>
               </Collapse>
