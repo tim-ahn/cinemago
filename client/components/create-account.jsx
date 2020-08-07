@@ -1,9 +1,10 @@
 import React from 'react';
 
-export default class LoginPage extends React.Component {
+export default class CreateAccount extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      name: '',
       email: '',
       password: ''
     };
@@ -20,8 +21,9 @@ export default class LoginPage extends React.Component {
 
   handleSubmit(event, info) {
     event.preventDefault();
-    this.props.logIn(this.state.email, this.state.password);
+    this.props.signUp(this.state.name, this.state.email, this.state.password);
     this.setState({
+      name: '',
       email: '',
       password: ''
     });
@@ -33,8 +35,17 @@ export default class LoginPage extends React.Component {
 
       <div className="container h-100">
         <h1 className="loginTitle">MOVIFY</h1>
+        <h3 className="loginTitle">Create an Account</h3>
         <div className="login my-auto">
           <form className="form-login" onSubmit={this.handleSubmit}>
+            <input
+              type="text"
+              placeholder="name"
+              value={this.state.name}
+              onChange={this.handleChange}
+              className="border-0 m-1"
+              name="name"
+            />
             <input
               type="text"
               placeholder="email"
@@ -51,11 +62,11 @@ export default class LoginPage extends React.Component {
               className="border-0 m-1"
               name="password"
             />
-            <input className="btn btn-secondary m-1" type="submit" value="Sign In"></input>
+            <button className="btn btn-secondary m-1" >sign-up</button>
           </form>
         </div>
         <div>
-          <button className="btn btn-secondary m-1" onClick={() => this.props.changeView('signUp')}>Create Account</button>
+          <button className="btn btn-secondary m-1" onClick={() => this.props.changeView('login')}>Back to Log In</button>
         </div>
       </div>
     </>);
