@@ -22,7 +22,11 @@ class HomeSearch extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    this.props.searchResults(this.state.text, this.state.sortBy);
+    if (this.state.genreSelected.size <= 0) {
+      this.props.searchResults(this.state.text, this.state.sortBy);
+    } else {
+      this.props.searchFilteredResults(this.state.text, this.state.sortBy, [...this.state.genreSelected]);
+    }
     this.setState({ dropDownShow: true });
   }
 
@@ -102,6 +106,7 @@ class HomeSearch extends React.Component {
           </DropdownMenu>
         </ButtonDropdown>
         <div className="row">
+          {}
           {this.props.results.map(item => (
             <MovieLongCard key={item.id} id={item.id} poster_path={item.poster_path} fullInfo={item} addItemToList={this.props.addItemToList} lists={this.props.lists} />
           ))}
