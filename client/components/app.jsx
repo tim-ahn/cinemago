@@ -91,7 +91,16 @@ export default class App extends React.Component {
   }
 
   logOut() {
-    this.setState({ userId: null, view: 'login', results: [] });
+    this.setState({
+      userId: null,
+      view: 'login',
+      results: [],
+      otherUsers: [],
+      lists: [],
+      details: [],
+      viewListItems: [],
+      currentListName: ''
+    });
   }
 
   searchResults(query, category) {
