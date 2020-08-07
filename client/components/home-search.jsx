@@ -27,7 +27,6 @@ class HomeSearch extends React.Component {
   }
 
   handleText(event) {
-    console.log(event.target.value);
     this.setState({ text: event.target.value });
   }
 
@@ -112,8 +111,9 @@ class HomeSearch extends React.Component {
               <button className="btn btn-primary" onClick={this.handleSubmit2}>Search</button>
               <div className="row">
                 {this.props.otherUsers.map((item, index) => (
-                  <div className="border" key={index}>
-                    Hi
+                  <div className="border container" key={index}>
+                    Name: {item.name}
+                    Email: {item.email}
                   </div>
                 ))}
               </div>
