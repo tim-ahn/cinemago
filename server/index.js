@@ -36,7 +36,7 @@ app.post('/api/search/genre', (req, res, next) => {
   // page limit(maxPages) is in place to prevent long load times
   const results = [];
   const filter = req.body.filter;
-  var page = 0; // page incriments before fetch is called
+  var page = 0; // page increments before fetch is called, so it starts at 1
   let maxPage;
   if (!req.body.filter) {
     throw (new ClientError('filter is needed in request body', 400));
@@ -50,11 +50,11 @@ app.post('/api/search/genre', (req, res, next) => {
       .then(result => result.json()
       )
       .then(data => {
-        if (maxPage === undefined) {
+        if (maxPage === undefined) { // decide the max number of pages to search through
           if (data.total_pages <= 14) {
             maxPage = data.total_pages;
           } else {
-            maxPage = 14; // decide the max number of pages to search through
+            maxPage = 14;
           }
         }
         for (let i = 0; i < data.results.length; i++) {

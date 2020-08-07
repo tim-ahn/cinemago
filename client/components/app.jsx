@@ -95,6 +95,7 @@ export default class App extends React.Component {
   }
 
   searchResults(query, category) {
+    this.setState({ results: [] });
     fetch('api/search', {
       method: 'POST',
       headers: {
@@ -122,6 +123,7 @@ export default class App extends React.Component {
   }
 
   searchFilteredResults(query, category, filter) {
+    this.setState({ results: [] });
     fetch('api/search/genre', {
       method: 'POST',
       headers: {
