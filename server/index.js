@@ -520,6 +520,25 @@ app.get('/api/search/users/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+// delete reviews
+app.delete('/api/reviews/:reviewId', (req, res, next) => {
+  const reviewId = req.params.reviewId;
+  const sql = `
+    delete from "reviews" where "reviewId" = $1
+    returning *
+  `;
+  const params = [reviewId];
+  db.query(sql, params)
+    .then(result => {
+      if (result.rows.length < 1) {
+        next(new ClientError('no items in list'), 404);
+      } else {
+        res.json(result.rows);
+      }
+    })
+    .catch(error => next(error));
+});
+
 // get all messages where sentId is equal to userId
 app.get('/api/messages/:userId', (req, res, next) => {
   const userId = req.params.userId;
