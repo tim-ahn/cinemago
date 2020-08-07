@@ -165,27 +165,31 @@ export default class App extends React.Component {
 
   render() {
     // eslint-disable-next-line no-unused-vars
-    let pageView;
-    if (this.state.view === 'home') {
-      pageView = <HomePage getTrending={this.getTrending} results={this.state.trending} getMovieDetails={this.getMovieDetails}/>;
-    } else if (this.state.view === 'search') {
-      pageView = <HomeSearch searchResults={this.searchResults} results={this.state.results} changeView={this.changeView} getMovieDetails={this.getMovieDetails} addItemToList={this.addItemToList} lists={this.state.lists}/>;
-      // <HomeSearch searchResults={this.searchResults} results={this.state.results} />;
-    } else if (this.state.view === 'list') {
-      pageView = <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} deleteList={this.deleteList} changeView={this.changeView} getItemsInList={this.getItemsInList} />;
-    } else if (this.state.view === 'details') {
-      pageView = <MovieDetails changeView={this.changeView} details={this.state.details}/>;
-    } else if (this.state.view === 'user') {
-      pageView = <UserProfile userId={this.state.userId} changeView={this.changeView} />; // insert userId when relavent
-    } else if (this.state.view === 'listContent') {
-      pageView = <ListItems viewListItems={this.state.viewListItems} listName={this.state.currentListName} listId={this.state.currentListId} changeView={this.changeView} removeItemsInList={this.removeItemsInList} />;
-    }
-    return <>
+    // let pageView;
+    // if (this.state.view === 'home') {
+    //   pageView = <HomePage getTrending={this.getTrending} results={this.state.trending} getMovieDetails={this.getMovieDetails}/>;
+    // } else if (this.state.view === 'search') {
+    //   pageView = <HomeSearch searchResults={this.searchResults} results={this.state.results} changeView={this.changeView} getMovieDetails={this.getMovieDetails} addItemToList={this.addItemToList} lists={this.state.lists}/>;
+    //   // <HomeSearch searchResults={this.searchResults} results={this.state.results} />;
+    // } else if (this.state.view === 'list') {
+    //   pageView = <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} deleteList={this.deleteList} changeView={this.changeView} getItemsInList={this.getItemsInList} />;
+    // } else if (this.state.view === 'details') {
+    //   pageView = <MovieDetails changeView={this.changeView} details={this.state.details}/>;
+    // } else if (this.state.view === 'user') {
+    //   pageView = <UserProfile userId={this.state.userId} changeView={this.changeView} />; // insert userId when relavent
+    // } else if (this.state.view === 'listContent') {
+    //   pageView = <ListItems viewListItems={this.state.viewListItems} listName={this.state.currentListName} listId={this.state.currentListId} changeView={this.changeView} removeItemsInList={this.removeItemsInList} />;
+    // }
+    // return <>
 
-      {pageView}
-      {/* <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} deleteList={this.deleteList} changeView={this.changeView} />; */}
-      {/* <HomeSearch searchResults={this.searchResults} results={this.state.results} addItemToList={this.addItemToList} lists={this.state.lists} /> */}
-      <Navbar changeView={this.changeView} />
-    </>;
+    //   {pageView}
+    //   {/* <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} deleteList={this.deleteList} changeView={this.changeView} />; */}
+    //   {/* <HomeSearch searchResults={this.searchResults} results={this.state.results} addItemToList={this.addItemToList} lists={this.state.lists} /> */}
+    //   <Navbar changeView={this.changeView} />
+    // </>;
+
+    return (
+      <MovieDetails/>
+    );
   }
 }
