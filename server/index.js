@@ -391,6 +391,26 @@ app.post('/api/logOut/', (req, res, next) => {
   req.session.userInfo = null;
 });
 
+// get all other users besides userId (yourself)
+app.post('/api/search/users/:userId', (req, res, next) => {
+  const userId = req.params.userId;
+  const sql = `
+    select "name", "bio", "email", "imageURL"
+    from "users"
+    where "userId" != $1
+  `;
+  const params = [userId];
+  db.query(sql, params)
+    .then(result => {
+      if (result.rows.length < 1) {
+        next(new ClientError('no items in list', 404));
+      } else {
+        res.json(result.rows);
+      }
+    })
+    .catch(err => next(err));
+});
+
 app.use((err, req, res, next) => {
   if (err instanceof ClientError) {
     res.status(err.status).json({ error: err.message });
