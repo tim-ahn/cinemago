@@ -61,7 +61,7 @@ app.get('/api/details/:movieId', (req, res, next) => {
 });
 // end feature: user-can-view-details
 
-// GET request for home page to get trending or top rated movies
+// PATCH request for home page to get trending or top rated movies
 app.patch('/api/home', (req, res, next) => {
   if (req.body.category === 'trending') {
     fetch(`https://api.themoviedb.org/3/trending/movie/day?api_key=${apiKey}`)
