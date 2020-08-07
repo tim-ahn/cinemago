@@ -17,13 +17,70 @@ app.use(sessionMiddleware);
 app.use(express.json());
 
 app.post('/api/search', (req, res, next) => {
+
   fetch(`https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&query=${req.body.query}&page=1&include_adult=false`)
     .then(result => result.json()
     )
-    .then(data => res.json(data.results))
+    .then(data => {
+
+      return res.json(data.results);
+    })
     .catch(error => next(error));
+
 });
 
+// post request for search by genre
+app.post('/api/search/genre', (req, res, next) => {
+  // when the query results returned from the api
+  // filter through (maxPage) of results returned until maxPage is reached or results reach 20
+  // page limit(maxPages) is in place to prevent long load times
+  const results = [];
+  const filter = req.body.filter;
+  var page = 0; // page incriments before fetch is called
+  let maxPage;
+  if (!req.body.filter) {
+    throw (new ClientError('filter is needed in request body', 400));
+  } else {
+    lookAtPages();
+  }
+  // recursive function is used when there aren't enough results and when page limit isn't met
+  function lookAtPages() {
+    page++;
+    fetch(`https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&query=${req.body.query}&page=${page}&include_adult=false`)
+      .then(result => result.json()
+      )
+      .then(data => {
+        if (maxPage === undefined) {
+          if (data.total_pages <= 14) {
+            maxPage = data.total_pages;
+          } else {
+            maxPage = 14; // decide the max number of pages to search through
+          }
+        }
+        for (let i = 0; i < data.results.length; i++) {
+          const movie = data.results[i];
+          const movieGenres = movie.genre_ids;
+          let flag = false;
+          for (let x = 0; x < filter.length; x++) {
+            if (!movieGenres.includes(filter[x])) {
+              flag = true;
+            }
+          }
+          if (flag) {
+            continue;
+          } else {
+            results.push(data.results[i]);
+          }
+        }
+        if (results.length < 20 && page < maxPage) {
+          lookAtPages();
+        } else {
+          return res.json(results);
+        }
+      })
+      .catch(error => next(error));
+  }
+});
 /* get request for api/details endpoint
 notes: need to include name to reviews too. grab it from users table using userId?
 */

@@ -27,6 +27,7 @@ export default class App extends React.Component {
       userId: 1 // Hardcoded for now, will be set after user logs in and will be helpful in fetching to backend
     };
     this.searchResults = this.searchResults.bind(this);
+    this.searchFilteredResults = this.searchFilteredResults.bind(this);
     this.getTrending = this.getTrending.bind(this);
     this.getUserLists = this.getUserLists.bind(this);
     this.createNewList = this.createNewList.bind(this);
@@ -100,6 +101,33 @@ export default class App extends React.Component {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ query: query })
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (category === 'popularity') {
+          data.sort(function (a, b) {
+            return b.popularity - a.popularity;
+          });
+        } else if (category === 'rating') {
+          data.sort(function (a, b) {
+            return b.vote_average - a.vote_average;
+          });
+        } else {
+          data.sort(function (a, b) {
+            return parseInt(b.release_date.substr(0, 4)) - parseInt(a.release_date.substr(0, 4));
+          });
+        }
+        this.setState({ results: data });
+      });
+  }
+
+  searchFilteredResults(query, category, filter) {
+    fetch('api/search/genre', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ query: query, filter: filter })
     })
       .then(res => res.json())
       .then(data => {
@@ -231,13 +259,13 @@ export default class App extends React.Component {
     if (this.state.view === 'home') {
       pageView = <HomePage getTrending={this.getTrending} results={this.state.trending} getMovieDetails={this.getMovieDetails} getUserLists={this.getUserLists} />;
     } else if (this.state.view === 'search') {
-      pageView = <HomeSearch searchResults={this.searchResults} results={this.state.results} addItemToList={this.addItemToList} getMovieDetails={this.getMovieDetails} lists={this.state.lists} searchUsers={this.searchUsers} otherUsers={this.state.otherUsers} />;
+      pageView = <HomeSearch searchResults={this.searchResults} searchFilteredResults={this.searchFilteredResults} results={this.state.results} addItemToList={this.addItemToList} getMovieDetails={this.getMovieDetails} lists={this.state.lists} searchUsers={this.searchUsers} otherUsers={this.state.otherUsers} />;
     } else if (this.state.view === 'list') {
       pageView = <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} deleteList={this.deleteList} changeView={this.changeView} getItemsInList={this.getItemsInList} />;
     } else if (this.state.view === 'details') {
       pageView = <MovieDetails changeView={this.changeView} details={this.state.details} />;
     } else if (this.state.view === 'user') {
-      pageView = <UserProfile userId={this.state.userId} changeView={this.changeView} />; // insert userId when relavent
+      pageView = <UserProfile userId={this.state.userId} changeView={this.changeView} />;
     } else if (this.state.view === 'listContent') {
       pageView = <ListItems viewListItems={this.state.viewListItems} listName={this.state.currentListName} listId={this.state.currentListId} changeView={this.changeView} removeItemsInList={this.removeItemsInList} />;
     } else if (this.state.view === 'review') {
