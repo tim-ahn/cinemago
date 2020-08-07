@@ -392,7 +392,7 @@ app.post('/api/logOut/', (req, res, next) => {
 });
 
 // get all other users besides userId (yourself)
-app.post('/api/search/users/:userId', (req, res, next) => {
+app.get('/api/search/users/:userId', (req, res, next) => {
   const userId = req.params.userId;
   const sql = `
     select "name", "bio", "email", "imageURL"

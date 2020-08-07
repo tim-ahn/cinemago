@@ -15,7 +15,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: 'login', // change to login if want to use login page,
+      view: 'home', // change to login if want to use login page,
       results: [],
       trending: [],
       lists: [],
@@ -36,6 +36,11 @@ export default class App extends React.Component {
     this.logIn = this.logIn.bind(this);
     this.signUp = this.signUp.bind(this);
     this.logOut = this.logOut.bind(this);
+    this.searchUsers = this.searchUsers.bind(this);
+  }
+
+  componentDidMount() {
+    this.searchUsers('rr');
   }
 
   logIn(email, password) {
@@ -197,6 +202,15 @@ export default class App extends React.Component {
       method: 'DELETE'
     }).then(res => res.json())
       .then(data => this.getItemsInList(listId, this.state.currentListName));
+  }
+
+  searchUsers(query) {
+    fetch(`/api/search/users/${this.state.userId}`)
+      .then(res => res.json())
+      .then(data => {
+        const result = data.filter(user => user.name.toLowerCase().includes(query) || user.email.toLowerCase().includes(query));
+        console.log(result);
+      });
   }
 
   changeView(newPage) {
