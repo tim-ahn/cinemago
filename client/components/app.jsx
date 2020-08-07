@@ -91,10 +91,20 @@ export default class App extends React.Component {
   }
 
   logOut() {
-    this.setState({ userId: null, view: 'login', results: [] });
+    this.setState({
+      userId: null,
+      view: 'login',
+      results: [],
+      otherUsers: [],
+      lists: [],
+      details: [],
+      viewListItems: [],
+      currentListName: ''
+    });
   }
 
   searchResults(query, category) {
+    this.setState({ results: [] }); // clear search results on new search
     fetch('api/search', {
       method: 'POST',
       headers: {
@@ -122,6 +132,7 @@ export default class App extends React.Component {
   }
 
   searchFilteredResults(query, category, filter) {
+    this.setState({ results: [] });
     fetch('api/search/genre', {
       method: 'POST',
       headers: {

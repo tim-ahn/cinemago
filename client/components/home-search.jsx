@@ -2,6 +2,7 @@ import React from 'react';
 import MovieLongCard from './movie-longcard';
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, TabContent, TabPane, Nav, NavItem, NavLink, Collapse, Button, CardBody, Card, ButtonGroup } from 'reactstrap';
 import classnames from 'classnames';
+import UserCard from './user-card';
 
 class HomeSearch extends React.Component {
   constructor(props) {
@@ -155,15 +156,13 @@ class HomeSearch extends React.Component {
           <TabPane tabId="2">
             <form className="container">
               <h2 >Search Page</h2>
-              <input onChange={this.handleText2} value={this.state.userText} className="form-control" placeholder="Search for Users" id="user-line"></input>
-
-              <button className="btn btn-primary" onClick={this.handleSubmit2}>Search</button>
+              <div className="form-row flex-nowrap">
+                <input onChange={this.handleText2} value={this.state.userText} className="form-control" placeholder="Search for Users" id="user-line"></input>
+                <button className="btn btn-primary" onClick={this.handleSubmit2}>Search</button>
+              </div>
               <div className="row">
                 {this.props.otherUsers.map((item, index) => (
-                  <div className="border container" key={index}>
-                    Name: {item.name}
-                    Email: {item.email}
-                  </div>
+                  <UserCard item={item} key={index} />
                 ))}
               </div>
             </form>
