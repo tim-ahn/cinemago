@@ -186,6 +186,26 @@ app.patch('/api/reviews/:reviewId', (req, res, next) => {
     .catch(err => next(err));
 }); // end of PATCH request for User Can Edit Own Review
 
+// GET request for User Can View Self/Other User Reviews
+app.get('/api/reviews/:userId', (req, res, next) => {
+  const userId = req.params.userId;
+  const sql = `
+  select *
+    from "reviews"
+    where "reviewId" = $1
+  `;
+  const params = [userId];
+  db.query(sql, params)
+    .then(result => {
+      if (result.rows.length < 1) {
+        next(new ClientError(`cannot ${req.method} ${req.originalUrl}`, 404));
+      } else {
+        res.status(200).json(result.rows);
+      }
+    })
+    .catch(err => next(err));
+}); // end of GET request for User Can View Self/Other User Reviews
+
 app.get('/api/lists/:userId', (req, res, next) => {
   const id = req.params.userId;
   const sql = `
