@@ -15,7 +15,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: 'login', // change to login if want to use login page,
+      view: 'home', // change to login if want to use login page,
       results: [],
       otherUsers: [],
       trending: [],
@@ -91,7 +91,7 @@ export default class App extends React.Component {
   }
 
   logOut() {
-    this.setState({ userId: null, view: 'login' });
+    this.setState({ userId: null, view: 'login', results: [] });
   }
 
   searchResults(query, category) {
