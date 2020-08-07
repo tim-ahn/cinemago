@@ -3,7 +3,6 @@ import MovieLongCard from './movie-longcard';
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, TabContent, TabPane, Nav, NavItem, NavLink, Collapse, Button, CardBody, Card, ButtonGroup } from 'reactstrap';
 import classnames from 'classnames';
 
-
 class HomeSearch extends React.Component {
   constructor(props) {
     super(props);
@@ -14,7 +13,7 @@ class HomeSearch extends React.Component {
       dropDownShow: false,
       genreMenuOpen: false,
       genreSelected: new Set(),
-      tab: '1', 
+      tab: '1',
       userText: ''
     };
 
@@ -110,27 +109,27 @@ class HomeSearch extends React.Component {
         <TabContent activeTab={this.state.tab}>
           <TabPane tabId="1">
             <form className="container">
-       <form className="container">
-          <h2 >Search Page</h2>
-          <div className="form-row flex-nowrap">
-            <input onChange={this.handleText} value={this.state.text} className="form-control" placeholder="Search for Movies" id="name-line"></input>
-            <button className="btn btn-primary" onClick={this.handleSubmit}>Search</button>
-          </div>
-        </form>
-        <div className="container">
-        <Button className="my-2 ml-1" color="secondary" onClick={this.toggleGenreMenu}>Genres</Button>
-          <Collapse isOpen={this.state.genreMenuOpen}>
-            <Card>
-              <CardBody>
-                <ButtonGroup className="flex-wrap">
-                  {genreList.map(genre => (
-                    <Button outline color="success" key={genre.id} onClick={() => this.genreButtonClick(genre.id)} active={this.state.genreSelected.has(genre.id)}>{genre.name}</Button>
-                  ))}
-                </ButtonGroup>
-              </CardBody>
-            </Card>
-          </Collapse>
-        </div>
+
+              <h2 >Search Page</h2>
+              <div className="form-row flex-nowrap">
+                <input onChange={this.handleText} value={this.state.text} className="form-control" placeholder="Search for Movies" id="name-line"></input>
+                <button className="btn btn-primary" onClick={this.handleSubmit}>Search</button>
+              </div>
+            </form>
+            <div className="container">
+              <Button className="my-2 ml-1" color="secondary" onClick={this.toggleGenreMenu}>Genres</Button>
+              <Collapse isOpen={this.state.genreMenuOpen}>
+                <Card>
+                  <CardBody>
+                    <ButtonGroup className="flex-wrap">
+                      {genreList.map(genre => (
+                        <Button outline color="success" key={genre.id} onClick={() => this.genreButtonClick(genre.id)} active={this.state.genreSelected.has(genre.id)}>{genre.name}</Button>
+                      ))}
+                    </ButtonGroup>
+                  </CardBody>
+                </Card>
+              </Collapse>
+            </div>
 
             <div className="container">
               <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggleDropDown} style={{ float: 'right', display: show }}>
