@@ -42,10 +42,6 @@ export default class App extends React.Component {
     this.searchUsers = this.searchUsers.bind(this);
   }
 
-  componentDidMount() {
-    this.searchUsers('rr');
-  }
-
   logIn(email, password) {
     fetch('api/login', {
       method: 'POST',
