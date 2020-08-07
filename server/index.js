@@ -504,7 +504,7 @@ app.post('/api/logOut/', (req, res, next) => {
 app.get('/api/search/users/:userId', (req, res, next) => {
   const userId = req.params.userId;
   const sql = `
-    select "name", "bio", "email", "imageURL"
+    select "name", "bio", "email", "imageURL", "userId"
     from "users"
     where "userId" != $1
   `;
@@ -513,6 +513,48 @@ app.get('/api/search/users/:userId', (req, res, next) => {
     .then(result => {
       if (result.rows.length < 1) {
         next(new ClientError('no items in list', 404));
+      } else {
+        res.json(result.rows);
+      }
+    })
+    .catch(err => next(err));
+});
+
+// get all messages where sentId is equal to userId
+app.get('/api/messages/:userId', (req, res, next) => {
+  const userId = req.params.userId;
+  const sql = `
+    select *
+    from "messages"
+    where "recipientId" = $1
+  `;
+  const params = [userId];
+  db.query(sql, params)
+    .then(result => {
+      if (result.rows.length < 1) {
+        next(new ClientError('no messages found', 404));
+      } else {
+        res.json(result.rows);
+      }
+    })
+    .catch(err => next(err));
+});
+
+// send a message from userId (sentId) to recipientId
+app.post('/api/messages/:userId', (req, res, next) => {
+  const userId = req.params.userId;
+  const recipientId = req.body.recipientId;
+  const content = req.body.content;
+  const sql = `
+    insert into "messages" ("senderId", "recipientId", "content")
+    values ($1, $2, $3)
+    returning *
+  `;
+  const params = [userId, recipientId, content];
+  db.query(sql, params)
+    .then(result => {
+      if (result.rows.length < 1) {
+        next(new ClientError('no messages found', 404));
       } else {
         res.json(result.rows);
       }
