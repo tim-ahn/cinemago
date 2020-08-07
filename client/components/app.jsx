@@ -10,6 +10,7 @@ import WriteReview from './write-review';
 import LoginPage from './login-page';
 import CreateAccount from './create-account';
 import Header from './header';
+import UserMessages from './user-messages';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -24,7 +25,8 @@ export default class App extends React.Component {
       viewListItems: [],
       currentListName: '',
       currentListId: null,
-      userId: 1 // Hardcoded for now, will be set after user logs in and will be helpful in fetching to backend
+      userId: 1, // Hardcoded for now, will be set after user logs in and will be helpful in fetching to backend
+      messages: []
     };
     this.searchResults = this.searchResults.bind(this);
     this.searchFilteredResults = this.searchFilteredResults.bind(this);
@@ -41,6 +43,7 @@ export default class App extends React.Component {
     this.signUp = this.signUp.bind(this);
     this.logOut = this.logOut.bind(this);
     this.searchUsers = this.searchUsers.bind(this);
+    this.getMessages = this.getMessages.bind(this);
   }
 
   logIn(email, password) {
@@ -99,7 +102,8 @@ export default class App extends React.Component {
       lists: [],
       details: [],
       viewListItems: [],
-      currentListName: ''
+      currentListName: '',
+      messages: []
     });
   }
 
@@ -260,6 +264,15 @@ export default class App extends React.Component {
       });
   }
 
+  getMessages() {
+    fetch(`/api/messages/${this.state.userId}`)
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        this.setState({ messages: data });
+      });
+  }
+
   changeView(newPage) {
     this.setState({ view: newPage });
   }
@@ -281,10 +294,9 @@ export default class App extends React.Component {
       pageView = <ListItems viewListItems={this.state.viewListItems} listName={this.state.currentListName} listId={this.state.currentListId} changeView={this.changeView} removeItemsInList={this.removeItemsInList} />;
     } else if (this.state.view === 'review') {
       pageView = <WriteReview />;
+    } else if (this.state.view === 'messages') {
+      pageView = <UserMessages messages={this.state.messages} getMessages={this.getMessages} />;
     }
-    // else if (this.state.view === 'login') {
-    //   pageView = <LoginPage logIn={this.logIn} />;
-    // }
 
     if (this.state.view === 'login') {
       return (
