@@ -99,7 +99,7 @@ class HomeSearch extends React.Component {
               </ButtonDropdown>
               <div className="row">
                 {this.props.results.map(item => (
-                  <MovieLongCard key={item.id} id={item.id} poster_path={item.poster_path} fullInfo={item} addItemToList={this.props.addItemToList} lists={this.props.lists} />
+                  <MovieLongCard key={item.id} id={item.id} poster_path={item.poster_path} fullInfo={item} changeView={this.props.changeView} getMovieDetails={this.props.getMovieDetails} addItemToList={this.props.addItemToList} lists={this.props.lists} />
                 ))}
               </div>
             </div>
@@ -121,7 +121,6 @@ class HomeSearch extends React.Component {
           </TabPane>
         </TabContent>
       </div>
-
     </>);
   }
 }

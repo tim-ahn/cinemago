@@ -2,11 +2,11 @@ import React from 'react';
 import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
 
 class MovieLongCard extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = { addModalShow: false, dropdownOpen: false, listId: null };
     this.addModal = this.addModal.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -14,7 +14,7 @@ class MovieLongCard extends React.Component {
   }
 
   handleClick(event) {
-    // this.props.
+    this.props.getMovieDetails(this.props.id);
   }
 
   addModal() {
@@ -41,7 +41,7 @@ class MovieLongCard extends React.Component {
     }
     return (<>
       <div >
-        <div className="row m-2 border white">
+        <div className="row m-2 border" onClick={() => this.handleClick(event)}>
           <div className="col m-2">
             <img src={posterURL} className="card-img" styles=""></img>
           </div>
