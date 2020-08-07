@@ -15,8 +15,9 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: 'login', // change to login if want to use login page,
+      view: 'home', // change to login if want to use login page,
       results: [],
+      otherUsers: [],
       trending: [],
       lists: [],
       details: [],
@@ -38,6 +39,7 @@ export default class App extends React.Component {
     this.logIn = this.logIn.bind(this);
     this.signUp = this.signUp.bind(this);
     this.logOut = this.logOut.bind(this);
+    this.searchUsers = this.searchUsers.bind(this);
   }
 
   logIn(email, password) {
@@ -210,6 +212,15 @@ export default class App extends React.Component {
       .then(data => this.getItemsInList(listId, this.state.currentListName));
   }
 
+  searchUsers(query) {
+    fetch(`/api/search/users/${this.state.userId}`)
+      .then(res => res.json())
+      .then(data => {
+        const result = data.filter(user => user.name.toLowerCase().includes(query) || user.email.toLowerCase().includes(query));
+        this.setState({ otherUsers: result });
+      });
+  }
+
   changeView(newPage) {
     this.setState({ view: newPage });
   }
@@ -218,14 +229,13 @@ export default class App extends React.Component {
     // eslint-disable-next-line no-unused-vars
     let pageView;
     if (this.state.view === 'home') {
-      pageView = <HomePage getTrending={this.getTrending} results={this.state.trending} getMovieDetails={this.getMovieDetails} getUserLists={this.getUserLists}/>;
+      pageView = <HomePage getTrending={this.getTrending} results={this.state.trending} getMovieDetails={this.getMovieDetails} getUserLists={this.getUserLists} />;
     } else if (this.state.view === 'search') {
-      pageView = <HomeSearch searchResults={this.searchResults} results={this.state.results} changeView={this.changeView} getMovieDetails={this.getMovieDetails} addItemToList={this.addItemToList} lists={this.state.lists}/>;
-      // <HomeSearch searchResults={this.searchResults} results={this.state.results} />;
+      pageView = <HomeSearch searchResults={this.searchResults} results={this.state.results} addItemToList={this.addItemToList} getMovieDetails={this.getMovieDetails} lists={this.state.lists} searchUsers={this.searchUsers} otherUsers={this.state.otherUsers} />;
     } else if (this.state.view === 'list') {
       pageView = <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} deleteList={this.deleteList} changeView={this.changeView} getItemsInList={this.getItemsInList} />;
     } else if (this.state.view === 'details') {
-      pageView = <MovieDetails changeView={this.changeView} details={this.state.details}/>;
+      pageView = <MovieDetails changeView={this.changeView} details={this.state.details} />;
     } else if (this.state.view === 'user') {
       pageView = <UserProfile userId={this.state.userId} changeView={this.changeView} />; // insert userId when relavent
     } else if (this.state.view === 'listContent') {
