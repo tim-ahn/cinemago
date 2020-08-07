@@ -16,7 +16,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: 'messages', // change to login if want to use login page,
+      view: 'home', // change to login if want to use login page,
       results: [],
       otherUsers: [],
       trending: [],
