@@ -36,6 +36,8 @@ app.get('/api/details/:movieId', (req, res, next) => {
     fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US`)
       .then(res => res.json()),
     fetch(`https://api.themoviedb.org/3/movie/${movieId}/recommendations?api_key=${apiKey}&language=en-US&page=1`)
+      .then(res => res.json()),
+    fetch(`https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${apiKey}&language=en-US`)
       .then(res => res.json())
   ])
     .then(data => {
