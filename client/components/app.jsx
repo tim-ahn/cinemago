@@ -10,6 +10,7 @@ import WriteReview from './write-review';
 import LoginPage from './login-page';
 import CreateAccount from './create-account';
 import Header from './header';
+import ViewReviewsPage from './view-reviews-page';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -205,37 +206,38 @@ export default class App extends React.Component {
 
   render() {
     // eslint-disable-next-line no-unused-vars
-    let pageView;
-    if (this.state.view === 'home') {
-      pageView = <HomePage getTrending={this.getTrending} results={this.state.trending} getUserLists={this.getUserLists} />;
-    } else if (this.state.view === 'search') {
-      pageView = <HomeSearch searchResults={this.searchResults} results={this.state.results} addItemToList={this.addItemToList} lists={this.state.lists} />;
-    } else if (this.state.view === 'list') {
-      pageView = <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} deleteList={this.deleteList} changeView={this.changeView} getItemsInList={this.getItemsInList} />;
-    } else if (this.state.view === 'user') {
-      pageView = <UserProfile userId={this.state.userId} changeView={this.changeView} />; // insert userId when relavent
-    } else if (this.state.view === 'listContent') {
-      pageView = <ListItems viewListItems={this.state.viewListItems} listName={this.state.currentListName} listId={this.state.currentListId} changeView={this.changeView} removeItemsInList={this.removeItemsInList} />;
-    } else if (this.state.view === 'review') {
-      pageView = <WriteReview />;
-    }
-    // else if (this.state.view === 'login') {
-    //   pageView = <LoginPage logIn={this.logIn} />;
+    // let pageView;
+    // if (this.state.view === 'home') {
+    //   pageView = <HomePage getTrending={this.getTrending} results={this.state.trending} getUserLists={this.getUserLists} />;
+    // } else if (this.state.view === 'search') {
+    //   pageView = <HomeSearch searchResults={this.searchResults} results={this.state.results} addItemToList={this.addItemToList} lists={this.state.lists} />;
+    // } else if (this.state.view === 'list') {
+    //   pageView = <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} deleteList={this.deleteList} changeView={this.changeView} getItemsInList={this.getItemsInList} />;
+    // } else if (this.state.view === 'user') {
+    //   pageView = <UserProfile userId={this.state.userId} changeView={this.changeView} />; // insert userId when relavent
+    // } else if (this.state.view === 'listContent') {
+    //   pageView = <ListItems viewListItems={this.state.viewListItems} listName={this.state.currentListName} listId={this.state.currentListId} changeView={this.changeView} removeItemsInList={this.removeItemsInList} />;
+    // } else if (this.state.view === 'review') {
+    //   pageView = <WriteReview />;
     // }
+    // // else if (this.state.view === 'login') {
+    // //   pageView = <LoginPage logIn={this.logIn} />;
+    // // }
 
-    if (this.state.view === 'login') {
-      return (
-        <LoginPage logIn={this.logIn} changeView={this.changeView} />
-      );
-    } else if (this.state.view === 'signUp') {
-      return <CreateAccount changeView={this.changeView} signUp={this.signUp} />;
-    } else {
-      return <>
-        <Header logOut={this.logOut} />
-        {pageView}
-        <Navbar changeView={this.changeView} />
-      </>;
-    }
-
+    // if (this.state.view === 'login') {
+    //   return (
+    //     <LoginPage logIn={this.logIn} changeView={this.changeView} />
+    //   );
+    // } else if (this.state.view === 'signUp') {
+    //   return <CreateAccount changeView={this.changeView} signUp={this.signUp} />;
+    // } else {
+    return <>
+      {/* <Header logOut={this.logOut} />
+        {pageView} */}
+      <ViewReviewsPage />
+      {/* <Navbar changeView={this.changeView} /> */}
+    </>;
   }
+
 }
+// }
