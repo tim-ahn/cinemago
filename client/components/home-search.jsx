@@ -8,7 +8,9 @@ class HomeSearch extends React.Component {
     super(props);
     this.state = { text: '', sortBy: 'popularity', dropdownOpen: false, dropDownShow: false, tab: '1', userText: '' };
     this.handleText = this.handleText.bind(this);
+    this.handleText2 = this.handleText2.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSubmit2 = this.handleSubmit2.bind(this);
     this.toggleDropDown = this.toggleDropDown.bind(this);
     this.sortCategory = this.sortCategory.bind(this);
   }
@@ -30,8 +32,7 @@ class HomeSearch extends React.Component {
   }
 
   handleText2(event) {
-    console.log(event.target.value);
-    // this.setState({ userText: event.target.value });
+    this.setState({ userText: event.target.value });
   }
 
   toggleDropDown() {
@@ -109,7 +110,13 @@ class HomeSearch extends React.Component {
               <input onChange={this.handleText2} value={this.state.userText} className="form-control" placeholder="Search for Users" id="user-line"></input>
 
               <button className="btn btn-primary" onClick={this.handleSubmit2}>Search</button>
-
+              <div className="row">
+                {this.props.otherUsers.map((item, index) => (
+                  <div className="border" key={index}>
+                    Hi
+                  </div>
+                ))}
+              </div>
             </form>
           </TabPane>
         </TabContent>

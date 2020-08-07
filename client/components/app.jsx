@@ -17,6 +17,7 @@ export default class App extends React.Component {
     this.state = {
       view: 'home', // change to login if want to use login page,
       results: [],
+      otherUsers: [],
       trending: [],
       lists: [],
       viewListItems: [],
@@ -209,7 +210,7 @@ export default class App extends React.Component {
       .then(res => res.json())
       .then(data => {
         const result = data.filter(user => user.name.toLowerCase().includes(query) || user.email.toLowerCase().includes(query));
-        console.log(result);
+        this.setState({ otherUsers: result });
       });
   }
 
@@ -223,7 +224,7 @@ export default class App extends React.Component {
     if (this.state.view === 'home') {
       pageView = <HomePage getTrending={this.getTrending} results={this.state.trending} getUserLists={this.getUserLists} />;
     } else if (this.state.view === 'search') {
-      pageView = <HomeSearch searchResults={this.searchResults} results={this.state.results} addItemToList={this.addItemToList} lists={this.state.lists} />;
+      pageView = <HomeSearch searchResults={this.searchResults} results={this.state.results} addItemToList={this.addItemToList} lists={this.state.lists} searchUsers={this.searchUsers} otherUsers={this.state.otherUsers} />;
     } else if (this.state.view === 'list') {
       pageView = <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} deleteList={this.deleteList} changeView={this.changeView} getItemsInList={this.getItemsInList} />;
     } else if (this.state.view === 'user') {
