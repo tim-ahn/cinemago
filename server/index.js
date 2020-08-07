@@ -62,7 +62,7 @@ app.get('/api/details/:movieId', (req, res, next) => {
 // end feature: user-can-view-details
 
 // GET request for home page to get trending or top rated movies
-app.post('/api/home', (req, res, next) => {
+app.patch('/api/home', (req, res, next) => {
   if (req.body.category === 'trending') {
     fetch(`https://api.themoviedb.org/3/trending/movie/day?api_key=${apiKey}`)
       .then(result => result.json()
@@ -119,10 +119,9 @@ app.patch('/api/users/:userId', (req, res, next) => {
 });
 
 // POST request for user can write review
-app.post('/api/reviews/:movieId', (req, res, next) => {
-  const movieId = req.params.movieId;
+app.post('/api/reviews', (req, res, next) => {
+  const movieId = req.body.movieId;
   const userId = req.body.userId;
-  const reviewId = req.body.reviewId;
   const rating = req.body.rating;
   const reviewContent = req.body.content;
 
@@ -131,18 +130,18 @@ app.post('/api/reviews/:movieId', (req, res, next) => {
     return;
   }
 
-  if (!userId || !reviewId || !rating || !reviewContent) {
+  if (!userId || !rating || !reviewContent) {
     res.status(400).json({ error: 'missing content' });
     return;
   }
 
   const sql = `
-    insert into "reviews" ("userId", "reviewId", "rating", "content", "movieId" )
-    values ($1, $2, $3, $4, $5)
+    insert into "reviews" ("userId", "rating", "content", "movieId" )
+    values ($1, $2, $3, $4)
     returning *;
   `;
 
-  const params = [userId, reviewId, rating, reviewContent, movieId];
+  const params = [userId, rating, reviewContent, movieId];
 
   db.query(sql, params)
     .then(response => {
@@ -158,9 +157,9 @@ app.post('/api/reviews/:movieId', (req, res, next) => {
     });
 });
 
-// PUT request for User Can Edit Own Review
-app.put('/api/reviews/:reviewId', (req, res, next) => {
-  const reviewId = req.body.reviewId;
+// PATCH request for User Can Edit Own Review
+app.patch('/api/reviews/:reviewId', (req, res, next) => {
+  const reviewId = req.params.reviewId;
   const rating = req.body.rating;
   const reviewContent = req.body.content;
 
@@ -168,7 +167,7 @@ app.put('/api/reviews/:reviewId', (req, res, next) => {
     res.status(400).json({ error: 'invalid review id' });
     return;
   }
-  if (!reviewId || !rating || !reviewContent) {
+  if (!rating || !reviewContent) {
     res.status(400).json({ error: 'missing required information' });
     return;
   }
@@ -183,18 +182,9 @@ app.put('/api/reviews/:reviewId', (req, res, next) => {
   const params = [rating, reviewContent, reviewId];
 
   db.query(sql, params)
-    .then(response => {
-      if (!response.rows[0]) {
-        res.status(404).json({ error: 'cannot find movie with id' });
-      } else {
-        res.status(200).json(response.rows[0]);
-      }
-    })
-    .catch(err => {
-      console.error(err);
-      res.status(500).json({ error: 'an unexpected error occurred' });
-    });
-}); // end of PUT request for User Can Edit Own Review
+    .then(result => res.sendStatus(200))
+    .catch(err => next(err));
+}); // end of PATCH request for User Can Edit Own Review
 
 app.get('/api/lists/:userId', (req, res, next) => {
   const id = req.params.userId;
