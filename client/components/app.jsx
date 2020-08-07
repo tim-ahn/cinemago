@@ -9,6 +9,7 @@ import UserProfile from './user-profile';
 import ListItems from './list-Items';
 import LoginPage from './login-page';
 import CreateAccount from './create-account';
+import Header from './header';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -34,6 +35,7 @@ export default class App extends React.Component {
     this.removeItemsInList = this.removeItemsInList.bind(this);
     this.logIn = this.logIn.bind(this);
     this.signUp = this.signUp.bind(this);
+    this.logOut = this.logOut.bind(this);
   }
 
   logIn(email, password) {
@@ -70,7 +72,6 @@ export default class App extends React.Component {
     })
       .then(res => res.json())
       .then(data => {
-        console.log(data);
         if (data.message === 'email already taken') {
           return data.message;
         } else {
@@ -82,6 +83,10 @@ export default class App extends React.Component {
           this.getUserLists();
         }
       });
+  }
+
+  logOut() {
+    this.setState({ userId: null, view: 'login' });
   }
 
   searchResults(query, category) {
@@ -202,7 +207,7 @@ export default class App extends React.Component {
     // eslint-disable-next-line no-unused-vars
     let pageView;
     if (this.state.view === 'home') {
-      pageView = <HomePage getTrending={this.getTrending} results={this.state.trending} />;
+      pageView = <HomePage getTrending={this.getTrending} results={this.state.trending} getUserLists={this.getUserLists} />;
     } else if (this.state.view === 'search') {
       pageView = <HomeSearch searchResults={this.searchResults} results={this.state.results} addItemToList={this.addItemToList} lists={this.state.lists} />;
     } else if (this.state.view === 'list') {
@@ -224,7 +229,7 @@ export default class App extends React.Component {
       return <CreateAccount changeView={this.changeView} signUp={this.signUp} />;
     } else {
       return <>
-
+        <Header logOut={this.logOut} />
         {pageView}
         <Navbar changeView={this.changeView} />
       </>;
