@@ -104,7 +104,7 @@ export default class App extends React.Component {
   }
 
   searchResults(query, category) {
-    this.setState({ results: [] });
+    this.setState({ results: [] }); // clear search results on new search
     fetch('api/search', {
       method: 'POST',
       headers: {
