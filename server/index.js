@@ -362,6 +362,13 @@ app.post('/api/signup/', (req, res, next) => {
          values ($1, $2, $3)
          returning *;
   `;
+
+  const sql3 = `
+  insert into "lists" ("userId", "type","name")
+    values ($1, 'favorites', 'My Favorites List')`;
+  const sql4 = `;
+    insert into "lists" ("userId", "type","name")
+    values ($1, 'watch', 'My Watch List')`;
   db.query(sql, params)
     .then(result => {
       const newUser = result.rows[0];
@@ -372,9 +379,13 @@ app.post('/api/signup/', (req, res, next) => {
       } else {
         db.query(sql2, [name, email, password])
           .then(result => {
-            userInfo = result.rows[0];
+            const userInfo = result.rows[0];
             req.session.userInfo = userInfo;
-            return res.json(req.session);
+            db.query(sql3, [userInfo.userId]).then(data => {
+              db.query(sql4, [userInfo.userId]).then(data => {
+                return res.json(req.session);
+              });
+            });
           });
 
       }
