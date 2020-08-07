@@ -48,7 +48,10 @@ export default class MovieDetails extends React.Component {
     }
 
     if (newReviewsArray < 1) {
-      reviews = null;
+      reviews =
+      <div className="row">
+        <p>No Reviews</p>
+      </div>;
     } else {
       const author1 = this.props.details[0].results[0].author;
       const author2 = this.props.details[0].results[1].author;

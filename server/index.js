@@ -111,6 +111,15 @@ app.patch('/api/users/:userId', (req, res, next) => {
   if (!req.body.bio) {
     throw (new ClientError('bio is needed', 400));
   }
+  const sql = `
+    update "users"
+    set "bio" = $2
+    where "userId" = $1
+  `;
+  const params = [id, req.body.bio];
+  db.query(sql, params)
+    .then(result => res.sendStatus(200))
+    .catch(err => next(err));
 });
 
 // POST request for user can write review
@@ -306,63 +315,105 @@ app.delete('/api/listItems/:listId/:movieId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-// ROUGH CODE OUTLINE FOR LOGGING IN AND SIGNING UP
 // User can Login
-// app.post('/api/login/', (req, res, next) => {
-//   const userName  = req.body.userName;
-//   const value = [userName];
-//   const sql = `
-//   select *
-//   from "user"
-//   where "userName" = $1;`;
-//   db.query(sql, value)
-//     .then(result => {
-//       const userObject = result && result.rows && result.rows[0];
-//       if (!userObject) {
-//         const sql2 = `
-//         insert into "user" ("userName")
-//                     values ($1)
-//                     returning *`;
-//         const value2 = [`${userName}`];
-//         db.query(sql2, value2).then(data => {
-//           req.session.userInfo = data.rows[0];
-//           return res.json(req.session);
-//         });
-//       } else {
-//         req.session.userInfo = userObject;
-//         return res.json(req.session);
-//       }
-//     })
-//     .catch(err => {
-//       return res.send({ message: err });
-//     });
-// });
+app.post('/api/login/', (req, res, next) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  const value = [email, password];
+  const sql = `
+  select *
+  from "users"
+  where "email" = $1 and "password" = $2
+  `;
+
+  db.query(sql, value)
+    .then(result => {
+      const userInfo = result.rows[0];
+      if (!userInfo) {
+        res.json({ message: 'wrong email or password' });
+      } else {
+        req.session.userInfo = userInfo;
+        return res.json(req.session);
+      }
+    })
+    .catch(err => {
+      return res.send({ message: err });
+    });
+});
 
 // User can sign up
-// app.post('/api/signup/', (req, res, next) => {
-//   const { userName, email, password } = req.body;
-//   const params = [userName, email, password];
-//   const sql = `
-//     INSERT INTO "user" ("userName", "email", "password")
-//          VALUES ($1, $2, $3)
-//          RETURNING *;
-//   `;
-//   db.query(sql, params)
-//     .then(result => {
-//       const newUser = result.rows[0];
-//       if (!newUser) {
-//         return res.status(400).json({
-//           error: `Failed to create user ${userName}`
-//         });
-//       } else {
-//         req.session.userId = newUser.userId;
-//         return res.json(newUser);
-//       }
-//     })
-//     .catch(err => {
-//       return res.send({ message: err.message });
-//     });
-// });
+app.post('/api/signup/', (req, res, next) => {
+  const name = req.body.name;
+  const email = req.body.email;
+  const password = req.body.password;
+  const params = [email];
+  const sql = `
+    select *
+    from "users"
+    where "email" = $1
+  `;
+  const sql2 = `
+    insert into "users" ("name", "email", "password")
+         values ($1, $2, $3)
+         returning *;
+  `;
+
+  const sql3 = `
+  insert into "lists" ("userId", "type","name")
+    values ($1, 'favorites', 'My Favorites List')`;
+  const sql4 = `;
+    insert into "lists" ("userId", "type","name")
+    values ($1, 'watch', 'My Watch List')`;
+  db.query(sql, params)
+    .then(result => {
+      const newUser = result.rows[0];
+      if (newUser) {
+        return res.status(400).json({
+          error: 'email already taken'
+        });
+      } else {
+        db.query(sql2, [name, email, password])
+          .then(result => {
+            const userInfo = result.rows[0];
+            req.session.userInfo = userInfo;
+            db.query(sql3, [userInfo.userId]).then(data => {
+              db.query(sql4, [userInfo.userId]).then(data => {
+                return res.json(req.session);
+              });
+            });
+          });
+
+      }
+    })
+    .catch(err => {
+      return res.send({ message: err.message });
+    });
+});
+
+// User can Log Out
+app.post('/api/logOut/', (req, res, next) => {
+  req.session.userInfo = null;
+});
+
+// get all other users besides userId (yourself)
+app.post('/api/search/users/:userId', (req, res, next) => {
+  const userId = req.params.userId;
+  const sql = `
+    select "name", "bio", "email", "imageURL"
+    from "users"
+    where "userId" != $1
+  `;
+  const params = [userId];
+  db.query(sql, params)
+    .then(result => {
+      if (result.rows.length < 1) {
+        next(new ClientError('no items in list', 404));
+      } else {
+        res.json(result.rows);
+      }
+    })
+    .catch(err => next(err));
+});
 
 app.use((err, req, res, next) => {
   if (err instanceof ClientError) {
