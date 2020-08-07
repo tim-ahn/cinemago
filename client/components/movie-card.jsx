@@ -1,9 +1,13 @@
 import React from 'react';
 
 class MovieCard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+  }
 
   handleClick(event) {
-    // this.props.
+    this.props.getMovieDetails(this.props.movieCardId);
   }
 
   render() {
@@ -14,7 +18,7 @@ class MovieCard extends React.Component {
       posterURL = '../images/image_placeholder.png';
     }
     return (<>
-      <div className="col-3 m-2">
+      <div className="col-3 m-2" onClick={() => this.handleClick(event)}>
         <img src={posterURL} className="card-img"></img>
       </div>
 

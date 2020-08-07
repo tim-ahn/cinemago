@@ -85,12 +85,16 @@ app.post('/api/search/genre', (req, res, next) => {
 notes: need to include name to reviews too. grab it from users table using userId?
 */
 app.get('/api/details/:movieId', (req, res, next) => {
-  const movieId = 496243; // need to figure out how to grab dynamically
+  const movieId = req.params.movieId;
 
   promise.all([
     fetch(`https://api.themoviedb.org/3/movie/${movieId}/reviews?api_key=${apiKey}&language=en-US&page=1`)
       .then(res => res.json()),
     fetch(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${apiKey}&language=en-US`)
+      .then(res => res.json()),
+    fetch(`https://api.themoviedb.org/3/movie/${movieId}/recommendations?api_key=${apiKey}&language=en-US&page=1`)
+      .then(res => res.json()),
+    fetch(`https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${apiKey}&language=en-US`)
       .then(res => res.json())
   ])
     .then(data => {
@@ -118,7 +122,7 @@ app.get('/api/details/:movieId', (req, res, next) => {
 });
 // end feature: user-can-view-details
 
-// GET request for home page to get trending or top rated movies
+// POST request for home page to get trending or top rated movies
 app.post('/api/home', (req, res, next) => {
   if (req.body.category === 'trending') {
     fetch(`https://api.themoviedb.org/3/trending/movie/day?api_key=${apiKey}`)
@@ -175,9 +179,93 @@ app.patch('/api/users/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+// POST request for user can write review
 app.post('/api/reviews', (req, res, next) => {
-  res.json({ text: 'something' });
+  const movieId = req.body.movieId;
+  const userId = req.body.userId;
+  const rating = req.body.rating;
+  const reviewContent = req.body.content;
+
+  if (movieId < 1 || isNaN(movieId)) {
+    res.status(400).json({ error: 'invalid id' });
+    return;
+  }
+
+  if (!userId || !rating || !reviewContent) {
+    res.status(400).json({ error: 'missing content' });
+    return;
+  }
+
+  const sql = `
+    insert into "reviews" ("userId", "rating", "content", "movieId" )
+    values ($1, $2, $3, $4)
+    returning *;
+  `;
+
+  const params = [userId, rating, reviewContent, movieId];
+
+  db.query(sql, params)
+    .then(response => {
+      if (!response.rows[0]) {
+        res.status(404).json({ error: 'cannot review movie' });
+      } else {
+        res.status(201).json(response.rows[0]);
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ error: 'an unexpected error occurred' });
+    });
 });
+
+// PATCH request for User Can Edit Own Review
+app.patch('/api/reviews/:reviewId', (req, res, next) => {
+  const reviewId = req.params.reviewId;
+  const rating = req.body.rating;
+  const reviewContent = req.body.content;
+
+  if (reviewId < 1 || isNaN(reviewId)) {
+    res.status(400).json({ error: 'invalid review id' });
+    return;
+  }
+  if (!rating || !reviewContent) {
+    res.status(400).json({ error: 'missing required information' });
+    return;
+  }
+
+  const sql = `
+  update "reviews"
+    set "rating" = $1, "content" = $2
+    where "reviewId" = $3
+    returning *
+  `;
+
+  const params = [rating, reviewContent, reviewId];
+
+  db.query(sql, params)
+    .then(result => res.sendStatus(200))
+    .catch(err => next(err));
+}); // end of PATCH request for User Can Edit Own Review
+
+// GET request for User Can View Self/Other User Reviews
+app.get('/api/reviews/:userId', (req, res, next) => {
+  const userId = req.params.userId;
+  const sql = `
+  select *
+    from "reviews"
+    where "reviewId" = $1
+  `;
+  const params = [userId];
+  db.query(sql, params)
+    .then(result => {
+      if (result.rows.length < 1) {
+        next(new ClientError(`cannot ${req.method} ${req.originalUrl}`, 404));
+      } else {
+        res.status(200).json(result.rows);
+      }
+    })
+    .catch(err => next(err));
+}); // end of GET request for User Can View Self/Other User Reviews
 
 app.get('/api/lists/:userId', (req, res, next) => {
   const id = req.params.userId;
@@ -332,63 +420,105 @@ app.delete('/api/listItems/:listId/:movieId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-// ROUGH CODE OUTLINE FOR LOGGING IN AND SIGNING UP
 // User can Login
-// app.post('/api/login/', (req, res, next) => {
-//   const userName  = req.body.userName;
-//   const value = [userName];
-//   const sql = `
-//   select *
-//   from "user"
-//   where "userName" = $1;`;
-//   db.query(sql, value)
-//     .then(result => {
-//       const userObject = result && result.rows && result.rows[0];
-//       if (!userObject) {
-//         const sql2 = `
-//         insert into "user" ("userName")
-//                     values ($1)
-//                     returning *`;
-//         const value2 = [`${userName}`];
-//         db.query(sql2, value2).then(data => {
-//           req.session.userInfo = data.rows[0];
-//           return res.json(req.session);
-//         });
-//       } else {
-//         req.session.userInfo = userObject;
-//         return res.json(req.session);
-//       }
-//     })
-//     .catch(err => {
-//       return res.send({ message: err });
-//     });
-// });
+app.post('/api/login/', (req, res, next) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  const value = [email, password];
+  const sql = `
+  select *
+  from "users"
+  where "email" = $1 and "password" = $2
+  `;
+
+  db.query(sql, value)
+    .then(result => {
+      const userInfo = result.rows[0];
+      if (!userInfo) {
+        res.json({ message: 'wrong email or password' });
+      } else {
+        req.session.userInfo = userInfo;
+        return res.json(req.session);
+      }
+    })
+    .catch(err => {
+      return res.send({ message: err });
+    });
+});
 
 // User can sign up
-// app.post('/api/signup/', (req, res, next) => {
-//   const { userName, email, password } = req.body;
-//   const params = [userName, email, password];
-//   const sql = `
-//     INSERT INTO "user" ("userName", "email", "password")
-//          VALUES ($1, $2, $3)
-//          RETURNING *;
-//   `;
-//   db.query(sql, params)
-//     .then(result => {
-//       const newUser = result.rows[0];
-//       if (!newUser) {
-//         return res.status(400).json({
-//           error: `Failed to create user ${userName}`
-//         });
-//       } else {
-//         req.session.userId = newUser.userId;
-//         return res.json(newUser);
-//       }
-//     })
-//     .catch(err => {
-//       return res.send({ message: err.message });
-//     });
-// });
+app.post('/api/signup/', (req, res, next) => {
+  const name = req.body.name;
+  const email = req.body.email;
+  const password = req.body.password;
+  const params = [email];
+  const sql = `
+    select *
+    from "users"
+    where "email" = $1
+  `;
+  const sql2 = `
+    insert into "users" ("name", "email", "password")
+         values ($1, $2, $3)
+         returning *;
+  `;
+
+  const sql3 = `
+  insert into "lists" ("userId", "type","name")
+    values ($1, 'favorites', 'My Favorites List')`;
+  const sql4 = `;
+    insert into "lists" ("userId", "type","name")
+    values ($1, 'watch', 'My Watch List')`;
+  db.query(sql, params)
+    .then(result => {
+      const newUser = result.rows[0];
+      if (newUser) {
+        return res.status(400).json({
+          error: 'email already taken'
+        });
+      } else {
+        db.query(sql2, [name, email, password])
+          .then(result => {
+            const userInfo = result.rows[0];
+            req.session.userInfo = userInfo;
+            db.query(sql3, [userInfo.userId]).then(data => {
+              db.query(sql4, [userInfo.userId]).then(data => {
+                return res.json(req.session);
+              });
+            });
+          });
+
+      }
+    })
+    .catch(err => {
+      return res.send({ message: err.message });
+    });
+});
+
+// User can Log Out
+app.post('/api/logOut/', (req, res, next) => {
+  req.session.userInfo = null;
+});
+
+// get all other users besides userId (yourself)
+app.get('/api/search/users/:userId', (req, res, next) => {
+  const userId = req.params.userId;
+  const sql = `
+    select "name", "bio", "email", "imageURL"
+    from "users"
+    where "userId" != $1
+  `;
+  const params = [userId];
+  db.query(sql, params)
+    .then(result => {
+      if (result.rows.length < 1) {
+        next(new ClientError('no items in list', 404));
+      } else {
+        res.json(result.rows);
+      }
+    })
+    .catch(err => next(err));
+});
 
 app.use((err, req, res, next) => {
   if (err instanceof ClientError) {

@@ -25,7 +25,7 @@ export default class ListCard extends React.Component {
   render() {
     if (this.props.item.type === 'custom') {
       return (<>
-        <div className="col-11 m-2 border">
+        <div className="col-11 m-2 border white">
           <h3>{this.props.item.name}</h3>
           <div>
             <Button color="secondary" onClick={() => this.searchModal()} className="m-2">Add To list</Button>
@@ -41,7 +41,7 @@ export default class ListCard extends React.Component {
           </div>
           <button className="btn btn-secondary m-2" onClick={() => { this.props.getItemsInList(this.props.item.listId); }}>View List Content</button>
           <div>
-            <Button color="danger" onClick={() => this.deleteModal()}>Delete Modal</Button>
+            <Button color="danger" onClick={() => this.deleteModal()}>Delete List</Button>
             <Modal isOpen={this.state.deleteModalShow} toggle={() => this.deleteModal()} >
               <ModalBody>
                 Are you sure you want to delete this list?
@@ -57,7 +57,7 @@ export default class ListCard extends React.Component {
     } else {
       return (<>
 
-        <div className="col-11 m-2 border">
+        <div className="col-11 m-2 border white">
           <h3>{this.props.item.name}</h3>
           <div>
             <Button color="secondary" onClick={() => this.searchModal()} className="m-2">Add To list</Button>
