@@ -41,7 +41,7 @@ class HomePage extends React.Component {
         </ul>
         <div className="row justify-content-center">
           {this.props.results.map(item => (
-            <MovieCard key={item.id} poster_path={item.poster_path} />
+            <MovieCard key={item.id} movieCardId={item.id} poster_path={item.poster_path} getMovieDetails={this.props.getMovieDetails} />
           ))}
         </div>
       </div>

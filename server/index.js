@@ -109,6 +109,7 @@ app.patch('/api/users/:userId', (req, res, next) => {
   if (!req.body.bio) {
     throw (new ClientError('bio is needed', 400));
   }
+});
 
 // POST request for user can write review
 app.post('/api/reviews/:movieId', (req, res, next) => {

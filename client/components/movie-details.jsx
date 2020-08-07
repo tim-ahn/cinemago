@@ -8,18 +8,16 @@ export default class MovieDetails extends React.Component {
 
   // need to do image-contain for backdrop
   render() {
-    const backDropPath = '/hkBaDkMWbLaf8B1lsWsKX7Ew3Xq.jpg';
-    const posterPath = '/qJ2tW6WMUDux911r6m7haRef0WH.jpg';
-    const recommendedMovie1 = '/8RW2runSEc34IwKN2D1aPcJd2UL.jpg';
-    const recommendedMovie2 = '/85cWkCVftiVs0BVey6pxX8uNmLt.jpg';
-    const recommendedMovie3 = '/9DeGfFIqjph5CBFVQrD6wv9S7rR.jpg';
+    const backDropPath = this.props.details[1].backdrop_path;
+    const posterPath = this.props.details[1].poster_path;
+    const recommendedMovie1 = this.props.details[2].results[0].poster_path;
+    const recommendedMovie2 = this.props.details[2].results[1].poster_path;
+    const recommendedMovie3 = this.props.details[2].results[2].poster_path;
 
     return (
       <>
-        <div>{this.props.details[1].original_title}</div>
-
-        {/* <div onClick={() => this.handleClick()}>
-          <p>BACK BUTTON</p>
+        <div onClick={() => this.handleClick()}>
+          <img src="../images/less-than-icon.png"></img>
         </div>
         <img src={`https://image.tmdb.org/t/p/w500${backDropPath}`}></img>
         <div>
@@ -51,7 +49,7 @@ export default class MovieDetails extends React.Component {
           <img src={`https://image.tmdb.org/t/p/w500${recommendedMovie1}`}></img>
           <img src={`https://image.tmdb.org/t/p/w500${recommendedMovie2}`}></img>
           <img src={`https://image.tmdb.org/t/p/w500${recommendedMovie3}`}></img>
-        </div> */}
+        </div>
       </>
     );
   }
