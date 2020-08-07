@@ -326,15 +326,6 @@ app.post('/api/login/', (req, res, next) => {
     .then(result => {
       const userInfo = result.rows[0];
       if (!userInfo) {
-        // const sql2 = `
-        // insert into "users" ("email", "password")
-        //             values ($1, $2)
-        //             returning *`;
-        // const value2 = [email, password];
-        // db.query(sql2, value2).then(result2 => {
-        //   req.session.userInfo = result2.rows[0];
-        //   return res.json(req.session);
-        // });
         res.json({ message: 'wrong email or password' });
       } else {
         req.session.userInfo = userInfo;
@@ -393,6 +384,11 @@ app.post('/api/signup/', (req, res, next) => {
     .catch(err => {
       return res.send({ message: err.message });
     });
+});
+
+// User can Log Out
+app.post('/api/logOut/', (req, res, next) => {
+  req.session.userInfo = null;
 });
 
 app.use((err, req, res, next) => {

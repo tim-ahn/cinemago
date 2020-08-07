@@ -10,6 +10,7 @@ class HomePage extends React.Component {
 
   componentDidMount() {
     this.props.getTrending('trending');
+    this.props.getUserLists();
   }
 
   switchTab(category) {
@@ -29,8 +30,8 @@ class HomePage extends React.Component {
     }
 
     return (<>
-      <h1>Home Page</h1>
       <div className="container">
+        <h1>Home Page</h1>
         <ul className="nav nav-tabs">
           <li className="nav-item">
             <button className={link1} onClick={() => this.switchTab('trending')} styles={{ outline: 'none' }}>Trending Today</button>
