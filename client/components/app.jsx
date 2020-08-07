@@ -1,12 +1,12 @@
 import React from 'react';
 import HomeSearch from './home-search';
 import HomePage from './home-page';
-import WriteReview from './write-review';
 import Navbar from './navbar';
 import UserLists from './user-lists';
 import MovieDetails from './movie-details';
 import UserProfile from './user-profile';
 import ListItems from './list-Items';
+import WriteReview from './write-review';
 import LoginPage from './login-page';
 import CreateAccount from './create-account';
 import Header from './header';
@@ -216,6 +216,8 @@ export default class App extends React.Component {
       pageView = <UserProfile userId={this.state.userId} changeView={this.changeView} />; // insert userId when relavent
     } else if (this.state.view === 'listContent') {
       pageView = <ListItems viewListItems={this.state.viewListItems} listName={this.state.currentListName} listId={this.state.currentListId} changeView={this.changeView} removeItemsInList={this.removeItemsInList} />;
+    } else if (this.state.view === 'review') {
+      pageView = <WriteReview />;
     }
     // else if (this.state.view === 'login') {
     //   pageView = <LoginPage logIn={this.logIn} />;

@@ -12,7 +12,7 @@ export default class ListItems extends React.Component {
             <h2>{this.props.listName}</h2>
             <button className="btn-secondary" onClick={() => { this.props.changeView('list'); }}>Go Back to Lists</button>
             {this.props.viewListItems.map(item => {
-              return <ListItemCard key={item.movieId} id={item.movieId} poster_path={item.posterURL} fullInfo={item} removeItemsInList={this.props.removeItemsInList} listId={this.props.listId} />;
+              return <ListItemCard key={item.movieId} id={item.movieId} poster_path={item.posterURL} fullInfo={item} removeItemsInList={this.props.removeItemsInList} listId={this.props.listId} changeView={this.props.changeView}/>;
             })}
           </div>
         </div>
