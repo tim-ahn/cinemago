@@ -162,7 +162,7 @@ class HomeSearch extends React.Component {
               </div>
               <div className="row">
                 {this.props.otherUsers.map((item, index) => (
-                  <UserCard item={item} key={index} />
+                  <UserCard item={item} key={index} sendMessage={this.props.sendMessage} />
                 ))}
               </div>
             </form>

@@ -17,7 +17,7 @@ export default class UserCard extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     this.toggleModal();
-    // this.props.sendMessage
+    this.props.sendMessage(this.props.item.userId, this.state.message);
     this.setState({ message: '' });
   }
 
@@ -26,7 +26,6 @@ export default class UserCard extends React.Component {
   }
 
   render() {
-
     return (<>
       <div className="row m-2 border container white">
         <div className="col m-2">
