@@ -1,40 +1,74 @@
 import React from 'react';
+import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
 
 export default class MovieDetails extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isToggleOn: false,
+      movieIsToggleOn: false,
+      modalToggleOn: false,
       heartIconColor: '',
       eyeIconColor: '',
       listIconColor: ''
     };
     this.handleClick = this.handleClick.bind(this);
-    this.addMovieToFavorites = this.addMovieToFavorites.bind(this);
+    this.addRemoveMovieToList = this.addRemoveMovieToList.bind(this);
+    // this.addMovieToCustomList = this.addMovieToCustomList.bind(this);
   }
 
   handleClick(event) {
     this.props.changeView('search');
   }
 
-  addMovieToFavorites() {
-    const toggleOn = this.state.isToggleOn;
-    if (toggleOn === false) {
-      this.props.addItemToList(1, this.props.details[1]);
-      this.setState({
-        isToggleOn: true,
-        heartIconColor: 'text-danger'
-      });
-    } else {
-      this.props.removeItemsInList(1, this.props.details[0].id);
-      this.setState({
-        isToggleOn: false,
-        heartIconColor: ''
-      });
-    }
+  setModalToggle() {
+    this.setState({ modalToggleOn: !this.state.modalToggleOn });
   }
 
+  addRemoveMovieToList(event) {
+    const button = event.target.getAttribute('value');
+    const movieIsToggleOn = this.state.movieIsToggleOn;
+
+    if (button === 'heart') {
+      if (movieIsToggleOn === false) {
+        this.props.addItemToList(this.props.lists[0].listId, this.props.details[1]);
+        this.setState({
+          movieIsToggleOn: true,
+          heartIconColor: 'text-danger'
+        });
+      } else {
+        this.props.removeItemsInListMovieDetails(this.props.lists[0].listId, this.props.details[0].id);
+        this.setState({
+          movieIsToggleOn: false,
+          heartIconColor: ''
+        });
+      }
+    } else {
+      if (movieIsToggleOn === false) {
+        this.props.addItemToList(this.props.lists[1].listId, this.props.details[1]);
+        this.setState({
+          movieIsToggleOn: true,
+          eyeIconColor: 'text-success'
+        });
+      } else {
+        this.props.removeItemsInListMovieDetails(this.props.lists[1].listId, this.props.details[0].id);
+        this.setState({
+          movieIsToggleOn: false,
+          eyeIconColor: ''
+        });
+      }
+    }
+  }
+  // first need to create a modal to add movies to existing lists
+  // then option to create your own list
+  // addMovieToCustomList() {
+  //   const modalToggleOn = this.state.modalToggleOn;
+
+  //   this.props.addItemToList(this.props.lists[])
+  // }
+
   render() {
+
+    let modal = null;
     const backDropPath = this.props.details[1].backdrop_path;
     const posterPath = this.props.details[1].poster_path;
     const youtubeURL = this.props.details[3].results[0].key;
@@ -46,6 +80,29 @@ export default class MovieDetails extends React.Component {
 
     const newMoviesArray = recommendedMoviesArray.filter(movies => this.props.details[2].results);
     const newReviewsArray = reviewsArray.filter(reviews => this.props.details[0].results);
+
+    if (this.state.modalToggleOn) {
+      modal = <>
+        <Modal isOpen={this.state.addModalShow} toggle={() => this.addModal()} >
+          <ModalBody>
+
+            <label htmlFor="lists">Which list would you like to add to?</label>
+
+            <select name="lists" id="userLists" onChange={() => this.setState({ listId: parseInt(event.target.value) })}>
+              {this.props.lists.map(item => {
+                return <option key={item.listId} value={item.listId}> {item.name}</option>;
+              })}
+            </select>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onClick={() => { this.add(); }}>Add to List</Button>{' '}
+            <Button color="secondary" onClick={() => this.addModal()}>Cancel</Button>
+          </ModalFooter>
+        </Modal>
+      </>;
+    } else {
+      modal = null;
+    }
 
     if (newMoviesArray < 1) {
       usersAlsoLiked = null;
@@ -72,32 +129,32 @@ export default class MovieDetails extends React.Component {
 
     if (newReviewsArray < 1) {
       reviews =
-      <div className="row">
-        <p>No Reviews</p>
-      </div>;
+        <div className="row">
+          <p>No Reviews</p>
+        </div>;
     } else {
       const author1 = this.props.details[0].results[0].author;
       const author2 = this.props.details[0].results[1].author;
       const review1 = this.props.details[0].results[0].content;
       const review2 = this.props.details[0].results[1].content;
       reviews =
-      <>
-        <div className="row reviews">
-          <h2>Reviews <img src="../images/plus-sign-icon.png"></img> </h2>
-        </div>
-        <div className="row">
-
-          <div className="col-6 border">
-            <p>{author1}</p>
-            <p>{review1}</p>
+        <>
+          <div className="row reviews">
+            <h2>Reviews <img src="../images/plus-sign-icon.png"></img> </h2>
           </div>
+          <div className="row">
 
-          <div className="col-6 border">
-            <p>{author2}</p>
-            <p>{review2}</p>
+            <div className="col-6 border">
+              <p>{author1}</p>
+              <p>{review1}</p>
+            </div>
+
+            <div className="col-6 border">
+              <p>{author2}</p>
+              <p>{review2}</p>
+            </div>
           </div>
-        </div>
-      </>;
+        </>;
     }
 
     return (
@@ -125,9 +182,9 @@ export default class MovieDetails extends React.Component {
               </div>
 
               <div>
-                <i className={`far fa-heart ${this.state.heartIconColor}`} onClick={() => this.addMovieToFavorites()}></i>
-                <i className="far fa-eye" onClick={() => this.props.addItemToList(2, this.props.details[1])}></i>
-                <i className="far fa-list-alt" ></i>
+                <i className={`far fa-heart fa-3x ${this.state.heartIconColor}`} onClick={() => this.addRemoveMovieToList(event)} value="heart"></i>
+                <i className={`far fa-eye fa-3x ${this.state.eyeIconColor}`} onClick={() => this.addRemoveMovieToList(event)} value="eye"></i>
+                <i className="far fa-list-alt fa-3x" value="list" ></i>
               </div>
             </div>
 

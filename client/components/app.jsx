@@ -39,6 +39,7 @@ export default class App extends React.Component {
     this.addItemToList = this.addItemToList.bind(this);
     this.getItemsInList = this.getItemsInList.bind(this);
     this.removeItemsInList = this.removeItemsInList.bind(this);
+    this.removeItemsInListMovieDetails = this.removeItemsInListMovieDetails.bind(this);
     this.logIn = this.logIn.bind(this);
     this.signUp = this.signUp.bind(this);
     this.logOut = this.logOut.bind(this);
@@ -256,6 +257,13 @@ export default class App extends React.Component {
       .then(data => this.getItemsInList(listId, this.state.currentListName));
   }
 
+  // same as removeItemsInList without calling this.getItemsInList
+  removeItemsInListMovieDetails(listId, movieId) {
+    fetch(`/api/listItems/${listId}/${movieId}`, {
+      method: 'DELETE'
+    }).then(res => res.json());
+  }
+
   searchUsers(query) {
     fetch(`/api/search/users/${this.state.userId}`)
       .then(res => res.json())
@@ -304,7 +312,7 @@ export default class App extends React.Component {
     } else if (this.state.view === 'list') {
       pageView = <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} deleteList={this.deleteList} changeView={this.changeView} getItemsInList={this.getItemsInList} />;
     } else if (this.state.view === 'details') {
-      pageView = <MovieDetails changeView={this.changeView} details={this.state.details} addItemToList={this.addItemToList} removeItemsInList={this.removeItemsInList} listId={this.state.currentListId}/>;
+      pageView = <MovieDetails changeView={this.changeView} details={this.state.details} addItemToList={this.addItemToList} removeItemsInListMovieDetails={this.removeItemsInListMovieDetails} lists={this.state.lists}/>;
     } else if (this.state.view === 'user') {
       pageView = <UserProfile userId={this.state.userId} changeView={this.changeView} />;
     } else if (this.state.view === 'listContent') {
