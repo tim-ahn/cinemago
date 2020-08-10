@@ -44,8 +44,8 @@ export default class UserCard extends React.Component {
             </form>
           </ModalBody>
           <ModalFooter>
-            <Button color="btn btn-outline-danger" onClick={() => this.handleSubmit(event)}>Send Message</Button>{' '}
             <Button color="secondary" onClick={() => this.toggleModal()}>Cancel</Button>
+            <Button color="btn btn-outline-danger" onClick={() => this.handleSubmit(event)}>Send Message</Button>{' '}
           </ModalFooter>
         </Modal>
       </div>

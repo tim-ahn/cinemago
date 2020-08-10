@@ -67,8 +67,8 @@ class MovieLongCard extends React.Component {
                   </select>
                 </ModalBody>
                 <ModalFooter>
-                  <Button color="primary" onClick={() => { this.add(); }}>Add to List</Button>{' '}
                   <Button color="secondary" onClick={() => this.addModal()}>Cancel</Button>
+                  <Button color="primary" onClick={() => { this.add(); }}>Add to List</Button>{' '}
                 </ModalFooter>
               </Modal>
 
