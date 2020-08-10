@@ -41,7 +41,7 @@ export default class ListCard extends React.Component {
           </div>
           <button className="btn btn-secondary m-2" onClick={() => { this.props.getItemsInList(this.props.item.listId); }}>View List Content</button>
           <div>
-            <Button color="danger" onClick={() => this.deleteModal()}>Delete List</Button>
+            <Button color="danger" className="m-2" onClick={() => this.deleteModal()}>Delete List</Button>
             <Modal isOpen={this.state.deleteModalShow} toggle={() => this.deleteModal()} >
               <ModalBody>
                 Are you sure you want to delete this list?

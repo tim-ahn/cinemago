@@ -113,7 +113,7 @@ class UserProfile extends React.Component {
       return <h2>Loading...</h2>;
     } else {
       return <>
-        <div className="container">
+        <div className="container mb-5">
           <div className="d-flex flex-column justify-content-center">
             <h3 className='text-center'>{this.state.profile.name}</h3>
             <img className='rounded mx-auto d-block' src={(this.state.profile.imageURL === null) ? '../images/image_placeholder.png' : this.state.profile.imageURL}></img>
