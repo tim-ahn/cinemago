@@ -146,11 +146,12 @@ export default class MovieDetails extends React.Component {
           <h2>Users also liked:</h2>
           <div className="row justify-content-center px-2">
             {newMoviesArray.map((item, index) => {
-              return <div key={index} className="col-4 border" onClick={() => { this.props.getMovieDetails(item.id); }}>
+              return <div key={index} className="col-4 border" onClick={() => {
+                this.props.getMovieDetails(item.id); window.scrollTo(0, 0);
                 <img src={`https://image.tmdb.org/t/p/w500${this.props.details[2].results[index].poster_path}`} style={{ width: '100%' }}></img>
               </div>;
             })}
-          </div>
+        </div>
         </>;
     }
 

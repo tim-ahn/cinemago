@@ -15,6 +15,7 @@ class MovieLongCard extends React.Component {
 
   handleClick(event) {
     this.props.getMovieDetails(this.props.id);
+    window.scrollTo(0, 0);
   }
 
   addModal() {
