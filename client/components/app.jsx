@@ -323,7 +323,7 @@ export default class App extends React.Component {
     } else if (this.state.view === 'list') {
       pageView = <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} deleteList={this.deleteList} changeView={this.changeView} getItemsInList={this.getItemsInList} />;
     } else if (this.state.view === 'details') {
-      pageView = <MovieDetails changeView={this.changeView} details={this.state.details} addItemToList={this.addItemToList} removeItemsInListMovieDetails={this.removeItemsInListMovieDetails} lists={this.state.lists} listId={this.state.currentListId}/>;
+      pageView = <MovieDetails changeView={this.changeView} details={this.state.details} addItemToList={this.addItemToList} removeItemsInListMovieDetails={this.removeItemsInListMovieDetails} lists={this.state.lists} listId={this.state.currentListId} getMovieDetails={this.getMovieDetails} />;
     } else if (this.state.view === 'user') {
       pageView = <UserProfile userId={this.state.userId} changeView={this.changeView} />;
     } else if (this.state.view === 'listContent') {
