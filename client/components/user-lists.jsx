@@ -33,7 +33,7 @@ export default class UserLists extends React.Component {
   render() {
 
     return (<>
-      <div className="container mt-2 justify-content-center">
+      <div className="container mt-2 justify-content-center mb-5">
         <h1>My Lists</h1>
         <div>
           <Button color="primary" onClick={() => this.toggleModal()}>Create a Custom List  +</Button>

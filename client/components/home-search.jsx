@@ -88,7 +88,7 @@ class HomeSearch extends React.Component {
     const genreList = require('./genres.json').genres; // from imported genres.json; list of objects {id: x, name, y}
 
     return (<>
-      <div className="container">
+      <div className="container mb-5">
         <Nav tabs>
           <NavItem>
             <NavLink
