@@ -1,4 +1,5 @@
 import React from 'react';
+import { Collapse, CardBody, Card } from 'reactstrap';
 
 class UserProfile extends React.Component {
   constructor(props) {
@@ -8,13 +9,15 @@ class UserProfile extends React.Component {
       profile: {},
       editBio: false,
       selectedImage: null,
-      fileError: null
+      fileError: null,
+      fileOptionOpen: false
     };
     this.openBioEdit = this.openBioEdit.bind(this);
     this.saveBioEdit = this.saveBioEdit.bind(this);
     this.onBioChange = this.onBioChange.bind(this);
     this.uploadImage = this.uploadImage.bind(this);
     this.onImageSelect = this.onImageSelect.bind(this);
+    this.toggleUploadOption = this.toggleUploadOption.bind(this);
   }
 
   componentDidMount() {
@@ -56,8 +59,15 @@ class UserProfile extends React.Component {
     this.setState({ profile: newProfile });
   }
 
+  toggleUploadOption() {
+    this.setState((prevState, props) => { return { fileOptionOpen: !prevState.fileOptionOpen }; });
+  }
+
   uploadImage(event) {
     event.preventDefault();
+    if (this.selectedImage === null) {
+      return;
+    }
     const fetchURL = '/api/users/image/' + this.props.userId;
     const formData = new FormData();
     formData.append('image',
@@ -67,15 +77,20 @@ class UserProfile extends React.Component {
       method: 'POST',
       body: formData
     };
-
     fetch(fetchURL, options)
       // .then(this.setState({ selectedImage: null }))
       .catch(err => console.error(err));
-
   }
 
   onImageSelect(event) {
-    this.setState({ selectedImage: event.target.files[0] });
+    const image = event.target.files[0];
+    const maxImageSize = 2 * 1000 * 1000;// 2mb
+    if (image.size > maxImageSize || !['image/jpeg', 'image/png'].includes(image.type)) {
+      this.setState({ fileError: 'Image size must be less than 2MB and must be a .jpg or .png file', selectedImage: null });
+    } else {
+      this.setState({ fileError: null, selectedImage: image });
+    }
+
   }
 
   render() {
@@ -110,14 +125,23 @@ class UserProfile extends React.Component {
               {bio}
             </div>
             <div className="border border-secondary p-2 w-50 mx-auto mt-3 white">
-              <p className="font-weight-bold">Reviews</p>
-              <p className="font-weight-bold">Lists</p>
-              <p className="font-weight-bold">Settings</p>
-              <form onSubmit={this.uploadImage}>
-                <input type="file" name="image" onChange={this.onImageSelect}></input>
-                <button className="btn btn-secondary">Upload</button>
-                <p className="mini-text text-muted m-0">File Limit of 2MB. Use only .jpg or .png files </p>
-              </form>
+              <p className="font-weight-bold">My reviews</p>
+              <button onClick={this.toggleUploadOption} className="btn btn-outline-dark">Update Profile Image</button>
+              <Collapse isOpen={this.state.fileOptionOpen}>
+                <Card>
+                  <CardBody>
+                    {this.state.fileError && <p className="text-danger">{this.state.fileError}</p>}
+                    <form onSubmit={this.uploadImage}>
+                      <div className="row flex-nowrap mt-2">
+                        <input type="file" name="image" onChange={this.onImageSelect}></input>
+                        <button className="btn btn-success">Upload</button>
+                      </div>
+                      <p className="mini-text text-muted m-0">File Limit of 2MB. Use only .jpg or .png files </p>
+                    </form>
+                  </CardBody>
+                </Card>
+              </Collapse>
+
             </div>
           </div>
 
