@@ -15,6 +15,7 @@ class MovieLongCard extends React.Component {
 
   handleClick(event) {
     this.props.getMovieDetails(this.props.id);
+    window.scrollTo(0, 0);
   }
 
   addModal() {
@@ -67,8 +68,8 @@ class MovieLongCard extends React.Component {
                   </select>
                 </ModalBody>
                 <ModalFooter>
-                  <Button color="primary" onClick={() => { this.add(); }}>Add to List</Button>{' '}
                   <Button color="secondary" onClick={() => this.addModal()}>Cancel</Button>
+                  <Button color="primary" onClick={() => { this.add(); }}>Add to List</Button>{' '}
                 </ModalFooter>
               </Modal>
 

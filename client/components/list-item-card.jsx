@@ -48,8 +48,8 @@ export default class ListItemCard extends React.Component {
                 Are you sure you want to remove this movie?
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" onClick={() => { this.remove(); }}>Remove From List</Button>{' '}
                 <Button color="secondary" onClick={() => this.removeModal()}>Cancel</Button>
+                <Button color="danger" onClick={() => { this.remove(); }}>Remove From List</Button>{' '}
               </ModalFooter>
             </Modal>
           </div>

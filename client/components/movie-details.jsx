@@ -6,25 +6,51 @@ export default class MovieDetails extends React.Component {
     super(props);
     this.state = {
       movieIsToggleOn: false,
-      modalToggleOn: false,
       addModalShow: false,
       dropdownOpen: false,
       heartIconColor: '',
       eyeIconColor: '',
-      listIconColor: ''
+      listIconColor: '',
+      listId: null
     };
     this.handleClick = this.handleClick.bind(this);
     this.addRemoveMovieToList = this.addRemoveMovieToList.bind(this);
-    this.setModalToggle = this.setModalToggle.bind(this);
+    this.addModal = this.addModal.bind(this);
     this.addMovieToCustomList = this.addMovieToCustomList.bind(this);
+  }
+
+  componentDidMount() {
+    fetch(`/api/listItems/${this.props.lists[0].listId}`)
+      .then(res => res.json())
+      .then(data => {
+        const include = data.filter(item => item.movieId === this.props.details[1].id);
+        if (include.length >= 1) {
+          this.setState({
+            movieIsToggleOn: true,
+            heartIconColor: 'text-danger'
+          });
+        }
+      });
+    fetch(`/api/listItems/${this.props.lists[1].listId}`)
+      .then(res => res.json())
+      .then(data => {
+        const include = data.filter(item => item.movieId === this.props.details[1].id);
+        if (include.length >= 1) {
+          this.setState({
+            movieIsToggleOn: true,
+            eyeIconColor: 'text-success'
+          });
+        }
+      });
+    this.setState({ listId: this.props.lists[0].listId });
   }
 
   handleClick(event) {
     this.props.changeView('search');
   }
 
-  setModalToggle() {
-    this.setState({ isOpen: !this.state.isOpen });
+  addModal() {
+    this.setState((prevState, props) => { return { addModalShow: !prevState.addModalShow }; });
   }
 
   addRemoveMovieToList(event) {
@@ -63,7 +89,8 @@ export default class MovieDetails extends React.Component {
   }
 
   addMovieToCustomList() {
-    this.setModalToggle();
+    this.props.addItemToList(this.state.listId, this.props.details[1]);
+    this.addModal();
   }
 
   // first need to create a modal to add movies to existing lists
@@ -75,23 +102,24 @@ export default class MovieDetails extends React.Component {
   // }
 
   render() {
-
     let modal = null;
     const backDropPath = this.props.details[1].backdrop_path;
     const posterPath = this.props.details[1].poster_path;
-    const youtubeURL = this.props.details[3].results[0].key;
+    let youtubeURL = null;
+    if (this.props.details[3].results[0] !== undefined) {
+      youtubeURL = this.props.details[3].results[0].key;
+    }
 
     let usersAlsoLiked = null;
     let reviews = null;
     const recommendedMoviesArray = this.props.details[2].results;
     const reviewsArray = this.props.details[0].results;
 
-    const newMoviesArray = recommendedMoviesArray.filter(movies => this.props.details[2].results);
-    const newReviewsArray = reviewsArray.filter(reviews => this.props.details[0].results);
-
+    const newMoviesArray = recommendedMoviesArray.filter((movies, index) => index < 3);
+    const newReviewsArray = reviewsArray.filter((reviews, index) => index < 2);
     if (this.state.modalToggleOn === true) {
       modal = <>
-        <Modal isOpen={this.state.addModalShow}>
+        <Modal isOpen={this.state.addModalShow} toggle={() => this.addModal()}>
           <ModalBody>
 
             <label htmlFor="lists">Which list would you like to add to?</label>
@@ -103,8 +131,8 @@ export default class MovieDetails extends React.Component {
             </select>
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={() => { this.add(); }}>Add to List</Button>{' '}
             <Button color="secondary" onClick={() => this.addModal()}>Cancel</Button>
+            <Button color="primary" onClick={() => { this.add(); }}>Add to List</Button>{' '}
           </ModalFooter>
         </Modal>
       </>;
@@ -113,22 +141,15 @@ export default class MovieDetails extends React.Component {
     if (newMoviesArray < 1) {
       usersAlsoLiked = null;
     } else {
-      const recommendedMovie1 = this.props.details[2].results[0].poster_path;
-      const recommendedMovie2 = this.props.details[2].results[1].poster_path;
-      const recommendedMovie3 = this.props.details[2].results[2].poster_path;
       usersAlsoLiked =
         <>
           <h2>Users also liked:</h2>
           <div className="row justify-content-center px-2">
-            <div className="col-4 border">
-              <img src={`https://image.tmdb.org/t/p/w500${recommendedMovie1}`} style={{ width: '100%' }}></img>
-            </div>
-            <div className="col-4 border">
-              <img src={`https://image.tmdb.org/t/p/w500${recommendedMovie2}`} style={{ width: '100%' }}></img>
-            </div>
-            <div className="col-4 border">
-              <img src={`https://image.tmdb.org/t/p/w500${recommendedMovie3}`} style={{ width: '100%' }}></img>
-            </div>
+            {newMoviesArray.map((item, index) => {
+              return <div key={index} className="col-4 border" onClick={() => { this.props.getMovieDetails(item.id); window.scrollTo(0, 0); }}>
+                <img src={`https://image.tmdb.org/t/p/w500${this.props.details[2].results[index].poster_path}`} style={{ width: '100%' }}></img>
+              </div>;
+            })}
           </div>
         </>;
     }
@@ -139,26 +160,18 @@ export default class MovieDetails extends React.Component {
           <p>No Reviews</p>
         </div>;
     } else {
-      const author1 = this.props.details[0].results[0].author;
-      const author2 = this.props.details[0].results[1].author;
-      const review1 = this.props.details[0].results[0].content;
-      const review2 = this.props.details[0].results[1].content;
       reviews =
         <>
           <div className="row reviews">
             <h2>Reviews <img src="../images/plus-sign-icon.png"></img> </h2>
           </div>
           <div className="row">
-
-            <div className="col-6 border">
-              <p>{author1}</p>
-              <p>{review1}</p>
-            </div>
-
-            <div className="col-6 border">
-              <p>{author2}</p>
-              <p>{review2}</p>
-            </div>
+            {newReviewsArray.map((item, index) => {
+              return (<div key={index} className="col-6 border">
+                <p>{item.author}</p>
+                <p>{item.content}</p>
+              </div>);
+            })}
           </div>
         </>;
     }
@@ -190,7 +203,7 @@ export default class MovieDetails extends React.Component {
               <div>
                 <i className={`far fa-heart fa-3x ${this.state.heartIconColor}`} onClick={() => this.addRemoveMovieToList(event)} value="heart"></i>
                 <i className={`far fa-eye fa-3x ${this.state.eyeIconColor}`} onClick={() => this.addRemoveMovieToList(event)} value="eye"></i>
-                <i className="far fa-list-alt fa-3x" onClick={() => this.addMovieToCustomList()} value="list" ></i>
+                <i className="far fa-list-alt fa-3x" onClick={() => this.addModal()} value="list" ></i>
               </div>
 
               <Modal isOpen={this.state.addModalShow} toggle={() => this.addModal()} >
@@ -205,8 +218,8 @@ export default class MovieDetails extends React.Component {
                   </select>
                 </ModalBody>
                 <ModalFooter>
-                  <Button color="primary" onClick={() => { this.add(); }}>Add to List</Button>{' '}
                   <Button color="secondary" onClick={() => this.addModal()}>Cancel</Button>
+                  <Button color="primary" onClick={() => this.addMovieToCustomList()}>Add to List</Button>
                 </ModalFooter>
               </Modal>
 

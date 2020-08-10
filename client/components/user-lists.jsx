@@ -45,8 +45,8 @@ export default class UserLists extends React.Component {
               </form>
             </ModalBody>
             <ModalFooter>
-              <Button color="primary" onClick={() => this.handleSubmit(event)}>Create new list</Button>{' '}
               <Button color="secondary" onClick={() => this.toggleModal()}>Cancel</Button>
+              <Button color="primary" onClick={() => this.handleSubmit(event)}>Create new list</Button>{' '}
             </ModalFooter>
           </Modal>
         </div>

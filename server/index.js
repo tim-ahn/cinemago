@@ -11,6 +11,14 @@ const app = express();
 
 const apiKey = '9dbf824ef684a8b724b9b0e090bb97d9';
 
+const path = require('path');
+const multer = require('multer');
+const upload = multer({
+  dest: path.join(__dirname, 'public/images/user-images/')
+  //, limits: { fileSize: 2 * 1000 * 1000 } // image upload limit for 2MB
+});
+const fs = require('fs');
+
 app.use(staticMiddleware);
 app.use(sessionMiddleware);
 
@@ -143,10 +151,10 @@ app.post('/api/home', (req, res, next) => {
 app.get('/api/users/:userId', (req, res, next) => {
   const id = req.params.userId;
   const sql = `
-    select "users"."userId",
-      "users"."name",
-      "users"."bio",
-      "users"."imageURL"
+    select "userId",
+      "name",
+      "bio",
+      "imageURL"
       from "users"
     where "userId" = $1
   `;
@@ -179,6 +187,33 @@ app.patch('/api/users/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
+// upload user image and updates the imageurl to the user's data entry
+app.post('/api/users/image/:userId', upload.single('image'), (req, res, next) => {
+  // image refers to the name of the file-input on user-profile
+  const userId = req.params.userId;
+  const tempPath = req.file.path;
+  const targetPath = path.join(__dirname, `public/images/user-images/${userId}${path.extname(req.file.originalname)}`);
+
+  if (['.png', '.jpg'].includes(path.extname(req.file.originalname).toLowerCase())) {
+    fs.rename(tempPath, targetPath, err => {
+      if (err) throw (new ClientError('fs error', 500));
+    });
+    // after the file is created send target path to sql
+    const sql = `
+      update "users"
+      set "imageURL" = $2
+      where "userId" = $1
+      `;
+    const params = [userId, `../images/user-images/${userId}${path.extname(req.file.originalname)}`];
+    db.query(sql, params)
+      .then(result => res.sendStatus(201))
+      .catch(err => next(err));
+  } else {
+    fs.unlink(tempPath, err => {
+      if (err) throw (new ClientError('fs error - must use .png or .jpg file', 500));
+    });
+  }
+});
 // POST request for user can write review
 app.post('/api/reviews', (req, res, next) => {
   const movieId = req.body.movieId;
@@ -512,7 +547,7 @@ app.get('/api/search/users/:userId', (req, res, next) => {
   db.query(sql, params)
     .then(result => {
       if (result.rows.length < 1) {
-        next(new ClientError('no items in list', 404));
+        res.json([]);
       } else {
         res.json(result.rows);
       }
