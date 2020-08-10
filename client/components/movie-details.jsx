@@ -6,7 +6,6 @@ export default class MovieDetails extends React.Component {
     super(props);
     this.state = {
       movieIsToggleOn: false,
-      modalToggleOn: false,
       addModalShow: false,
       dropdownOpen: false,
       heartIconColor: '',
@@ -15,7 +14,7 @@ export default class MovieDetails extends React.Component {
     };
     this.handleClick = this.handleClick.bind(this);
     this.addRemoveMovieToList = this.addRemoveMovieToList.bind(this);
-    this.setModalToggle = this.setModalToggle.bind(this);
+    this.addModal = this.addModal.bind(this);
     this.addMovieToCustomList = this.addMovieToCustomList.bind(this);
   }
 
@@ -49,8 +48,8 @@ export default class MovieDetails extends React.Component {
     this.props.changeView('search');
   }
 
-  setModalToggle() {
-    this.setState({ isOpen: !this.state.isOpen });
+  addModal() {
+    this.setState((prevState, props) => { return { addModalShow: !prevState.addModalShow }; });
   }
 
   addRemoveMovieToList(event) {
@@ -89,7 +88,8 @@ export default class MovieDetails extends React.Component {
   }
 
   addMovieToCustomList() {
-    this.setModalToggle();
+    this.props.addItemToList(this.state.listId, this.props.details[1]);
+    this.addModal();
   }
 
   // first need to create a modal to add movies to existing lists
@@ -117,7 +117,7 @@ export default class MovieDetails extends React.Component {
 
     if (this.state.modalToggleOn === true) {
       modal = <>
-        <Modal isOpen={this.state.addModalShow}>
+        <Modal isOpen={this.state.addModalShow} toggle={() => this.addModal()}>
           <ModalBody>
 
             <label htmlFor="lists">Which list would you like to add to?</label>
@@ -216,7 +216,7 @@ export default class MovieDetails extends React.Component {
               <div>
                 <i className={`far fa-heart fa-3x ${this.state.heartIconColor}`} onClick={() => this.addRemoveMovieToList(event)} value="heart"></i>
                 <i className={`far fa-eye fa-3x ${this.state.eyeIconColor}`} onClick={() => this.addRemoveMovieToList(event)} value="eye"></i>
-                <i className="far fa-list-alt fa-3x" onClick={() => this.addMovieToCustomList()} value="list" ></i>
+                <i className="far fa-list-alt fa-3x" onClick={() => this.addModal()} value="list" ></i>
               </div>
 
               <Modal isOpen={this.state.addModalShow} toggle={() => this.addModal()} >
@@ -231,7 +231,7 @@ export default class MovieDetails extends React.Component {
                   </select>
                 </ModalBody>
                 <ModalFooter>
-                  <Button color="primary" onClick={() => { this.add(); }}>Add to List</Button>{' '}
+                  <Button color="primary" onClick={() => this.addMovieToCustomList()}>Add to List</Button>
                   <Button color="secondary" onClick={() => this.addModal()}>Cancel</Button>
                 </ModalFooter>
               </Modal>
