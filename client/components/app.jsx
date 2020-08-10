@@ -269,6 +269,7 @@ export default class App extends React.Component {
     fetch(`/api/search/users/${this.state.userId}`)
       .then(res => res.json())
       .then(data => {
+        console.log(data);
         const result = data.filter(user => user.name.toLowerCase().includes(query) || user.email.toLowerCase().includes(query));
         this.setState({ otherUsers: result });
       });
