@@ -3,10 +3,18 @@ import React from 'react';
 class UserProfile extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { loading: true, profile: {}, editBio: false };
+    this.state = {
+      loading: true,
+      profile: {},
+      editBio: false,
+      selectedImage: null,
+      fileError: null
+    };
     this.openBioEdit = this.openBioEdit.bind(this);
     this.saveBioEdit = this.saveBioEdit.bind(this);
     this.onBioChange = this.onBioChange.bind(this);
+    this.uploadImage = this.uploadImage.bind(this);
+    this.onImageSelect = this.onImageSelect.bind(this);
   }
 
   componentDidMount() {
@@ -48,6 +56,28 @@ class UserProfile extends React.Component {
     this.setState({ profile: newProfile });
   }
 
+  uploadImage(event) {
+    event.preventDefault();
+    const fetchURL = '/api/users/image/' + this.props.userId;
+    const formData = new FormData();
+    formData.append('image',
+      this.state.selectedImage,
+      this.state.selectedImage.name);
+    const options = {
+      method: 'POST',
+      body: formData
+    };
+
+    fetch(fetchURL, options)
+      // .then(this.setState({ selectedImage: null }))
+      .catch(err => console.error(err));
+
+  }
+
+  onImageSelect(event) {
+    this.setState({ selectedImage: event.target.files[0] });
+  }
+
   render() {
     // todo: change view when clicking reviews, lists, settings
     let bio;
@@ -83,8 +113,14 @@ class UserProfile extends React.Component {
               <p className="font-weight-bold">Reviews</p>
               <p className="font-weight-bold">Lists</p>
               <p className="font-weight-bold">Settings</p>
+              <form onSubmit={this.uploadImage}>
+                <input type="file" name="image" onChange={this.onImageSelect}></input>
+                <button className="btn btn-secondary">Upload</button>
+                <p className="mini-text text-muted m-0">File Limit of 2MB. Use only .jpg or .png files </p>
+              </form>
             </div>
           </div>
+
         </div>
 
       </>;

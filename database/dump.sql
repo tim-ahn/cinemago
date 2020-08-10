@@ -340,8 +340,10 @@ COPY public.users ("userId", name, password, bio, "imageURL", email) FROM stdin;
 14	ddd	ddd	\N	\N	ddd
 15	rrr	rrr	\N	\N	rrr
 16	cccc	xx	I'm cccc	\N	xx
-1	Uzair	anime	I like anime and fast cars. nuff said.	\N	uzair@gmail.com
+
+1	Uzair	anime	I like anime and fast cars. nuff said.	../images/user-images/1.png	uzair@gmail.com
 17	bbffgg	gggg	\N	\N	gggg
+
 \.
 
 
