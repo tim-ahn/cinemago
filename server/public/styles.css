@@ -38,3 +38,7 @@ button.focus,button:active.focus,button.active.focus {
 .loginTitle {
   text-align: center;
 }
+
+.hidden {
+  display: none;
+}
