@@ -54,6 +54,7 @@ class MovieLongCard extends React.Component {
             <div>
               <button onClick={() => this.handleClick(event)}>View Details (temporary)</button>
               <Button color="secondary" onClick={() => this.addModal()} className="m-2">Add To list</Button>
+
               <Modal isOpen={this.state.addModalShow} toggle={() => this.addModal()} >
                 <ModalBody>
 
@@ -70,6 +71,7 @@ class MovieLongCard extends React.Component {
                   <Button color="secondary" onClick={() => this.addModal()}>Cancel</Button>
                 </ModalFooter>
               </Modal>
+
             </div>
             {/* <button className="btn btn-secondary" onClick={() => { this.props.addItemToList(1, this.props.fullInfo); }}>
               Add item to list
