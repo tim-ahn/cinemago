@@ -11,6 +11,7 @@ import LoginPage from './login-page';
 import CreateAccount from './create-account';
 import Header from './header';
 import ViewReviewsPage from './view-reviews-page';
+import UserMessages from './user-messages';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -26,9 +27,11 @@ export default class App extends React.Component {
       currentListName: '',
       currentListId: null,
       userId: 1, // Hardcoded for now, will be set after user logs in and will be helpful in fetching to backend
-      reviews: []
+      reviews: [],
+      messages: []
     };
     this.searchResults = this.searchResults.bind(this);
+    this.searchFilteredResults = this.searchFilteredResults.bind(this);
     this.getTrending = this.getTrending.bind(this);
     this.getUserLists = this.getUserLists.bind(this);
     this.createNewList = this.createNewList.bind(this);
@@ -43,6 +46,8 @@ export default class App extends React.Component {
     this.logOut = this.logOut.bind(this);
     this.searchUsers = this.searchUsers.bind(this);
     this.viewReviews = this.viewReviews.bind(this);
+    this.getMessages = this.getMessages.bind(this);
+    this.sendMessage = this.sendMessage.bind(this);
   }
 
   logIn(email, password) {
@@ -93,16 +98,55 @@ export default class App extends React.Component {
   }
 
   logOut() {
-    this.setState({ userId: null, view: 'login' });
+    this.setState({
+      userId: null,
+      view: 'login',
+      results: [],
+      otherUsers: [],
+      lists: [],
+      details: [],
+      viewListItems: [],
+      currentListName: '',
+      messages: []
+    });
   }
 
   searchResults(query, category) {
+    this.setState({ results: [] }); // clear search results on new search
     fetch('api/search', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ query: query })
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (category === 'popularity') {
+          data.sort(function (a, b) {
+            return b.popularity - a.popularity;
+          });
+        } else if (category === 'rating') {
+          data.sort(function (a, b) {
+            return b.vote_average - a.vote_average;
+          });
+        } else {
+          data.sort(function (a, b) {
+            return parseInt(b.release_date.substr(0, 4)) - parseInt(a.release_date.substr(0, 4));
+          });
+        }
+        this.setState({ results: data });
+      });
+  }
+
+  searchFilteredResults(query, category, filter) {
+    this.setState({ results: [] });
+    fetch('api/search/genre', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ query: query, filter: filter })
     })
       .then(res => res.json())
       .then(data => {
@@ -228,6 +272,30 @@ export default class App extends React.Component {
       .then(res => res.json())
       .then(data => {
         this.setState({ reviews: data });
+  }
+
+  getMessages() {
+    fetch(`/api/messages/${this.state.userId}`)
+      .then(res => res.json())
+      .then(data => {
+        this.setState({ messages: data });
+      });
+  }
+
+  sendMessage(recipientId, content) {
+    fetch(`/api/messages/${this.state.userId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        recipientId: recipientId,
+        content: content
+      })
+    })
+      .then(res => res.json())
+      .then(data => {
+        return data;
       });
   }
 
@@ -238,28 +306,37 @@ export default class App extends React.Component {
   render() {
     // eslint-disable-next-line no-unused-vars
     let pageView;
-    // if (this.state.view === 'home') {
-    //   pageView = <HomePage getTrending={this.getTrending} results={this.state.trending} getMovieDetails={this.getMovieDetails} getUserLists={this.getUserLists} />;
-    // } else if (this.state.view === 'search') {
-    //   pageView = <HomeSearch searchResults={this.searchResults} results={this.state.results} addItemToList={this.addItemToList} getMovieDetails={this.getMovieDetails} lists={this.state.lists} searchUsers={this.searchUsers} otherUsers={this.state.otherUsers} />;
-    // } else if (this.state.view === 'list') {
-    //   pageView = <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} deleteList={this.deleteList} changeView={this.changeView} getItemsInList={this.getItemsInList} />;
-    // } else if (this.state.view === 'details') {
-    //   pageView = <MovieDetails changeView={this.changeView} details={this.state.details} />;
-    // } else if (this.state.view === 'user') {
-    //   pageView = <UserProfile userId={this.state.userId} changeView={this.changeView} />; // insert userId when relavent
-    // } else if (this.state.view === 'listContent') {
-    //   pageView = <ListItems viewListItems={this.state.viewListItems} listName={this.state.currentListName} listId={this.state.currentListId} changeView={this.changeView} removeItemsInList={this.removeItemsInList} />;
-    // } else
-    if (this.state.view === 'edit-review') {
-      pageView = <WriteReview editReview={this.state.editReviews} reviews={this.state.reviews} changeView={this.changeView}/>;
-    } else if (this.state.view === 'review-list') {
-      pageView = <ViewReviewsPage viewReviews={this.state.viewReviews} reviews={this.state.reviews}/>;
+    if (this.state.view === 'home') {
+      pageView = <HomePage getTrending={this.getTrending} results={this.state.trending} getMovieDetails={this.getMovieDetails} getUserLists={this.getUserLists} />;
+    } else if (this.state.view === 'search') {
+      pageView = <HomeSearch searchResults={this.searchResults} searchFilteredResults={this.searchFilteredResults} results={this.state.results} addItemToList={this.addItemToList} getMovieDetails={this.getMovieDetails} lists={this.state.lists} searchUsers={this.searchUsers} otherUsers={this.state.otherUsers} sendMessage={this.sendMessage} />;
+    } else if (this.state.view === 'list') {
+      pageView = <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} deleteList={this.deleteList} changeView={this.changeView} getItemsInList={this.getItemsInList} />;
+    } else if (this.state.view === 'details') {
+      pageView = <MovieDetails changeView={this.changeView} details={this.state.details} />;
+    } else if (this.state.view === 'user') {
+      pageView = <UserProfile userId={this.state.userId} changeView={this.changeView} />;
+    } else if (this.state.view === 'listContent') {
+      pageView = <ListItems viewListItems={this.state.viewListItems} listName={this.state.currentListName} listId={this.state.currentListId} changeView={this.changeView} removeItemsInList={this.removeItemsInList} />;
+    } else if (this.state.view === 'review') {
+      pageView = <WriteReview />;
+    } else if (this.state.view === 'messages') {
+      pageView = <UserMessages messages={this.state.messages} getMessages={this.getMessages} />;
     }
-    // } else if (this.state.view === 'login') {
-    //   pageView = <LoginPage logIn={this.logIn} />;
-    // } else if (this.state.view === 'login') {
-    //   pageView = <LoginPage logIn={this.logIn} />;
+
+    if (this.state.view === 'login') {
+      return (
+        <LoginPage logIn={this.logIn} changeView={this.changeView} />
+      );
+    } else if (this.state.view === 'signUp') {
+      return <CreateAccount changeView={this.changeView} signUp={this.signUp} />;
+    } else {
+      return <>
+        <Header logOut={this.logOut} />
+        {pageView}
+        <Navbar changeView={this.changeView} />
+      </>;
+    }
 
     // if (this.state.view === 'login') {
     //   return (

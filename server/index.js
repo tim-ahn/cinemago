@@ -17,13 +17,70 @@ app.use(sessionMiddleware);
 app.use(express.json());
 
 app.post('/api/search', (req, res, next) => {
+
   fetch(`https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&query=${req.body.query}&page=1&include_adult=false`)
     .then(result => result.json()
     )
-    .then(data => res.json(data.results))
+    .then(data => {
+
+      return res.json(data.results);
+    })
     .catch(error => next(error));
+
 });
 
+// post request for search by genre
+app.post('/api/search/genre', (req, res, next) => {
+  // when the query results returned from the api
+  // filter through (maxPage) of results returned until maxPage is reached or results reach 20
+  // page limit(maxPages) is in place to prevent long load times
+  const results = [];
+  const filter = req.body.filter;
+  var page = 0; // page increments before fetch is called, so it starts at 1
+  let maxPage;
+  if (!req.body.filter) {
+    throw (new ClientError('filter is needed in request body', 400));
+  } else {
+    lookAtPages();
+  }
+  // recursive function is used when there aren't enough results and when page limit isn't met
+  function lookAtPages() {
+    page++;
+    fetch(`https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&query=${req.body.query}&page=${page}&include_adult=false`)
+      .then(result => result.json()
+      )
+      .then(data => {
+        if (maxPage === undefined) { // decide the max number of pages to search through
+          if (data.total_pages <= 14) {
+            maxPage = data.total_pages;
+          } else {
+            maxPage = 14;
+          }
+        }
+        for (let i = 0; i < data.results.length; i++) {
+          const movie = data.results[i];
+          const movieGenres = movie.genre_ids;
+          let flag = false;
+          for (let x = 0; x < filter.length; x++) {
+            if (!movieGenres.includes(filter[x])) {
+              flag = true;
+            }
+          }
+          if (flag) {
+            continue;
+          } else {
+            results.push(data.results[i]);
+          }
+        }
+        if (results.length < 20 && page < maxPage) {
+          lookAtPages();
+        } else {
+          return res.json(results);
+        }
+      })
+      .catch(error => next(error));
+  }
+});
 /* get request for api/details endpoint
 notes: need to include name to reviews too. grab it from users table using userId?
 */
@@ -447,7 +504,7 @@ app.post('/api/logOut/', (req, res, next) => {
 app.get('/api/search/users/:userId', (req, res, next) => {
   const userId = req.params.userId;
   const sql = `
-    select "name", "bio", "email", "imageURL"
+    select "name", "bio", "email", "imageURL", "userId"
     from "users"
     where "userId" != $1
   `;
@@ -456,6 +513,69 @@ app.get('/api/search/users/:userId', (req, res, next) => {
     .then(result => {
       if (result.rows.length < 1) {
         next(new ClientError('no items in list', 404));
+      } else {
+        res.json(result.rows);
+      }
+    })
+    .catch(err => next(err));
+});
+
+// delete reviews
+app.delete('/api/reviews/:reviewId', (req, res, next) => {
+  const reviewId = req.params.reviewId;
+  const sql = `
+    delete from "reviews" where "reviewId" = $1
+    returning *
+  `;
+  const params = [reviewId];
+  db.query(sql, params)
+    .then(result => {
+      if (result.rows.length < 1) {
+        next(new ClientError('no items in list'), 404);
+      } else {
+        res.json(result.rows);
+      }
+    })
+    .catch(error => next(error));
+});
+
+// get all messages where sentId is equal to userId
+app.get('/api/messages/:userId', (req, res, next) => {
+  const userId = req.params.userId;
+  const sql = `
+    select "senderId", "content", "sentAt", "name"
+    from "messages"
+    join "users" on "users"."userId" = "messages"."senderId"
+    where "recipientId" = $1
+  `;
+
+  const params = [userId];
+  db.query(sql, params)
+    .then(result => {
+      if (result.rows.length < 1) {
+        next(new ClientError('no messages found', 404));
+      } else {
+        res.json(result.rows);
+      }
+    })
+    .catch(err => next(err));
+});
+
+// send a message from userId (sentId) to recipientId
+app.post('/api/messages/:userId', (req, res, next) => {
+  const userId = req.params.userId;
+  const recipientId = req.body.recipientId;
+  const content = req.body.content;
+  const sql = `
+    insert into "messages" ("senderId", "recipientId", "content")
+    values ($1, $2, $3)
+    returning *
+  `;
+  const params = [userId, recipientId, content];
+  db.query(sql, params)
+    .then(result => {
+      if (result.rows.length < 1) {
+        next(new ClientError('no messages found', 404));
       } else {
         res.json(result.rows);
       }

@@ -18,6 +18,7 @@ class Navbar extends React.Component {
     var searchColor = 'text-white';
     var heartColor = 'text-white';
     var userColor = 'text-white';
+    var messageColor = 'text-white';
     if (this.state.current === 'home') {
       homeColor = 'text-primary';
     } else if (this.state.current === 'search') {
@@ -26,6 +27,8 @@ class Navbar extends React.Component {
       heartColor = 'text-danger';
     } else if (this.state.current === 'user') {
       userColor = 'text-warning';
+    } else if (this.state.current === 'messages') {
+      messageColor = 'text-info';
     }
     return (<>
 
@@ -34,6 +37,7 @@ class Navbar extends React.Component {
           <i onClick={this.handleClick} className={`fas fa-home ${homeColor} pointer`} value="home"></i>
           <i onClick={this.handleClick} className={`fas fa-search ${searchColor} pointer`} value="search"></i>
           <i onClick={this.handleClick} className={`fas fa-heart ${heartColor} pointer`} value="list"></i>
+          <i onClick={this.handleClick} className={`fas fa-envelope ${messageColor} pointer`} value="messages"></i>
           <i onClick={this.handleClick} className={`fas fa-user ${userColor} pointer`} value="user"></i>
         </div>
       </nav>

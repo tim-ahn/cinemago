@@ -41,7 +41,7 @@ class MovieLongCard extends React.Component {
     }
     return (<>
       <div >
-        <div className="row m-2 border" onClick={() => this.handleClick(event)}>
+        <div className="row m-2 border white">
           <div className="col m-2">
             <img src={posterURL} className="card-img" styles=""></img>
           </div>
@@ -52,6 +52,7 @@ class MovieLongCard extends React.Component {
             <h4 className="card-subtitle mb-2 text-muted">Release Year:{year}</h4>
             <p className="card-text">{this.props.fullInfo.overview}</p>
             <div>
+              <button onClick={() => this.handleClick(event)}>View Details (temporary)</button>
               <Button color="secondary" onClick={() => this.addModal()} className="m-2">Add To list</Button>
               <Modal isOpen={this.state.addModalShow} toggle={() => this.addModal()} >
                 <ModalBody>
