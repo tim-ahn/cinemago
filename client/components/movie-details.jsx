@@ -19,6 +19,32 @@ export default class MovieDetails extends React.Component {
     this.addMovieToCustomList = this.addMovieToCustomList.bind(this);
   }
 
+  componentDidMount() {
+    fetch(`/api/listItems/${this.props.lists[0].listId}`)
+      .then(res => res.json())
+      .then(data => {
+        const include = data.filter(item => item.movieId === this.props.details[1].id);
+        if (include.length >= 1) {
+          this.setState({
+            movieIsToggleOn: true,
+            heartIconColor: 'text-danger'
+          });
+        }
+      });
+    fetch(`/api/listItems/${this.props.lists[1].listId}`)
+      .then(res => res.json())
+      .then(data => {
+        const include = data.filter(item => item.movieId === this.props.details[1].id);
+        if (include.length >= 1) {
+          this.setState({
+            movieIsToggleOn: true,
+            eyeIconColor: 'text-success'
+          });
+        }
+      });
+
+  }
+
   handleClick(event) {
     this.props.changeView('search');
   }
