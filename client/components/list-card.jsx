@@ -34,8 +34,8 @@ export default class ListCard extends React.Component {
                 Leave this page and search for movies?
               </ModalBody>
               <ModalFooter>
-                <Button color="primary" onClick={() => { this.props.changeView('search'); }}>Go to Search Page </Button>{' '}
                 <Button color="secondary" onClick={() => this.searchModal()}>Cancel</Button>
+                <Button color="primary" onClick={() => { this.props.changeView('search'); }}>Go to Search Page </Button>{' '}
               </ModalFooter>
             </Modal>
           </div>
@@ -47,8 +47,8 @@ export default class ListCard extends React.Component {
                 Are you sure you want to delete this list?
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" onClick={() => this.props.deleteList(this.props.item.listId)}>Delete List </Button>{' '}
                 <Button color="secondary" className="m-2" onClick={() => this.deleteModal()}>Cancel</Button>
+                <Button color="danger" onClick={() => this.props.deleteList(this.props.item.listId)}>Delete List </Button>{' '}
               </ModalFooter>
             </Modal>
           </div>
@@ -66,8 +66,8 @@ export default class ListCard extends React.Component {
                 Leave this page and search for movies?
               </ModalBody>
               <ModalFooter>
-                <Button color="primary" onClick={() => { this.props.changeView('search'); }}>Go to Search Page </Button>{' '}
                 <Button color="secondary" onClick={() => this.searchModal()}>Cancel</Button>
+                <Button color="primary" onClick={() => { this.props.changeView('search'); }}>Go to Search Page </Button>{' '}
               </ModalFooter>
             </Modal>
           </div>

@@ -10,7 +10,8 @@ export default class MovieDetails extends React.Component {
       dropdownOpen: false,
       heartIconColor: '',
       eyeIconColor: '',
-      listIconColor: ''
+      listIconColor: '',
+      listId: null
     };
     this.handleClick = this.handleClick.bind(this);
     this.addRemoveMovieToList = this.addRemoveMovieToList.bind(this);
@@ -41,7 +42,7 @@ export default class MovieDetails extends React.Component {
           });
         }
       });
-
+    this.setState({ listId: this.props.lists[0].listId });
   }
 
   handleClick(event) {
@@ -129,8 +130,8 @@ export default class MovieDetails extends React.Component {
             </select>
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={() => { this.add(); }}>Add to List</Button>{' '}
             <Button color="secondary" onClick={() => this.addModal()}>Cancel</Button>
+            <Button color="primary" onClick={() => { this.add(); }}>Add to List</Button>{' '}
           </ModalFooter>
         </Modal>
       </>;
@@ -231,8 +232,8 @@ export default class MovieDetails extends React.Component {
                   </select>
                 </ModalBody>
                 <ModalFooter>
-                  <Button color="primary" onClick={() => this.addMovieToCustomList()}>Add to List</Button>
                   <Button color="secondary" onClick={() => this.addModal()}>Cancel</Button>
+                  <Button color="primary" onClick={() => this.addMovieToCustomList()}>Add to List</Button>
                 </ModalFooter>
               </Modal>
 
