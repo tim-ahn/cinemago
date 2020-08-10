@@ -547,7 +547,7 @@ app.get('/api/search/users/:userId', (req, res, next) => {
   db.query(sql, params)
     .then(result => {
       if (result.rows.length < 1) {
-        next(new ClientError('no items in list', 404));
+        res.json([]);
       } else {
         res.json(result.rows);
       }
