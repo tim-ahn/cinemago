@@ -18,12 +18,14 @@ SET row_security = off;
 
 ALTER TABLE public.users ALTER COLUMN "userId" DROP DEFAULT;
 ALTER TABLE public.reviews ALTER COLUMN "reviewId" DROP DEFAULT;
+ALTER TABLE public.messages ALTER COLUMN "messageId" DROP DEFAULT;
 ALTER TABLE public.lists ALTER COLUMN "listId" DROP DEFAULT;
 DROP SEQUENCE public."users_userId_seq";
 DROP TABLE public.users;
 DROP SEQUENCE public."reviews_reviewId_seq";
 DROP TABLE public.reviews;
 DROP TABLE public.movies;
+DROP SEQUENCE public."messages_messageId_seq";
 DROP TABLE public.messages;
 DROP SEQUENCE public."lists_listId_seq";
 DROP TABLE public.lists;
@@ -112,8 +114,29 @@ CREATE TABLE public.messages (
     "senderId" integer NOT NULL,
     "recipientId" integer NOT NULL,
     content text NOT NULL,
-    "sentAt" timestamp without time zone
+    "sentAt" timestamp without time zone,
+    "messageId" integer NOT NULL
 );
+
+
+--
+-- Name: messages_messageId_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public."messages_messageId_seq"
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: messages_messageId_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public."messages_messageId_seq" OWNED BY public.messages."messageId";
 
 
 --
@@ -205,6 +228,13 @@ ALTER TABLE ONLY public.lists ALTER COLUMN "listId" SET DEFAULT nextval('public.
 
 
 --
+-- Name: messages messageId; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.messages ALTER COLUMN "messageId" SET DEFAULT nextval('public."messages_messageId_seq"'::regclass);
+
+
+--
 -- Name: reviews reviewId; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -231,6 +261,8 @@ COPY public."listItems" ("listId", "movieId") FROM stdin;
 1	616445
 47	15016
 51	38575
+48	299534
+55	299536
 \.
 
 
@@ -243,7 +275,6 @@ COPY public.lists ("userId", "listId", type, name) FROM stdin;
 1	2	watch	My Watch List
 2	3	favorites	My Favorites
 2	4	watch	My Watch List
-2	30	custom	Cool Movies
 10	31	watch	My Watch List
 10	32	favorites	My Favorites List
 11	33	watch	My Watch List
@@ -262,6 +293,9 @@ COPY public.lists ("userId", "listId", type, name) FROM stdin;
 16	48	favorites	My Favorites List
 16	49	watch	My Watch List
 16	51	custom	cool
+17	53	favorites	My Favorites List
+17	54	watch	My Watch List
+17	55	custom	Cool Movies
 \.
 
 
@@ -269,14 +303,7 @@ COPY public.lists ("userId", "listId", type, name) FROM stdin;
 -- Data for Name: messages; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.messages ("senderId", "recipientId", content, "sentAt") FROM stdin;
-1	2	Hey	\N
-1	2	there	\N
-1	2	how	\N
-2	1	how	\N
-2	1	test	\N
-2	1	test2	\N
-1	2	test2	\N
+COPY public.messages ("senderId", "recipientId", content, "sentAt", "messageId") FROM stdin;
 \.
 
 
@@ -313,7 +340,10 @@ COPY public.users ("userId", name, password, bio, "imageURL", email) FROM stdin;
 14	ddd	ddd	\N	\N	ddd
 15	rrr	rrr	\N	\N	rrr
 16	cccc	xx	I'm cccc	\N	xx
+
 1	Uzair	anime	I like anime and fast cars. nuff said.	../images/user-images/1.png	uzair@gmail.com
+17	bbffgg	gggg	\N	\N	gggg
+
 \.
 
 
@@ -321,7 +351,14 @@ COPY public.users ("userId", name, password, bio, "imageURL", email) FROM stdin;
 -- Name: lists_listId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."lists_listId_seq"', 51, true);
+SELECT pg_catalog.setval('public."lists_listId_seq"', 55, true);
+
+
+--
+-- Name: messages_messageId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+--
+
+SELECT pg_catalog.setval('public."messages_messageId_seq"', 1, false);
 
 
 --
@@ -335,7 +372,7 @@ SELECT pg_catalog.setval('public."reviews_reviewId_seq"', 1, false);
 -- Name: users_userId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."users_userId_seq"', 16, true);
+SELECT pg_catalog.setval('public."users_userId_seq"', 17, true);
 
 
 --
@@ -348,4 +385,3 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 --
 -- PostgreSQL database dump complete
 --
-

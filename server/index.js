@@ -578,7 +578,7 @@ app.delete('/api/reviews/:reviewId', (req, res, next) => {
 app.get('/api/messages/:userId', (req, res, next) => {
   const userId = req.params.userId;
   const sql = `
-    select "senderId", "content", "sentAt", "name"
+    select "senderId", "content", "sentAt", "name", "messageId"
     from "messages"
     join "users" on "users"."userId" = "messages"."senderId"
     where "recipientId" = $1
@@ -611,6 +611,24 @@ app.post('/api/messages/:userId', (req, res, next) => {
     .then(result => {
       if (result.rows.length < 1) {
         next(new ClientError('no messages found', 404));
+      } else {
+        res.json(result.rows);
+      }
+    })
+    .catch(err => next(err));
+});
+
+app.delete('/api/messages/:messageId', (req, res, next) => {
+  const id = req.params.messageId;
+  const sql = `
+      delete from "messages" where "messageId" = $1
+      returning *
+  `;
+  const params = [id];
+  db.query(sql, params)
+    .then(result => {
+      if (result.rows.length < 1) {
+        next(new ClientError(`cannot ${req.method} ${req.originalUrl}`, 404));
       } else {
         res.json(result.rows);
       }

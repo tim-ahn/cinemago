@@ -39,12 +39,14 @@ export default class App extends React.Component {
     this.addItemToList = this.addItemToList.bind(this);
     this.getItemsInList = this.getItemsInList.bind(this);
     this.removeItemsInList = this.removeItemsInList.bind(this);
+    this.removeItemsInListMovieDetails = this.removeItemsInListMovieDetails.bind(this);
     this.logIn = this.logIn.bind(this);
     this.signUp = this.signUp.bind(this);
     this.logOut = this.logOut.bind(this);
     this.searchUsers = this.searchUsers.bind(this);
     this.getMessages = this.getMessages.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
+    this.deleteMessage = this.deleteMessage.bind(this);
   }
 
   logIn(email, password) {
@@ -256,6 +258,13 @@ export default class App extends React.Component {
       .then(data => this.getItemsInList(listId, this.state.currentListName));
   }
 
+  // same as removeItemsInList without calling this.getItemsInList
+  removeItemsInListMovieDetails(listId, movieId) {
+    fetch(`/api/listItems/${listId}/${movieId}`, {
+      method: 'DELETE'
+    }).then(res => res.json());
+  }
+
   searchUsers(query) {
     fetch(`/api/search/users/${this.state.userId}`)
       .then(res => res.json())
@@ -290,6 +299,16 @@ export default class App extends React.Component {
       });
   }
 
+  deleteMessage(messageId) {
+    fetch(`/api/messages/${messageId}`, {
+      method: 'DELETE'
+
+    }).then(res => res.json())
+      .then(data => {
+        this.getMessages();
+      });
+  }
+
   changeView(newPage) {
     this.setState({ view: newPage });
   }
@@ -304,7 +323,7 @@ export default class App extends React.Component {
     } else if (this.state.view === 'list') {
       pageView = <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} deleteList={this.deleteList} changeView={this.changeView} getItemsInList={this.getItemsInList} />;
     } else if (this.state.view === 'details') {
-      pageView = <MovieDetails changeView={this.changeView} details={this.state.details} />;
+      pageView = <MovieDetails changeView={this.changeView} details={this.state.details} addItemToList={this.addItemToList} removeItemsInListMovieDetails={this.removeItemsInListMovieDetails} lists={this.state.lists} listId={this.state.currentListId} getMovieDetails={this.getMovieDetails} />;
     } else if (this.state.view === 'user') {
       pageView = <UserProfile userId={this.state.userId} changeView={this.changeView} />;
     } else if (this.state.view === 'listContent') {
@@ -312,7 +331,7 @@ export default class App extends React.Component {
     } else if (this.state.view === 'review') {
       pageView = <WriteReview />;
     } else if (this.state.view === 'messages') {
-      pageView = <UserMessages messages={this.state.messages} getMessages={this.getMessages} />;
+      pageView = <UserMessages messages={this.state.messages} getMessages={this.getMessages} deleteMessage={this.deleteMessage.bind(this)} />;
     }
 
     if (this.state.view === 'login') {
