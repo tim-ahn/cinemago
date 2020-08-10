@@ -1,5 +1,6 @@
 import React from 'react';
 import ListCard from './list-card';
+import MessageCard from './message-card';
 
 export default class UserMessages extends React.Component {
 
@@ -13,10 +14,7 @@ export default class UserMessages extends React.Component {
         <div className="container mt-2 justify-content-center">
           <h1>My Messages</h1>
           {this.props.messages.map((item, index) => {
-            return (<div key={index} className="border p-2 m-2 white">
-              <h5>From: {item.name}</h5>
-              <p>Content: {item.content}</p>
-            </div>);
+            return <MessageCard deleteMessage={this.props.deleteMessage} key={index} id={item.messageId} item={item} />;
           })}
         </div>
       </>);

@@ -45,6 +45,7 @@ export default class App extends React.Component {
     this.searchUsers = this.searchUsers.bind(this);
     this.getMessages = this.getMessages.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
+    this.deleteMessage = this.deleteMessage.bind(this);
   }
 
   logIn(email, password) {
@@ -290,6 +291,16 @@ export default class App extends React.Component {
       });
   }
 
+  deleteMessage(messageId) {
+    fetch(`/api/messages/${messageId}`, {
+      method: 'DELETE'
+
+    }).then(res => res.json())
+      .then(data => {
+        this.getMessages();
+      });
+  }
+
   changeView(newPage) {
     this.setState({ view: newPage });
   }
@@ -312,7 +323,7 @@ export default class App extends React.Component {
     } else if (this.state.view === 'review') {
       pageView = <WriteReview />;
     } else if (this.state.view === 'messages') {
-      pageView = <UserMessages messages={this.state.messages} getMessages={this.getMessages} />;
+      pageView = <UserMessages messages={this.state.messages} getMessages={this.getMessages} deleteMessage={this.deleteMessage.bind(this)} />;
     }
 
     if (this.state.view === 'login') {
