@@ -65,7 +65,7 @@ class UserProfile extends React.Component {
 
   uploadImage(event) {
     event.preventDefault();
-    if (this.selectedImage === null) {
+    if (this.state.selectedImage === null) {
       return;
     }
     const fetchURL = '/api/users/image/' + this.props.userId;
