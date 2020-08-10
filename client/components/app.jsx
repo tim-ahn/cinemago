@@ -25,7 +25,8 @@ export default class App extends React.Component {
       viewListItems: [],
       currentListName: '',
       currentListId: null,
-      userId: 1 // Hardcoded for now, will be set after user logs in and will be helpful in fetching to backend
+      userId: 1, // Hardcoded for now, will be set after user logs in and will be helpful in fetching to backend
+      reviews: []
     };
     this.searchResults = this.searchResults.bind(this);
     this.getTrending = this.getTrending.bind(this);
@@ -41,6 +42,7 @@ export default class App extends React.Component {
     this.signUp = this.signUp.bind(this);
     this.logOut = this.logOut.bind(this);
     this.searchUsers = this.searchUsers.bind(this);
+    this.viewReviews = this.viewReviews.bind(this);
   }
 
   logIn(email, password) {
@@ -136,7 +138,6 @@ export default class App extends React.Component {
   }
 
   getUserLists() {
-
     fetch(`/api/lists/${this.state.userId}`)
       .then(res => res.json())
       .then(data => {
@@ -222,13 +223,21 @@ export default class App extends React.Component {
       });
   }
 
+  viewReviews(reviewId, content) {
+    fetch(`/api/reviews/${this.state.userId}`)
+      .then(res => res.json())
+      .then(data => {
+        this.setState({ reviews: data });
+      });
+  }
+
   changeView(newPage) {
     this.setState({ view: newPage });
   }
 
   render() {
     // eslint-disable-next-line no-unused-vars
-    // let pageView;
+    let pageView;
     // if (this.state.view === 'home') {
     //   pageView = <HomePage getTrending={this.getTrending} results={this.state.trending} getMovieDetails={this.getMovieDetails} getUserLists={this.getUserLists} />;
     // } else if (this.state.view === 'search') {
@@ -241,15 +250,16 @@ export default class App extends React.Component {
     //   pageView = <UserProfile userId={this.state.userId} changeView={this.changeView} />; // insert userId when relavent
     // } else if (this.state.view === 'listContent') {
     //   pageView = <ListItems viewListItems={this.state.viewListItems} listName={this.state.currentListName} listId={this.state.currentListId} changeView={this.changeView} removeItemsInList={this.removeItemsInList} />;
-    // } else if (this.state.view === 'review') {
-    //   pageView = <WriteReview />;
-    // }
-    // else if (this.state.view === 'login') {
+    // } else
+    if (this.state.view === 'edit-review') {
+      pageView = <WriteReview editReview={this.state.editReviews} reviews={this.state.reviews} changeView={this.changeView}/>;
+    } else if (this.state.view === 'review-list') {
+      pageView = <ViewReviewsPage viewReviews={this.state.viewReviews} reviews={this.state.reviews}/>;
+    }
+    // } else if (this.state.view === 'login') {
     //   pageView = <LoginPage logIn={this.logIn} />;
-    // }
-    // // else if (this.state.view === 'login') {
-    // //   pageView = <LoginPage logIn={this.logIn} />;
-    // // }
+    // } else if (this.state.view === 'login') {
+    //   pageView = <LoginPage logIn={this.logIn} />;
 
     // if (this.state.view === 'login') {
     //   return (
@@ -259,9 +269,9 @@ export default class App extends React.Component {
     //   return <CreateAccount changeView={this.changeView} signUp={this.signUp} />;
     // } else {
     return <>
-      {/* <Header logOut={this.logOut} />
-        {pageView} */}
-      <ViewReviewsPage />
+      {/* <Header logOut={this.logOut} /> */}
+      {pageView}
+      <ViewReviewsPage changeView={this.changeView} userId={this.state.userId}/>
       {/* <Navbar changeView={this.changeView} /> */}
     </>;
   }

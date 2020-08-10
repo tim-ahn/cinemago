@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
-import WriteReview from './write-review';
 
 export default class ListItemCard extends React.Component {
 

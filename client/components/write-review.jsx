@@ -20,14 +20,16 @@ class WriteReview extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-
     fetch('/api/reviews', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ content: this.state.content, rating: this.state.rating })
     })
       .then(response => response.json())
-      .then(review => this.setState({ content: review }));
+      .then(review => {
+        this.setState({ content: review });
+        this.props.changeView('review-list');
+      });
   }
 
   handleText(event) {
@@ -82,8 +84,8 @@ class WriteReview extends React.Component {
         </textarea>
         <br></br>
         <div className="button-container">
-          <button className="btn btn-secondary">Cancel</button>
-          <button className="btn btn-primary">Submit</button>
+          <button className="btn btn-secondary" onClick={() => this.props.changeView('write-review')}>Cancel</button>
+          <button className="btn btn-primary" onClick={this.handleSubmit}>Submit</button>
         </div>
 
       </form>
