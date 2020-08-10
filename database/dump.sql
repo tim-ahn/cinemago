@@ -335,15 +335,12 @@ COPY public.reviews ("userId", "reviewId", rating, content, "movieId") FROM stdi
 --
 
 COPY public.users ("userId", name, password, bio, "imageURL", email) FROM stdin;
+1	Uzair	anime	I like anime and fast cars. nuff said.	../images/user-images/1.png	uzair@gmail.com
 2	Cody	coding	I like coding and teaching. nuff said	\N	cody@gmail.com
 13	ddd	aaa	\N	\N	sss
 14	ddd	ddd	\N	\N	ddd
 15	rrr	rrr	\N	\N	rrr
 16	cccc	xx	I'm cccc	\N	xx
-
-1	Uzair	anime	I like anime and fast cars. nuff said.	../images/user-images/1.png	uzair@gmail.com
-17	bbffgg	gggg	\N	\N	gggg
-
 \.
 
 
@@ -385,3 +382,4 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 --
 -- PostgreSQL database dump complete
 --
+
