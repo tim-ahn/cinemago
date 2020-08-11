@@ -7,7 +7,7 @@ export default class ListItems extends React.Component {
     if (this.props.viewListItems.length > 0) {
       return (<>
 
-        <div className="container">
+        <div className="container mb-5">
           <div className="row mt-1">
             <h2>{this.props.listName}</h2>
             <button className="btn-secondary" onClick={() => { this.props.changeView('list'); }}>Go Back to Lists</button>
@@ -19,7 +19,7 @@ export default class ListItems extends React.Component {
                 fullInfo={item}
                 removeItemsInList={this.props.removeItemsInList}
                 listId={this.props.listId}
-                changeView={this.props.changeView}/>;
+                changeView={this.props.changeView} />;
             })}
           </div>
         </div>
