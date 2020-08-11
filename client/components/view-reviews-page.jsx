@@ -4,17 +4,17 @@ import ViewReviewsCard from './view-reviews-card';
 class ViewReviewsPage extends React.Component {
   // take in an array of reviews from props
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      reviews: []
-    };
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     reviews: []
+  //   };
+  // }
 
-  componentDidMount() {
-    this.setState({ reviews: this.props.reviews });
+  // componentDidMount() {
+  //   this.setState({ reviews: this.props.reviews });
 
-  }
+  // }
 
   render() {
     // map array of reviews

@@ -290,7 +290,7 @@ app.get('/api/reviews/:userId', (req, res, next) => {
   db.query(sql, params)
     .then(result => {
       if (result.rows.length < 1) {
-        next(new ClientError(`cannot ${req.method} ${req.originalUrl}`, 404));
+        res.json([]);
       } else {
         res.status(200).json(result.rows);
       }

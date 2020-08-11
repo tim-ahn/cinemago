@@ -28,7 +28,8 @@ export default class App extends React.Component {
       currentListId: null,
       userId: 1, // Hardcoded for now, will be set after user logs in and will be helpful in fetching to backend
       reviews: [],
-      messages: []
+      messages: [],
+      movieToReview: null
     };
     this.searchResults = this.searchResults.bind(this);
     this.searchFilteredResults = this.searchFilteredResults.bind(this);
@@ -50,6 +51,8 @@ export default class App extends React.Component {
     this.getMessages = this.getMessages.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
     this.deleteMessage = this.deleteMessage.bind(this);
+    this.postReview = this.postReview.bind(this);
+    this.changeCurrentMovieToReview = this.changeCurrentMovieToReview.bind(this);
   }
 
   logIn(email, password) {
@@ -271,7 +274,6 @@ export default class App extends React.Component {
     fetch(`/api/search/users/${this.state.userId}`)
       .then(res => res.json())
       .then(data => {
-        console.log(data);
         const result = data.filter(user => user.name.toLowerCase().includes(query) || user.email.toLowerCase().includes(query));
         this.setState({ otherUsers: result });
       });
@@ -320,6 +322,22 @@ export default class App extends React.Component {
       });
   }
 
+  postReview(movieId, content, rating) {
+    fetch('/api/reviews', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content: content, rating: rating, userId: this.state.userId, movieId: movieId })
+    })
+      .then(response => response.json())
+      .then(review => {
+        this.changeView('listContent');
+      });
+  }
+
+  changeCurrentMovieToReview(movieId) {
+    this.setState({ movieToReview: movieId });
+  }
+
   changeView(newPage) {
     this.setState({ view: newPage });
   }
@@ -338,9 +356,9 @@ export default class App extends React.Component {
     } else if (this.state.view === 'user') {
       pageView = <UserProfile userId={this.state.userId} changeView={this.changeView} />;
     } else if (this.state.view === 'listContent') {
-      pageView = <ListItems viewListItems={this.state.viewListItems} listName={this.state.currentListName} listId={this.state.currentListId} changeView={this.changeView} removeItemsInList={this.removeItemsInList} />;
+      pageView = <ListItems viewListItems={this.state.viewListItems} listName={this.state.currentListName} listId={this.state.currentListId} changeView={this.changeView} removeItemsInList={this.removeItemsInList} changeCurrentMovieToReview={this.changeCurrentMovieToReview} />;
     } else if (this.state.view === 'review') {
-      pageView = <WriteReview changeView={this.changeView} viewListItems={this.state.viewListItems}/>;
+      pageView = <WriteReview changeView={this.changeView} postReview={this.postReview} movieToReview={this.state.movieToReview} />;
     } else if (this.state.view === 'messages') {
       pageView = <UserMessages messages={this.state.messages} getMessages={this.getMessages} deleteMessage={this.deleteMessage.bind(this)} />;
     }
@@ -355,24 +373,11 @@ export default class App extends React.Component {
       return <>
         <Header logOut={this.logOut} />
         {pageView}
+        {/* <ViewReviewsPage /> */}
         <Navbar changeView={this.changeView} />
       </>;
     }
 
-    // if (this.state.view === 'login') {
-    //   return (
-    //     <LoginPage logIn={this.logIn} changeView={this.changeView} />
-    //   );
-    // } else if (this.state.view === 'signUp') {
-    //   return <CreateAccount changeView={this.changeView} signUp={this.signUp} />;
-    // } else {
-    return <>
-      {/* <Header logOut={this.logOut} /> */}
-      {pageView}
-      <ViewReviewsPage changeView={this.changeView} userId={this.state.userId}/>
-      {/* <Navbar changeView={this.changeView} /> */}
-    </>;
   }
 
 }
-// }
