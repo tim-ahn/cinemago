@@ -46,7 +46,7 @@ export default class ListItemCard extends React.Component {
             <h4 className="card-subtitle mb-2 text-muted">Release Year:{year}</h4>
             <p className="card-text">{this.props.fullInfo.description}</p>
             <div className="form-row flex-nowrap">
-              <button color="primary" className="dynamicButton btn m-2" onClick={() => { this.props.changeCurrentMovieToReview(this.props.fullInfo.movieId); this.props.changeView('review'); }} >Write a Review</button>
+              <button className="dynamicButton btn btn-light m-2" onClick={() => { this.props.changeCurrentMovieToReview(this.props.fullInfo.movieId); this.props.changeView('review'); }} >Write a Review</button>
               <Button color="danger" onClick={() => this.removeModal()} className="dynamicButton m-2">Remove</Button>
             </div>
             <Modal isOpen={this.state.removeModalShow} toggle={() => this.removeModal()} >
