@@ -5,7 +5,10 @@ export default class ListItemCard extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { removeModalShow: false };
+    this.state = {
+      removeModalShow: false
+
+    };
     this.removeModal = this.removeModal.bind(this);
   }
 
@@ -31,6 +34,7 @@ export default class ListItemCard extends React.Component {
     } else {
       year = 'Not Available';
     }
+
     return (<>
       <div >
         <div className="row m-2 border white">

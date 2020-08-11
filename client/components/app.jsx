@@ -340,7 +340,7 @@ export default class App extends React.Component {
     } else if (this.state.view === 'listContent') {
       pageView = <ListItems viewListItems={this.state.viewListItems} listName={this.state.currentListName} listId={this.state.currentListId} changeView={this.changeView} removeItemsInList={this.removeItemsInList} />;
     } else if (this.state.view === 'review') {
-      pageView = <WriteReview />;
+      pageView = <WriteReview changeView={this.changeView} viewListItems={this.state.viewListItems}/>;
     } else if (this.state.view === 'messages') {
       pageView = <UserMessages messages={this.state.messages} getMessages={this.getMessages} deleteMessage={this.deleteMessage.bind(this)} />;
     }

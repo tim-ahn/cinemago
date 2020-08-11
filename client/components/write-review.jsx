@@ -4,12 +4,7 @@ import StarRatingComponent from 'react-star-rating-component';
 class WriteReview extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      userId: null,
-      movieId: null,
-      rating: 1,
-      content: ''
-    };
+    this.state = { };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleText = this.handleText.bind(this);
   }
@@ -56,7 +51,7 @@ class WriteReview extends React.Component {
               <img src={posterURL} className="card-img" styles=""></img>
             </div>
             <div className="col">
-              <h6 className="card-title">MovieTitle{this.props.movieTitle}</h6>
+              <h6 className="card-title">{this.props.viewListItems[]}</h6>
               <h6 className="card-subtitle">Rating:{this.props.rating}</h6>
               <h6 className="card-subtitle">Release Year:{this.props.releaseYear}</h6>
               <p className="card-text">{'something'}</p>

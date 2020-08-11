@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardText, CardBody, CardTitle, Button } from 'reactstrap';
+import { Card, CardText, CardBody, CardTitle } from 'reactstrap';
 
 class ViewReviewsCard extends React.Component {
 
@@ -16,7 +16,7 @@ class ViewReviewsCard extends React.Component {
 
             <button className="btn-secondary" onClick={this.props.editReview}>Edit Review</button>
 
-            <Button color='danger'>Delete Review</Button>
+            <button className='btn-danger' onClick={() => this.props.changeView('listContent')}>Delete Review</button>
           </CardBody>
         </Card>
       </div>
