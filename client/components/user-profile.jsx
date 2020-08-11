@@ -41,6 +41,7 @@ class UserProfile extends React.Component {
   }
 
   saveBioEdit() {
+    event.preventDefault();
     const fetchURL = '/api/users/' + this.props.userId;
     fetch(fetchURL, {
       method: 'PATCH',
