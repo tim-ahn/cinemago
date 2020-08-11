@@ -119,7 +119,7 @@ export default class MovieDetails extends React.Component {
     const newReviewsArray = reviewsArray.filter((reviews, index) => index < 2);
     if (this.state.modalToggleOn === true) {
       modal = <>
-        <Modal isOpen={this.state.addModalShow} toggle={() => this.addModal()}>
+        <Modal isOpen={this.state.addModalShow} toggle={() => this.addModal()} centered={true}>
           <ModalBody>
 
             <label htmlFor="lists">Which list would you like to add to?</label>
@@ -215,7 +215,7 @@ export default class MovieDetails extends React.Component {
                 <i className="far fa-list-alt fa-3x" onClick={() => this.addModal()} value="list" ></i>
               </div>
 
-              <Modal isOpen={this.state.addModalShow} toggle={() => this.addModal()} >
+              <Modal isOpen={this.state.addModalShow} toggle={() => this.addModal()} centered={true}>
                 <ModalBody>
 
                   <label htmlFor="lists">Which list would you like to add to?</label>

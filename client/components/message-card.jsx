@@ -25,7 +25,7 @@ export default class MessageCard extends React.Component {
       <h5>From: {this.props.item.name}</h5>
       <p>Content: {this.props.item.content}</p>
       <Button color="outline-danger" onClick={() => this.removeModal()} className="m-2">Delete</Button>
-      <Modal isOpen={this.state.removeModalShow} toggle={() => this.removeModal()} >
+      <Modal isOpen={this.state.removeModalShow} toggle={() => this.removeModal()} centered={true}>
         <ModalBody>
           Are you sure you want to delete this message?
         </ModalBody>

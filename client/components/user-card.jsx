@@ -37,7 +37,7 @@ export default class UserCard extends React.Component {
           <button type="button" className="btn btn-outline-danger" onClick={() => this.toggleModal()}>Send Message</button>
           <button className="btn btn-outline-primary ml-1">View Profile</button>
         </div>
-        <Modal isOpen={this.state.modalShow} toggle={() => this.toggleModal()} >
+        <Modal isOpen={this.state.modalShow} toggle={() => this.toggleModal()} centered={true}>
           <ModalHeader toggle={() => this.toggleModal()}>Message</ModalHeader>
           <ModalBody>
             <form className="container">

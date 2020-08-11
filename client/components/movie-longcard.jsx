@@ -58,7 +58,7 @@ class MovieLongCard extends React.Component {
             </div>
             <div>
 
-              <Modal isOpen={this.state.addModalShow} toggle={() => this.addModal()} >
+              <Modal isOpen={this.state.addModalShow} toggle={() => this.addModal()} centered={true}>
                 <ModalBody>
 
                   <label htmlFor="lists">Which list would you like to add to?</label>
