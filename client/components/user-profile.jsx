@@ -79,15 +79,22 @@ class UserProfile extends React.Component {
       body: formData
     };
     fetch(fetchURL, options)
-      // .then(this.setState({ selectedImage: null }))
+      .then(result => result.json())
+      .then(data => {
+        const updatedProfile = { ...this.state.profile };
+        updatedProfile.imageURL = data.imageURL;
+        this.setState({ profile: updatedProfile });
+      })
       .catch(err => console.error(err));
   }
 
   onImageSelect(event) {
     const image = event.target.files[0];
     const maxImageSize = 2 * 1000 * 1000;// 2mb
-    if (image.size > maxImageSize || !['image/jpeg', 'image/png'].includes(image.type)) {
-      this.setState({ fileError: 'Image size must be less than 2MB and must be a .jpg or .png file', selectedImage: null });
+    if (image.size > maxImageSize) {
+      this.setState({ fileError: 'Image size must be less than 2MB', selectedImage: null });
+    } else if (!['image/jpeg', 'image/png'].includes(image.type)) {
+      this.setState({ fileError: 'File must be a .jpg or .png image', selectedImage: null });
     } else {
       this.setState({ fileError: null, selectedImage: image });
     }
