@@ -10,6 +10,7 @@ import WriteReview from './write-review';
 import LoginPage from './login-page';
 import CreateAccount from './create-account';
 import Header from './header';
+import ViewReviewsPage from './view-reviews-page';
 import UserMessages from './user-messages';
 
 export default class App extends React.Component {
@@ -26,6 +27,7 @@ export default class App extends React.Component {
       currentListName: '',
       currentListId: null,
       userId: 1, // Hardcoded for now, will be set after user logs in and will be helpful in fetching to backend
+      reviews: [],
       messages: []
     };
     this.searchResults = this.searchResults.bind(this);
@@ -44,6 +46,7 @@ export default class App extends React.Component {
     this.signUp = this.signUp.bind(this);
     this.logOut = this.logOut.bind(this);
     this.searchUsers = this.searchUsers.bind(this);
+    this.viewReviews = this.viewReviews.bind(this);
     this.getMessages = this.getMessages.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
     this.deleteMessage = this.deleteMessage.bind(this);
@@ -181,7 +184,6 @@ export default class App extends React.Component {
   }
 
   getUserLists() {
-
     fetch(`/api/lists/${this.state.userId}`)
       .then(res => res.json())
       .then(data => {
@@ -275,6 +277,14 @@ export default class App extends React.Component {
       });
   }
 
+  viewReviews(reviewId, content) {
+    fetch(`/api/reviews/${this.state.userId}`)
+      .then(res => res.json())
+      .then(data => {
+        this.setState({ reviews: data });
+      });
+  }
+
   getMessages() {
     fetch(`/api/messages/${this.state.userId}`)
       .then(res => res.json())
@@ -330,7 +340,7 @@ export default class App extends React.Component {
     } else if (this.state.view === 'listContent') {
       pageView = <ListItems viewListItems={this.state.viewListItems} listName={this.state.currentListName} listId={this.state.currentListId} changeView={this.changeView} removeItemsInList={this.removeItemsInList} />;
     } else if (this.state.view === 'review') {
-      pageView = <WriteReview />;
+      pageView = <WriteReview changeView={this.changeView} viewListItems={this.state.viewListItems}/>;
     } else if (this.state.view === 'messages') {
       pageView = <UserMessages messages={this.state.messages} getMessages={this.getMessages} deleteMessage={this.deleteMessage.bind(this)} />;
     }
@@ -349,5 +359,20 @@ export default class App extends React.Component {
       </>;
     }
 
+    // if (this.state.view === 'login') {
+    //   return (
+    //     <LoginPage logIn={this.logIn} changeView={this.changeView} />
+    //   );
+    // } else if (this.state.view === 'signUp') {
+    //   return <CreateAccount changeView={this.changeView} signUp={this.signUp} />;
+    // } else {
+    return <>
+      {/* <Header logOut={this.logOut} /> */}
+      {pageView}
+      <ViewReviewsPage changeView={this.changeView} userId={this.state.userId}/>
+      {/* <Navbar changeView={this.changeView} /> */}
+    </>;
   }
+
 }
+// }
