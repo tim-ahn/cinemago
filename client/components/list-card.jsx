@@ -29,9 +29,9 @@ export default class ListCard extends React.Component {
           <h3 className="mt-2">{this.props.item.name}</h3>
           <div>
             <div className="form-row flex-nowrap">
-              <Button color="secondary" onClick={() => this.searchModal()} className="dynamicButton m-2">Add To list</Button>
-              <button className="dynamicButton btn btn-secondary m-2" onClick={() => { this.props.getItemsInList(this.props.item.listId); }}>View List Content</button>
-              <Button color="danger" className="dynamicButton m-2" onClick={() => this.deleteModal()}>Delete List</Button>
+              <Button outline={true} color="secondary" onClick={() => this.searchModal()} className="dynamicButton m-2">Add To list</Button>
+              <button className="dynamicButton btn btn-outline-secondary m-2" onClick={() => { this.props.getItemsInList(this.props.item.listId); }}>View List Content</button>
+              <Button outline={true} color="danger" className="dynamicButton m-2" onClick={() => this.deleteModal()}>Delete List</Button>
             </div>
             <Modal isOpen={this.state.searchModalShow} toggle={() => this.searchModal()} centered={true}>
               <ModalBody>
@@ -63,8 +63,8 @@ export default class ListCard extends React.Component {
           <h3 className="mt-2">{this.props.item.name}</h3>
           <div>
             <div className="form-row flex-nowrap">
-              <Button color="secondary" onClick={() => this.searchModal()} className="dynamicButton m-2">Add To list</Button>
-              <button className="dynamicButton btn btn-secondary m-2" onClick={() => { this.props.getItemsInList(this.props.item.listId, this.props.item.name); }}>View List Content</button>
+              <Button outline={true} color="secondary" onClick={() => this.searchModal()} className="dynamicButton m-2">Add To list</Button>
+              <button className="dynamicButton btn btn-outline-secondary m-2" onClick={() => { this.props.getItemsInList(this.props.item.listId, this.props.item.name); }}>View List Content</button>
             </div>
             <Modal isOpen={this.state.searchModalShow} toggle={() => this.searchModal()} centered={true}>
               <ModalBody>
