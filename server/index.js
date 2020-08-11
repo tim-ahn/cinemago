@@ -215,14 +215,14 @@ app.post('/api/reviews', (req, res, next) => {
   const movieId = req.body.movieId;
   const userId = req.body.userId;
   const rating = req.body.rating;
-  const reviewContent = req.body.content;
+  const content = req.body.content;
 
   if (movieId < 1 || isNaN(movieId)) {
     res.status(400).json({ error: 'invalid id' });
     return;
   }
 
-  if (!userId || !rating || !reviewContent) {
+  if (!userId || !rating || !content) {
     res.status(400).json({ error: 'missing content' });
     return;
   }
@@ -233,7 +233,7 @@ app.post('/api/reviews', (req, res, next) => {
     returning *;
   `;
 
-  const params = [userId, rating, reviewContent, movieId];
+  const params = [userId, rating, content, movieId];
 
   db.query(sql, params)
     .then(response => {
@@ -253,13 +253,13 @@ app.post('/api/reviews', (req, res, next) => {
 app.patch('/api/reviews/:reviewId', (req, res, next) => {
   const reviewId = req.params.reviewId;
   const rating = req.body.rating;
-  const reviewContent = req.body.content;
+  const content = req.body.content;
 
   if (reviewId < 1 || isNaN(reviewId)) {
     res.status(400).json({ error: 'invalid review id' });
     return;
   }
-  if (!rating || !reviewContent) {
+  if (!rating || !content) {
     res.status(400).json({ error: 'missing required information' });
     return;
   }
@@ -271,7 +271,7 @@ app.patch('/api/reviews/:reviewId', (req, res, next) => {
     returning *
   `;
 
-  const params = [rating, reviewContent, reviewId];
+  const params = [rating, content, reviewId];
 
   db.query(sql, params)
     .then(result => res.sendStatus(200))
@@ -284,13 +284,13 @@ app.get('/api/reviews/:userId', (req, res, next) => {
   const sql = `
   select *
     from "reviews"
-    where "reviewId" = $1
+    where "userId" = $1
   `;
   const params = [userId];
   db.query(sql, params)
     .then(result => {
       if (result.rows.length < 1) {
-        next(new ClientError(`cannot ${req.method} ${req.originalUrl}`, 404));
+        res.json([]);
       } else {
         res.status(200).json(result.rows);
       }

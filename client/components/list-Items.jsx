@@ -19,7 +19,8 @@ export default class ListItems extends React.Component {
                 fullInfo={item}
                 removeItemsInList={this.props.removeItemsInList}
                 listId={this.props.listId}
-                changeView={this.props.changeView} />;
+                changeView={this.props.changeView}
+                changeCurrentMovieToReview={this.props.changeCurrentMovieToReview} />;
             })}
           </div>
         </div>

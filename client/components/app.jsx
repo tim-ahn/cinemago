@@ -10,6 +10,7 @@ import WriteReview from './write-review';
 import LoginPage from './login-page';
 import CreateAccount from './create-account';
 import Header from './header';
+import ViewReviewsPage from './view-reviews-page';
 import UserMessages from './user-messages';
 
 export default class App extends React.Component {
@@ -26,7 +27,9 @@ export default class App extends React.Component {
       currentListName: '',
       currentListId: null,
       userId: 1, // Hardcoded for now, will be set after user logs in and will be helpful in fetching to backend
-      messages: []
+      reviews: [],
+      messages: [],
+      movieToReview: null
     };
     this.searchResults = this.searchResults.bind(this);
     this.searchFilteredResults = this.searchFilteredResults.bind(this);
@@ -44,9 +47,12 @@ export default class App extends React.Component {
     this.signUp = this.signUp.bind(this);
     this.logOut = this.logOut.bind(this);
     this.searchUsers = this.searchUsers.bind(this);
+    this.viewReviews = this.viewReviews.bind(this);
     this.getMessages = this.getMessages.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
     this.deleteMessage = this.deleteMessage.bind(this);
+    this.postReview = this.postReview.bind(this);
+    this.changeCurrentMovieToReview = this.changeCurrentMovieToReview.bind(this);
   }
 
   logIn(email, password) {
@@ -181,7 +187,6 @@ export default class App extends React.Component {
   }
 
   getUserLists() {
-
     fetch(`/api/lists/${this.state.userId}`)
       .then(res => res.json())
       .then(data => {
@@ -269,9 +274,16 @@ export default class App extends React.Component {
     fetch(`/api/search/users/${this.state.userId}`)
       .then(res => res.json())
       .then(data => {
-        console.log(data);
         const result = data.filter(user => user.name.toLowerCase().includes(query) || user.email.toLowerCase().includes(query));
         this.setState({ otherUsers: result });
+      });
+  }
+
+  viewReviews(reviewId, content) {
+    fetch(`/api/reviews/${this.state.userId}`)
+      .then(res => res.json())
+      .then(data => {
+        this.setState({ reviews: data });
       });
   }
 
@@ -310,6 +322,22 @@ export default class App extends React.Component {
       });
   }
 
+  postReview(movieId, content, rating) {
+    fetch('/api/reviews', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content: content, rating: rating, userId: this.state.userId, movieId: movieId })
+    })
+      .then(response => response.json())
+      .then(review => {
+        this.changeView('listContent');
+      });
+  }
+
+  changeCurrentMovieToReview(movieId) {
+    this.setState({ movieToReview: movieId });
+  }
+
   changeView(newPage) {
     this.setState({ view: newPage });
   }
@@ -328,9 +356,9 @@ export default class App extends React.Component {
     } else if (this.state.view === 'user') {
       pageView = <UserProfile userId={this.state.userId} changeView={this.changeView} />;
     } else if (this.state.view === 'listContent') {
-      pageView = <ListItems viewListItems={this.state.viewListItems} listName={this.state.currentListName} listId={this.state.currentListId} changeView={this.changeView} removeItemsInList={this.removeItemsInList} />;
+      pageView = <ListItems viewListItems={this.state.viewListItems} listName={this.state.currentListName} listId={this.state.currentListId} changeView={this.changeView} removeItemsInList={this.removeItemsInList} changeCurrentMovieToReview={this.changeCurrentMovieToReview} />;
     } else if (this.state.view === 'review') {
-      pageView = <WriteReview />;
+      pageView = <WriteReview changeView={this.changeView} postReview={this.postReview} movieToReview={this.state.movieToReview} />;
     } else if (this.state.view === 'messages') {
       pageView = <UserMessages messages={this.state.messages} getMessages={this.getMessages} deleteMessage={this.deleteMessage.bind(this)} />;
     }
@@ -345,9 +373,11 @@ export default class App extends React.Component {
       return <>
         <Header logOut={this.logOut} />
         {pageView}
+        {/* <ViewReviewsPage /> */}
         <Navbar changeView={this.changeView} />
       </>;
     }
 
   }
+
 }
