@@ -8,6 +8,7 @@ export default class UserCard extends React.Component {
     this.toggleModal = this.toggleModal.bind(this);
     this.handleMessage = this.handleMessage.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.viewProfile = this.viewProfile.bind(this);
   }
 
   toggleModal() {
@@ -25,6 +26,11 @@ export default class UserCard extends React.Component {
     this.setState({ message: event.target.value });
   }
 
+  viewProfile() {
+    // change view to other profile and pass in the userId of target user
+    this.props.changeView('otherProfile', this.props.item.userId);
+  }
+
   render() {
     return (<>
       <div className="row m-2 border container white">
@@ -35,7 +41,7 @@ export default class UserCard extends React.Component {
           <h1>{this.props.item.name}</h1>
           <p>{this.props.item.email}</p>
           <button type="button" className="btn btn-outline-danger" onClick={() => this.toggleModal()}>Send Message</button>
-          <button className="btn btn-outline-primary ml-1">View Profile</button>
+          <button onClick={this.viewProfile} className="btn btn-outline-primary ml-1">View Profile</button>
         </div>
         <Modal isOpen={this.state.modalShow} toggle={() => this.toggleModal()} centered={true}>
           <ModalHeader toggle={() => this.toggleModal()}>Message</ModalHeader>
