@@ -11,7 +11,7 @@ export default class UserMessages extends React.Component {
   render() {
     if (this.props.messages.length > 0) {
       return (<>
-        <div className="container mt-2 justify-content-center">
+        <div className="container mt-2 justify-content-center mb-5">
           <h1>My Messages</h1>
           {this.props.messages.map((item, index) => {
             return <MessageCard deleteMessage={this.props.deleteMessage} key={index} id={item.messageId} item={item} />;
