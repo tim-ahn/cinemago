@@ -131,10 +131,7 @@ class HomeSearch extends React.Component {
                   </CardBody>
                 </Card>
               </Collapse>
-            </div>
-
-            <div className="container">
-              <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggleDropDown} style={{ float: 'right', display: show }}>
+              <ButtonDropdown isOpen={this.state.dropdownOpen} className="my-2" toggle={this.toggleDropDown} style={{ float: 'right', display: show }}>
                 <DropdownToggle caret>
                   Sort By
                 </DropdownToggle>
@@ -146,6 +143,9 @@ class HomeSearch extends React.Component {
                   <DropdownItem onClick={() => this.sortCategory()} id="date">Year</DropdownItem>
                 </DropdownMenu>
               </ButtonDropdown>
+            </div>
+
+            <div className="container">
               <div className="row">
                 {this.props.results.map(item => (
                   <MovieLongCard key={item.id} id={item.id} poster_path={item.poster_path} fullInfo={item} changeView={this.props.changeView} getMovieDetails={this.props.getMovieDetails} addItemToList={this.props.addItemToList} lists={this.props.lists} />
