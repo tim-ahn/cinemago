@@ -37,7 +37,7 @@ export default class UserLists extends React.Component {
         <h1>My Lists</h1>
         <div>
           <Button color="primary" onClick={() => this.toggleModal()}>Create a Custom List  +</Button>
-          <Modal isOpen={this.state.modalShow} toggle={() => this.toggleModal()} >
+          <Modal isOpen={this.state.modalShow} toggle={() => this.toggleModal()} centered={true}>
             <ModalHeader toggle={() => this.toggleModal()}>What is the name of your new list?</ModalHeader>
             <ModalBody>
               <form className="container">

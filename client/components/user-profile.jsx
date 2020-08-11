@@ -122,8 +122,10 @@ class UserProfile extends React.Component {
     } else {
       return <>
         <div className="container mb-5">
-          <div className="d-flex flex-column justify-content-center">
-            <h3 className='text-center'>{this.state.profile.name}</h3>
+          <div>
+            <div className="w-50 mx-auto">
+              <h3 className="text-center">{this.state.profile.name}</h3>
+            </div>
             <img className='rounded mx-auto d-block' src={(this.state.profile.imageURL === null) ? '../images/image_placeholder.png' : this.state.profile.imageURL}></img>
             <div className="border border-secondary p-2 w-50 mx-auto mt-3 white">
               <div className="row justify-content-between px-3">
