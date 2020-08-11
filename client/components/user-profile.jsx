@@ -126,7 +126,7 @@ class UserProfile extends React.Component {
               {bio}
             </div>
             <div className="border border-secondary p-2 w-50 mx-auto mt-3 white">
-              <p className="font-weight-bold">My reviews</p>
+              <button className="font-weight-bold" onClick={() => this.props.changeView('ownReviews')}>My reviews</button>
               <button onClick={this.toggleUploadOption} className="btn btn-outline-dark">Update Profile Image</button>
               <Collapse isOpen={this.state.fileOptionOpen}>
                 <Card>

@@ -6,21 +6,21 @@ class ViewReviewsCard extends React.Component {
   render() {
 
     return (
-      <div>
-        <Card>
-          <CardBody>
 
-            <CardTitle>{this.props.title}Hot Rod</CardTitle>
+      <Card>
+        <CardBody>
 
-            <CardText>{this.props.review} This movie is neat</CardText>
+          <CardTitle>{'something'}</CardTitle>
 
-            <button className="btn-secondary" onClick={this.props.editReview}>Edit Review</button>
+          <CardText>{this.props.reviews}</CardText>
 
-            <button className='btn-danger' onClick={() => this.props.changeView('listContent')}>Delete Review</button>
-          </CardBody>
-        </Card>
-      </div>
+          <button className="btn-secondary" onClick={() => this.props.changeView('review')}>Edit Review</button>
+
+          <button className='btn-danger' onClick={() => this.props.changeView('listContent')}>Delete Review</button>
+        </CardBody>
+      </Card>
     );
+
   }
 }
 export default ViewReviewsCard;

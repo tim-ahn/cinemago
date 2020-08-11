@@ -31,6 +31,7 @@ export default class ListItems extends React.Component {
           <div className="row mt-1">
             <h2>{this.props.listName}</h2>
             <button className="btn-secondary" onClick={() => { this.props.changeView('list'); }}>Go Back to Lists</button>
+            <button className="btn-secondary" onClick={() => { this.props.changeView('ownReviews'); }}>Go Back to My Reviews</button>
           </div>
         </div>
       </>);
