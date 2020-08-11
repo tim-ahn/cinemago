@@ -107,27 +107,30 @@ app.get('/api/details/:movieId', (req, res, next) => {
       .then(res => res.json())
   ])
     .then(data => {
-      res.json(data);
+      const sql = `
+        select "rating", "content", "name" as "author"
+        from "reviews"
+        join "users" using ("userId")
+        where "movieId" = $1
+      `;
+
+      const params = [movieId];
+      db.query(sql, params)
+        .then(result => {
+          const review = result.rows;
+          if (!review || !Array.isArray(review)) {
+            return [];
+          } else {
+            return review;
+          }
+        }).then(data2 => {
+          data[0].results = [...data2, ...data[0].results];
+          res.json(data);
+        })
+        .catch(error => next(error));
     })
     .catch(error => next(error));
 
-  // const sql = `
-  //     select "rating", "content"
-  //     from "reviews"
-  //     where "movieId" = $1
-  //   `;
-
-  // const params = [movieId];
-  // db.query(sql, params)
-  //   .then(result => {
-  //     const review = result.rows[0];
-  //     if (!review) {
-  //       next(new ClientError('No reviews currently exist', 404));
-  //     } else {
-  //       res.status(200).json(review);
-  //     }
-  //   })
-  //   .catch(error => next(error));
 });
 // end feature: user-can-view-details
 
@@ -216,14 +219,14 @@ app.post('/api/reviews', (req, res, next) => {
   const movieId = req.body.movieId;
   const userId = req.body.userId;
   const rating = req.body.rating;
-  const reviewContent = req.body.content;
+  const content = req.body.content;
 
   if (movieId < 1 || isNaN(movieId)) {
     res.status(400).json({ error: 'invalid id' });
     return;
   }
 
-  if (!userId || !rating || !reviewContent) {
+  if (!userId || !rating || !content) {
     res.status(400).json({ error: 'missing content' });
     return;
   }
@@ -234,7 +237,7 @@ app.post('/api/reviews', (req, res, next) => {
     returning *;
   `;
 
-  const params = [userId, rating, reviewContent, movieId];
+  const params = [userId, rating, content, movieId];
 
   db.query(sql, params)
     .then(response => {
@@ -254,13 +257,13 @@ app.post('/api/reviews', (req, res, next) => {
 app.patch('/api/reviews/:reviewId', (req, res, next) => {
   const reviewId = req.params.reviewId;
   const rating = req.body.rating;
-  const reviewContent = req.body.content;
+  const content = req.body.content;
 
   if (reviewId < 1 || isNaN(reviewId)) {
     res.status(400).json({ error: 'invalid review id' });
     return;
   }
-  if (!rating || !reviewContent) {
+  if (!rating || !content) {
     res.status(400).json({ error: 'missing required information' });
     return;
   }
@@ -272,7 +275,7 @@ app.patch('/api/reviews/:reviewId', (req, res, next) => {
     returning *
   `;
 
-  const params = [rating, reviewContent, reviewId];
+  const params = [rating, content, reviewId];
 
   db.query(sql, params)
     .then(result => res.sendStatus(200))
@@ -285,13 +288,13 @@ app.get('/api/reviews/:userId', (req, res, next) => {
   const sql = `
   select *
     from "reviews"
-    where "reviewId" = $1
+    where "userId" = $1
   `;
   const params = [userId];
   db.query(sql, params)
     .then(result => {
       if (result.rows.length < 1) {
-        next(new ClientError(`cannot ${req.method} ${req.originalUrl}`, 404));
+        res.json([]);
       } else {
         res.status(200).json(result.rows);
       }

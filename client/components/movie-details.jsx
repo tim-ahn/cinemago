@@ -139,15 +139,20 @@ export default class MovieDetails extends React.Component {
     }
 
     if (newMoviesArray < 1) {
-      usersAlsoLiked = null;
+      usersAlsoLiked = <>
+        <h2>Users also liked:</h2>
+        <div className="row justify-content-left px-2">
+          No Movies Found
+        </div>
+      </>;
     } else {
       usersAlsoLiked =
         <>
           <h2>Users also liked:</h2>
-          <div className="row justify-content-center px-2">
+          <div className="row justify-content-left px-2">
             {newMoviesArray.map((item, index) => {
               return <div key={index} className="col-4 border" onClick={() => { this.props.getMovieDetails(item.id); window.scrollTo(0, 0); }}>
-                <img src={`https://image.tmdb.org/t/p/w500${this.props.details[2].results[index].poster_path}`} style={{ width: '100%' }}></img>
+                <img src={(this.props.details[2].results[index].poster_path === null) ? '../images/image_placeholder.png' : `https://image.tmdb.org/t/p/w500${this.props.details[2].results[index].poster_path}`} style={{ width: '100%' }}></img>
               </div>;
             })}
           </div>
@@ -155,10 +160,14 @@ export default class MovieDetails extends React.Component {
     }
 
     if (newReviewsArray < 1) {
-      reviews =
+      reviews = <>
+        <div className="row reviews">
+          <h2>Reviews <img src="../images/plus-sign-icon.png"></img> </h2>
+        </div>
         <div className="row">
           <p>No Reviews</p>
-        </div>;
+        </div>
+      </>;
     } else {
       reviews =
         <>
@@ -182,7 +191,7 @@ export default class MovieDetails extends React.Component {
           <div className="row">
             <div onClick={() => this.handleClick()}>
               <img className="position-absolute" src="../images/less-than-icon.png" ></img>
-              <img src={`https://image.tmdb.org/t/p/w500${backDropPath}`} style={{ width: '100%', height: '100%' }}></img>
+              <img src={(backDropPath === null) ? '../images/image_placeholder.png' : `https://image.tmdb.org/t/p/w500${backDropPath}`} style={{ width: '100%', height: '100%' }}></img>
             </div>
           </div>
 
@@ -226,7 +235,7 @@ export default class MovieDetails extends React.Component {
             </div>
 
             <div className="col-6">
-              <img src={`https://image.tmdb.org/t/p/w500${posterPath}`} style={{ width: '100%' }}></img>
+              <img src={(posterPath === null) ? '../images/image_placeholder.png' : `https://image.tmdb.org/t/p/w500${posterPath}`} style={{ width: '100%' }}></img>
             </div>
 
           </div>

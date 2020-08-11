@@ -30,17 +30,17 @@ class HomePage extends React.Component {
     }
 
     return (<>
-      <div className="container">
+      <div className="container ">
         <h1>Home Page</h1>
         <ul className="nav nav-tabs">
           <li className="nav-item">
-            <button className={link1} onClick={() => this.switchTab('trending')} styles={{ outline: 'none' }}>Trending Today</button>
+            <button className={link1} onClick={() => this.switchTab('trending')} >Trending Today</button>
           </li>
           <li className="nav-item">
             <button className={link2} onClick={() => this.switchTab('top')}>Top Rated</button>
           </li>
         </ul>
-        <div className="row justify-content-center">
+        <div className="row justify-content-center mb-5">
           {this.props.results.map(item => (
             <MovieCard key={item.id} movieCardId={item.id} poster_path={item.poster_path} getMovieDetails={this.props.getMovieDetails} />
           ))}
