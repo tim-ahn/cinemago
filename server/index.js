@@ -193,7 +193,7 @@ app.post('/api/users/image/:userId', upload.single('image'), (req, res, next) =>
   // image refers to the name of the file-input on user-profile
   const userId = req.params.userId;
   const tempPath = req.file.path;
-  const targetPath = path.join(__dirname, `public/images/user-images/${userId}${path.extname(req.file.originalname)}`);
+  const targetPath = path.join(__dirname, `public/images/user-images/${req.file.originalname}`);
 
   fs.rename(tempPath, targetPath, err => {
     if (err) throw (new ClientError('fs error', 500));
@@ -204,9 +204,10 @@ app.post('/api/users/image/:userId', upload.single('image'), (req, res, next) =>
       set "imageURL" = $2
       where "userId" = $1
       `;
-  const params = [userId, `../images/user-images/${userId}${path.extname(req.file.originalname)}`];
+  const imageURL = `../images/user-images/${req.file.originalname}`;
+  const params = [userId, imageURL];
   db.query(sql, params)
-    .then(result => res.sendStatus(201))
+    .then(result => res.status(201).json({ imageURL: imageURL }))
     .catch(err => next(err));
 
 });

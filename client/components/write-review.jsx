@@ -72,7 +72,7 @@ class WriteReview extends React.Component {
         />
         <br></br>
         <textarea
-          defaultValue="Write a review here"
+          placeholder="Write a review here"
           name="review"
           id="review"
           cols="30"

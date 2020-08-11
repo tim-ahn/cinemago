@@ -269,7 +269,6 @@ export default class App extends React.Component {
     fetch(`/api/search/users/${this.state.userId}`)
       .then(res => res.json())
       .then(data => {
-        console.log(data);
         const result = data.filter(user => user.name.toLowerCase().includes(query) || user.email.toLowerCase().includes(query));
         this.setState({ otherUsers: result });
       });
@@ -320,7 +319,7 @@ export default class App extends React.Component {
     if (this.state.view === 'home') {
       pageView = <HomePage getTrending={this.getTrending} results={this.state.trending} getMovieDetails={this.getMovieDetails} getUserLists={this.getUserLists} />;
     } else if (this.state.view === 'search') {
-      pageView = <HomeSearch searchResults={this.searchResults} searchFilteredResults={this.searchFilteredResults} results={this.state.results} addItemToList={this.addItemToList} getMovieDetails={this.getMovieDetails} lists={this.state.lists} searchUsers={this.searchUsers} otherUsers={this.state.otherUsers} sendMessage={this.sendMessage} />;
+      pageView = <HomeSearch searchResults={this.searchResults} searchFilteredResults={this.searchFilteredResults} results={this.state.results} addItemToList={this.addItemToList} getMovieDetails={this.getMovieDetails} lists={this.state.lists} changeView={this.changeView} searchUsers={this.searchUsers} otherUsers={this.state.otherUsers} sendMessage={this.sendMessage} />;
     } else if (this.state.view === 'list') {
       pageView = <UserLists getUserLists={this.getUserLists} lists={this.state.lists} createNewList={this.createNewList} deleteList={this.deleteList} changeView={this.changeView} getItemsInList={this.getItemsInList} />;
     } else if (this.state.view === 'details') {
