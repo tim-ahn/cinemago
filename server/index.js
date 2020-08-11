@@ -107,27 +107,30 @@ app.get('/api/details/:movieId', (req, res, next) => {
       .then(res => res.json())
   ])
     .then(data => {
-      res.json(data);
+      const sql = `
+        select "rating", "content", "name" as "author"
+        from "reviews"
+        join "users" using ("userId")
+        where "movieId" = $1
+      `;
+
+      const params = [movieId];
+      db.query(sql, params)
+        .then(result => {
+          const review = result.rows;
+          if (!review || !Array.isArray(review)) {
+            return [];
+          } else {
+            return review;
+          }
+        }).then(data2 => {
+          data[0].results = [...data2, ...data[0].results];
+          res.json(data);
+        })
+        .catch(error => next(error));
     })
     .catch(error => next(error));
 
-  // const sql = `
-  //     select "rating", "content"
-  //     from "reviews"
-  //     where "movieId" = $1
-  //   `;
-
-  // const params = [movieId];
-  // db.query(sql, params)
-  //   .then(result => {
-  //     const review = result.rows[0];
-  //     if (!review) {
-  //       next(new ClientError('No reviews currently exist', 404));
-  //     } else {
-  //       res.status(200).json(review);
-  //     }
-  //   })
-  //   .catch(error => next(error));
 });
 // end feature: user-can-view-details
 
