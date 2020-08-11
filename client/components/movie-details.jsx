@@ -139,7 +139,12 @@ export default class MovieDetails extends React.Component {
     }
 
     if (newMoviesArray < 1) {
-      usersAlsoLiked = null;
+      usersAlsoLiked = <>
+        <h2>Users also liked:</h2>
+        <div className="row justify-content-left px-2">
+          No Movies Found
+        </div>
+      </>;
     } else {
       usersAlsoLiked =
         <>
@@ -155,10 +160,14 @@ export default class MovieDetails extends React.Component {
     }
 
     if (newReviewsArray < 1) {
-      reviews =
+      reviews = <>
+        <div className="row reviews">
+          <h2>Reviews <img src="../images/plus-sign-icon.png"></img> </h2>
+        </div>
         <div className="row">
           <p>No Reviews</p>
-        </div>;
+        </div>
+      </>;
     } else {
       reviews =
         <>
