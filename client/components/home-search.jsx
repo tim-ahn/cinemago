@@ -110,9 +110,7 @@ class HomeSearch extends React.Component {
         <TabContent activeTab={this.state.tab}>
           <TabPane tabId="1">
             <form className="container">
-
-              <h2 >Search Page</h2>
-              <div className="form-row flex-nowrap">
+              <div className="form-row flex-nowrap mt-3">
                 <input onChange={this.handleText} value={this.state.text} className="form-control" placeholder="Search for Movies" id="name-line"></input>
                 <button className="btn btn-primary" onClick={this.handleSubmit}>Search</button>
               </div>
@@ -155,14 +153,13 @@ class HomeSearch extends React.Component {
           </TabPane>
           <TabPane tabId="2">
             <form className="container">
-              <h2 >Search Page</h2>
-              <div className="form-row flex-nowrap">
+              <div className="form-row flex-nowrap mt-3">
                 <input onChange={this.handleText2} value={this.state.userText} className="form-control" placeholder="Search for Users" id="user-line"></input>
                 <button className="btn btn-primary" onClick={this.handleSubmit2}>Search</button>
               </div>
               <div className="row">
                 {this.props.otherUsers.map((item, index) => (
-                  <UserCard item={item} key={index} sendMessage={this.props.sendMessage} />
+                  <UserCard changeView={this.props.changeView} item={item} key={index} sendMessage={this.props.sendMessage} />
                 ))}
               </div>
             </form>

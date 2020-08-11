@@ -1,12 +1,14 @@
 import React from 'react';
 import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
-import WriteReview from './write-review';
 
 export default class ListItemCard extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { removeModalShow: false };
+    this.state = {
+      removeModalShow: false
+
+    };
     this.removeModal = this.removeModal.bind(this);
   }
 
@@ -32,19 +34,22 @@ export default class ListItemCard extends React.Component {
     } else {
       year = 'Not Available';
     }
+
     return (<>
       <div >
         <div className="row m-2 border white">
-          <div className="col m-2">
+          <div className="col m-2 ml-0">
             <img src={posterURL} className="card-img" styles=""></img>
           </div>
-          <div className="col m-4">
+          <div className="col mr-4 m-2">
             <h1 className="card-title">{this.props.fullInfo.title}</h1>
             <h4 className="card-subtitle mb-2 text-muted">Release Year:{year}</h4>
             <p className="card-text">{this.props.fullInfo.description}</p>
-            <button color="primary" onClick={() => this.props.changeView('review')} >Write a Review</button>
-            <Button color="danger" onClick={() => this.removeModal()} className="m-2">Remove</Button>
-            <Modal isOpen={this.state.removeModalShow} toggle={() => this.removeModal()} >
+            <div className="form-row flex-nowrap">
+              <button className="dynamicButton btn btn-light m-2" onClick={() => { this.props.changeCurrentMovieToReview(this.props.fullInfo.movieId); this.props.changeView('review'); }} >Write a Review</button>
+              <Button color="danger" onClick={() => this.removeModal()} className="dynamicButton m-2">Remove</Button>
+            </div>
+            <Modal isOpen={this.state.removeModalShow} toggle={() => this.removeModal()} centered={true}>
               <ModalBody>
                 Are you sure you want to remove this movie?
               </ModalBody>

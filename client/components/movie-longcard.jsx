@@ -43,20 +43,22 @@ class MovieLongCard extends React.Component {
     return (<>
       <div >
         <div className="row m-2 border white">
-          <div className="col m-2">
+          <div className="col m-2 ml-0">
             <img src={posterURL} className="card-img" styles=""></img>
           </div>
-          <div className="col m-4">
+          <div className="col mr-4 mt-2">
             <h1 className="card-title">{this.props.fullInfo.original_title}</h1>
             <h4 className="card-subtitle mb-2 text-muted">Popularity:{this.props.fullInfo.popularity}</h4>
             <h4 className="card-subtitle mb-2 text-muted">Rating:{this.props.fullInfo.vote_average}</h4>
             <h4 className="card-subtitle mb-2 text-muted">Release Year:{year}</h4>
             <p className="card-text">{this.props.fullInfo.overview}</p>
+            <div className="form-row flex-nowrap">
+              <Button color="light" className="dynamicButton m-2" onClick={() => this.handleClick(event)}>View Details</Button>
+              <Button color="secondary" onClick={() => this.addModal()} className="dynamicButton m-2">Add To list</Button>
+            </div>
             <div>
-              <button onClick={() => this.handleClick(event)}>View Details (temporary)</button>
-              <Button color="secondary" onClick={() => this.addModal()} className="m-2">Add To list</Button>
 
-              <Modal isOpen={this.state.addModalShow} toggle={() => this.addModal()} >
+              <Modal isOpen={this.state.addModalShow} toggle={() => this.addModal()} centered={true}>
                 <ModalBody>
 
                   <label htmlFor="lists">Which list would you like to add to?</label>

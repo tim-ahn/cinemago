@@ -7,10 +7,10 @@ export default class ListItems extends React.Component {
     if (this.props.viewListItems.length > 0) {
       return (<>
 
-        <div className="container">
+        <div className="container mb-5">
+          <h2>{this.props.listName}</h2>
+          <button className="btn-secondary" onClick={() => { this.props.changeView('list'); }}>Go Back to Lists</button>
           <div className="row mt-1">
-            <h2>{this.props.listName}</h2>
-            <button className="btn-secondary" onClick={() => { this.props.changeView('list'); }}>Go Back to Lists</button>
             {this.props.viewListItems.map(item => {
               return <ListItemCard
                 key={item.movieId}
@@ -19,7 +19,8 @@ export default class ListItems extends React.Component {
                 fullInfo={item}
                 removeItemsInList={this.props.removeItemsInList}
                 listId={this.props.listId}
-                changeView={this.props.changeView}/>;
+                changeView={this.props.changeView}
+                changeCurrentMovieToReview={this.props.changeCurrentMovieToReview} />;
             })}
           </div>
         </div>
@@ -27,9 +28,10 @@ export default class ListItems extends React.Component {
     } else {
       return (<>
         <div className="container">
-          <div className="row mt-1">
-            <h2>{this.props.listName}</h2>
-            <button className="btn-secondary" onClick={() => { this.props.changeView('list'); }}>Go Back to Lists</button>
+          <h2>{this.props.listName}</h2>
+          <button className="btn-secondary" onClick={() => { this.props.changeView('list'); }}>Go Back to Lists</button>
+          <div className="row mt-3">
+            <p>No movies in list</p>
           </div>
         </div>
       </>);

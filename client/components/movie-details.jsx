@@ -112,14 +112,43 @@ export default class MovieDetails extends React.Component {
 
     if (newMoviesArray.length < 1) {
       usersAlsoLiked = null;
+    const newReviewsArray = reviewsArray.filter((reviews, index) => index < 2);
+    if (this.state.modalToggleOn === true) {
+      modal = <>
+        <Modal isOpen={this.state.addModalShow} toggle={() => this.addModal()} centered={true}>
+          <ModalBody>
+
+            <label htmlFor="lists">Which list would you like to add to?</label>
+
+            <select name="lists" id="userLists" onChange={() => this.setState({ listId: parseInt(event.target.value) })}>
+              {this.props.lists.map(item => {
+                return <option key={item.listId} value={item.listId}> {item.name}</option>;
+              })}
+            </select>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="secondary" onClick={() => this.addModal()}>Cancel</Button>
+            <Button color="primary" onClick={() => { this.add(); }}>Add to List</Button>{' '}
+          </ModalFooter>
+        </Modal>
+      </>;
+    }
+
+    if (newMoviesArray < 1) {
+      usersAlsoLiked = <>
+        <h2>Users also liked:</h2>
+        <div className="row justify-content-left px-2">
+          No Movies Found
+        </div>
+      </>;
     } else {
       usersAlsoLiked =
         <>
           <h2>Users also liked:</h2>
-          <div className="row justify-content-center px-2">
+          <div className="row justify-content-left px-2">
             {newMoviesArray.map((item, index) => {
               return <div key={index} className="col-4 border" onClick={() => { this.props.getMovieDetails(item.id); window.scrollTo(0, 0); }}>
-                <img src={`https://image.tmdb.org/t/p/w500${this.props.details[2].results[index].poster_path}`} style={{ width: '100%' }}></img>
+                <img src={(this.props.details[2].results[index].poster_path === null) ? '../images/image_placeholder.png' : `https://image.tmdb.org/t/p/w500${this.props.details[2].results[index].poster_path}`} style={{ width: '100%' }}></img>
               </div>;
             })}
           </div>
@@ -130,7 +159,8 @@ export default class MovieDetails extends React.Component {
       reviews =
         <div className="row">
           <p>No Reviews</p>
-        </div>;
+        </div>
+      </>;
     } else {
       reviews =
         <>
@@ -165,7 +195,7 @@ export default class MovieDetails extends React.Component {
           <div className="row">
             <div onClick={() => this.handleClick()}>
               <img className="position-absolute" src="../images/less-than-icon.png" ></img>
-              <img src={`https://image.tmdb.org/t/p/w500${backDropPath}`} style={{ width: '100%', height: '100%' }}/>
+              <img src={(backDropPath === null) ? '../images/image_placeholder.png' : `https://image.tmdb.org/t/p/w500${backDropPath}`} style={{ width: '100%', height: '100%' }}></img>
             </div>
           </div>
 
@@ -189,10 +219,27 @@ export default class MovieDetails extends React.Component {
                 <i className="far fa-list-alt fa-3x" onClick={() => this.addModal()} value="list" ></i>
               </div>
 
+              <Modal isOpen={this.state.addModalShow} toggle={() => this.addModal()} centered={true}>
+                <ModalBody>
+
+                  <label htmlFor="lists">Which list would you like to add to?</label>
+
+                  <select name="lists" id="userLists" onChange={() => this.setState({ listId: parseInt(event.target.value) })}>
+                    {this.props.lists.map(item => {
+                      return <option key={item.listId} value={item.listId}> {item.name}</option>;
+                    })}
+                  </select>
+                </ModalBody>
+                <ModalFooter>
+                  <Button color="secondary" onClick={() => this.addModal()}>Cancel</Button>
+                  <Button color="primary" onClick={() => this.addMovieToCustomList()}>Add to List</Button>
+                </ModalFooter>
+              </Modal>
+
             </div>
 
             <div className="col-6">
-              <img src={`https://image.tmdb.org/t/p/w500${posterPath}`} style={{ width: '100%' }}></img>
+              <img src={(posterPath === null) ? '../images/image_placeholder.png' : `https://image.tmdb.org/t/p/w500${posterPath}`} style={{ width: '100%' }}></img>
             </div>
 
           </div>

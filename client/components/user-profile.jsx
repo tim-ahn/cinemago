@@ -41,6 +41,7 @@ class UserProfile extends React.Component {
   }
 
   saveBioEdit() {
+    event.preventDefault();
     const fetchURL = '/api/users/' + this.props.userId;
     fetch(fetchURL, {
       method: 'PATCH',
@@ -78,15 +79,22 @@ class UserProfile extends React.Component {
       body: formData
     };
     fetch(fetchURL, options)
-      // .then(this.setState({ selectedImage: null }))
+      .then(result => result.json())
+      .then(data => {
+        const updatedProfile = { ...this.state.profile };
+        updatedProfile.imageURL = data.imageURL;
+        this.setState({ profile: updatedProfile });
+      })
       .catch(err => console.error(err));
   }
 
   onImageSelect(event) {
     const image = event.target.files[0];
     const maxImageSize = 2 * 1000 * 1000;// 2mb
-    if (image.size > maxImageSize || !['image/jpeg', 'image/png'].includes(image.type)) {
-      this.setState({ fileError: 'Image size must be less than 2MB and must be a .jpg or .png file', selectedImage: null });
+    if (image.size > maxImageSize) {
+      this.setState({ fileError: 'Image size must be less than 2MB', selectedImage: null });
+    } else if (!['image/jpeg', 'image/png'].includes(image.type)) {
+      this.setState({ fileError: 'File must be a .jpg or .png image', selectedImage: null });
     } else {
       this.setState({ fileError: null, selectedImage: image });
     }
@@ -114,8 +122,10 @@ class UserProfile extends React.Component {
     } else {
       return <>
         <div className="container mb-5">
-          <div className="d-flex flex-column justify-content-center">
-            <h3 className='text-center'>{this.state.profile.name}</h3>
+          <div>
+            <div className="w-50 mx-auto">
+              <h3 className="text-center">{this.state.profile.name}</h3>
+            </div>
             <img className='rounded mx-auto d-block' src={(this.state.profile.imageURL === null) ? '../images/image_placeholder.png' : this.state.profile.imageURL}></img>
             <div className="border border-secondary p-2 w-50 mx-auto mt-3 white">
               <div className="row justify-content-between px-3">
