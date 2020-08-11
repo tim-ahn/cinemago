@@ -109,7 +109,6 @@ export default class MovieDetails extends React.Component {
     const reviewsArray = this.props.details[0].results;
 
     const newMoviesArray = recommendedMoviesArray.filter((movies, index) => index < 3);
-    const newReviewsArray = reviewsArray.filter((reviews, index) => index < 10);
 
     if (newMoviesArray.length < 1) {
       usersAlsoLiked = null;
@@ -127,7 +126,7 @@ export default class MovieDetails extends React.Component {
         </>;
     }
 
-    if (newReviewsArray.length < 1) {
+    if (reviewsArray.length < 1) {
       reviews =
         <div className="row">
           <p>No Reviews</p>
@@ -138,30 +137,27 @@ export default class MovieDetails extends React.Component {
           <div className="row reviews">
             <h2>Reviews <img src="../images/plus-sign-icon.png"/></h2>
           </div>
-          <div className="row">
-            {newReviewsArray.map((item, index) => {
-              return (<div key={index}>
-                <p>{item.author}</p>
-                <p>{item.content}</p>
-              </div>);
-            })}
-          </div>
+          <CarouselProvider
+            naturalSlideWidth={100}
+            naturalSlideHeight={100}
+            totalSlides={reviewsArray.length}
+          >
+            <ButtonBack>Back</ButtonBack>
+            <ButtonNext>Next</ButtonNext>
+            <Slider>
+              {reviewsArray.map((item, index) => {
+                return (
+                  <Slide className="border border-dark" key={index} index={index}>
+                    <p className="p-1">User: {item.author}</p>
+                    <p className="p-1">{item.content}</p>
+                  </Slide>
+                );
+              })}
+            </Slider>
+          </CarouselProvider>
+
         </>;
     }
-
-    let testReviews = null;
-    testReviews =
-
-        <>
-          {newReviewsArray.map((item, index) => {
-            return (
-              <Slide className="border border-dark" key={index} index={index}>
-                <p className="p-1">User: {item.author}</p>
-                <p className="p-1">{item.content}</p>
-              </Slide>
-            );
-          })}
-        </>;
 
     return (
       <>
@@ -202,20 +198,7 @@ export default class MovieDetails extends React.Component {
           </div>
 
           <p>{this.props.details[1].overview}</p>
-          {/* {reviews} */}
-
-          <CarouselProvider
-            naturalSlideWidth={100}
-            naturalSlideHeight={100}
-            totalSlides={newReviewsArray.length}
-          >
-            <ButtonBack>Back</ButtonBack>
-            <ButtonNext>Next</ButtonNext>
-            <Slider>
-              {testReviews}
-            </Slider>
-          </CarouselProvider>
-
+          {reviews}
           {usersAlsoLiked}
 
           <Modal isOpen={this.state.addModalShow} toggle={() => this.addModal()} >
