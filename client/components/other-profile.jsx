@@ -68,8 +68,8 @@ class OtherProfile extends React.Component {
             </div>
             <div className="border border-secondary p-2 w-50 mx-auto mt-3 white">
               <p className="font-weight-bold">Some movies {this.state.profile.name} favorited:</p>
-              <div>
-                {this.state.favorites.slice(0, 2).map((item, index) => {
+              <div className="row">
+                {this.state.favorites.slice(0, 3).map((item, index) => {
                   let posterURL;
                   if (this.props.poster_path !== null) {
                     posterURL = `https://image.tmdb.org/t/p/w500${item.posterURL}`;
