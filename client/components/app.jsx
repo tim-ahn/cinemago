@@ -502,9 +502,10 @@ export default class App extends React.Component {
         <OtherProfile
           changeView={this.changeView}
           sendMessage={this.sendMessage}
-          userId={this.tate.userViewed}
+          userId={this.state.userViewed}
           goBack={this.goBack}
-          getOtherUserReviews={this.getOtherUserReviews} />;
+          getOtherUserReviews={this.getOtherUserReviews}
+          getMovieDetails={this.getMovieDetails} />;
     }
 
     if (this.state.view === 'login') {
