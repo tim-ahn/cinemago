@@ -496,6 +496,7 @@ export default class App extends React.Component {
         <ViewOtherReviewsPage
           changeView={this.changeView}
           otherReviews={this.state.otherUserReviews}
+          goBack={this.goBack}
         />;
 
     } else if (this.state.view === 'otherProfile') {

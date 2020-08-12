@@ -8,6 +8,7 @@ class ViewOtherReviewsPage extends React.Component {
     if (this.props.otherReviews.length > 0) {
       return (<>
         <div className="container">
+          <button className="btn btn-outline-danger position-absolute" onClick={this.props.goBack}>Go Back</button>
           <h1>Reviews</h1>
           <div className="row mt-1">
             {this.props.otherReviews.map((item, index) => {
