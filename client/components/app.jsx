@@ -14,6 +14,7 @@ import ViewReviewsPage from './view-reviews-page';
 import ViewOtherReviewsPage from './view-other-reviews-page';
 import UserMessages from './user-messages';
 import OtherProfile from './other-profile';
+import Transition from './transition-component';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -490,23 +491,31 @@ export default class App extends React.Component {
 
     if (this.state.view === 'login') {
       return (
-        <LoginPage
-          logIn={this.logIn}
-          changeView={this.changeView} />);
+        <Transition key={this.state.view}>
+          <LoginPage
+            logIn={this.logIn}
+            changeView={this.changeView} />
+        </Transition>);
     } else if (this.state.view === 'signUp') {
       return (
-        <CreateAccount
-          changeView={this.changeView}
-          signUp={this.signUp} />);
+        <Transition key={this.state.view}>
+          <CreateAccount
+            changeView={this.changeView}
+            signUp={this.signUp} />
+        </Transition>);
     } else if (this.state.view === 'details') {
       return <>
-        {pageView}
+        <Transition key={this.state.view}>
+          {pageView}
+        </Transition>;
         <Navbar changeView={this.changeView} />
       </>;
     } else {
       return <>
         <Header logOut={this.logOut} />
-        {pageView}
+        <Transition key={this.state.view}>
+          {pageView}
+        </Transition>
         <Navbar changeView={this.changeView} />
       </>;
     }
