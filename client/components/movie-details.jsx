@@ -214,7 +214,10 @@ export default class MovieDetails extends React.Component {
 
           </div>
 
-          <p>{this.props.details[1].overview}</p>
+          <div className="row mt-2 p-2">
+            <p>{this.props.details[1].overview}</p>
+          </div>
+
           {reviews}
           {usersAlsoLiked}
 
