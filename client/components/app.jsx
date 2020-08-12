@@ -35,7 +35,7 @@ export default class App extends React.Component {
       movieToReview: null,
       movieTitleToReview: '',
       userViewed: null,
-      lastPage: null,
+      lastPage: 'home',
       otherUserReviews: []
 
     };
@@ -379,12 +379,13 @@ export default class App extends React.Component {
 
   changeView(newPage, userId) {
     // userId = (typeof userId !== 'undefined') ? userId : 'undefined'
-    const lastView = this.state.view;
+    const lastView = (newPage === this.state.view) ? this.state.lastPage : this.state.view;
     if (typeof userId === 'undefined') {
       this.setState({ view: newPage, lastPage: lastView });
     } else {
       this.setState({ view: newPage, userViewed: userId, lastPage: lastView });
     }
+    window.scrollTo(0, 0);
   }
 
   goBack() {
@@ -501,9 +502,9 @@ export default class App extends React.Component {
       pageView =
         <OtherProfile
           changeView={this.changeView}
-          sendMessage={this.sendMessage}
-          userId={this.state.userViewed}
-          goBack={this.goBack} 
+          sendMessage={this.senMessage}
+          userId={this.tate.userViewed}
+          goBack={this.goBack}
           getOtherUserReviews={this.getOtherUserReviews} />;
     }
 
