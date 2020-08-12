@@ -139,19 +139,19 @@ export default class MovieDetails extends React.Component {
 
     if (reviewsArray.length < 1) {
       reviews =
-      <>
-        <div className="row reviews">
-          <h2>Reviews <img onClick={() => { this.handleClickReview(); }} src="../images/plus-sign-icon.png" /></h2>
-        </div>
-        <div className="row">
-          <p>No Reviews</p>
-        </div>
-      </>;
+        <>
+          <div className="row reviews">
+            <h2>Reviews <img onClick={() => { this.handleClickReview(); }} src="../images/plus-sign-icon.png" /></h2>
+          </div>
+          <div className="row">
+            <p>No Reviews</p>
+          </div>
+        </>;
     } else {
       reviews =
         <>
           <div className="row reviews">
-            <h2>Reviews <img onClick={() => { this.handleClickReview(); }} src="../images/plus-sign-icon.png"/></h2>
+            <h2>Reviews <img onClick={() => { this.handleClickReview(); }} src="../images/plus-sign-icon.png" /></h2>
           </div>
           <CarouselProvider
             naturalSlideWidth={100}
@@ -233,23 +233,6 @@ export default class MovieDetails extends React.Component {
           <p>{this.props.details[1].overview}</p>
           {reviews}
           {usersAlsoLiked}
-
-          <Modal isOpen={this.state.addModalShow} toggle={() => this.addModal()} >
-            <ModalBody>
-
-              <label htmlFor="lists">Which list would you like to add to?</label>
-
-              <select name="lists" id="userLists" onChange={() => this.setState({ listId: parseInt(event.target.value) })}>
-                {this.props.lists.map(item => {
-                  return <option key={item.listId} value={item.listId}> {item.name}</option>;
-                })}
-              </select>
-            </ModalBody>
-            <ModalFooter>
-              <Button color="secondary" onClick={() => this.addModal()}>Cancel</Button>
-              <Button color="primary" onClick={() => this.addMovieToCustomList()}>Add to List</Button>
-            </ModalFooter>
-          </Modal>
 
         </div>
       </>
