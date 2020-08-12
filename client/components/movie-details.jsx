@@ -16,7 +16,6 @@ export default class MovieDetails extends React.Component {
       listIconColor: '',
       listId: null
     };
-    this.handleClick = this.handleClick.bind(this);
     this.addRemoveMovieToList = this.addRemoveMovieToList.bind(this);
     this.addModal = this.addModal.bind(this);
     this.addMovieToCustomList = this.addMovieToCustomList.bind(this);
@@ -47,10 +46,6 @@ export default class MovieDetails extends React.Component {
         }
       });
     this.setState({ listId: this.props.lists[0].listId });
-  }
-
-  handleClick(event) {
-    this.props.changeView('search');
   }
 
   handleClickReview(event) {
@@ -180,10 +175,10 @@ export default class MovieDetails extends React.Component {
       <>
         <div className="container mb-5">
           <div className="row">
-            <div onClick={() => this.handleClick()}>
-              <img className="position-absolute" src="../images/less-than-icon.png" ></img>
-              <img src={(backDropPath === null) ? '../images/image_placeholder.png' : `https://image.tmdb.org/t/p/w500${backDropPath}`} style={{ width: '100%', height: '100%' }}></img>
-            </div>
+            <button onClick={this.props.goBack} className="btn btn-outline-secondary">&#60;Go Back</button>
+
+            <img src={(backDropPath === null) ? '../images/image_placeholder.png' : `https://image.tmdb.org/t/p/w500${backDropPath}`} style={{ width: '100%', height: '100%' }}></img>
+
           </div>
 
           <div className="row">
