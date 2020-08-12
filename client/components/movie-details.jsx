@@ -176,6 +176,7 @@ export default class MovieDetails extends React.Component {
         <div className="container mb-5">
           <div className="row">
             <div>
+              <button onClick={this.props.goBack} className="btn btn-outline-danger">&#60;Go Back</button>
               <img className="position-absolute" onClick={() => this.handleClick()} src="../images/less-than-icon.png" ></img>
               <img className="backdrop-poster" src={(backDropPath === null) ? '../images/image_placeholder.png' : `https://image.tmdb.org/t/p/original${backDropPath}`} style={{ width: '100%', height: '100%' }}></img>
             </div>
