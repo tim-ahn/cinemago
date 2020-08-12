@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
 import MovieSlide from './movie-slide';
 
 export default class ListCard extends React.Component {
@@ -29,7 +29,7 @@ export default class ListCard extends React.Component {
   render() {
     if (this.props.item.type === 'custom') {
       return (<>
-        <div className="col-11 m-2 border white">
+        <div className="w-100 p-2 border white">
           <h3 className="mt-2">{this.props.item.name}</h3>
           <div>
             <div className="form-row flex-nowrap">
@@ -64,7 +64,7 @@ export default class ListCard extends React.Component {
     } else {
       return (<>
 
-        <div className="col-11 m-2 border white">
+        <div className="w-100 p-2 border white">
           <h3 className="mt-2">{this.props.item.name}</h3>
           <div>
             <div className="form-row flex-nowrap">

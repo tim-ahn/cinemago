@@ -19,7 +19,7 @@ class MovieCard extends React.Component {
       posterURL = '../images/image_placeholder.png';
     }
     return (<>
-      <div className="col-3 m-2" onClick={() => this.handleClick(event)}>
+      <div className="col-4 p-2" onClick={() => this.handleClick(event)}>
         <img src={posterURL} className="card-img"></img>
       </div>
 
