@@ -8,9 +8,9 @@ export default class ListItems extends React.Component {
       return (<>
 
         <div className="container mb-5">
+          <h2>{this.props.listName}</h2>
+          <button className="btn-secondary" onClick={() => { this.props.changeView('list'); }}>Go Back to Lists</button>
           <div className="row mt-1">
-            <h2>{this.props.listName}</h2>
-            <button className="btn-secondary" onClick={() => { this.props.changeView('list'); }}>Go Back to Lists</button>
             {this.props.viewListItems.map(item => {
               return <ListItemCard
                 key={item.movieId}
@@ -28,10 +28,10 @@ export default class ListItems extends React.Component {
     } else {
       return (<>
         <div className="container">
-          <div className="row mt-1">
-            <h2>{this.props.listName}</h2>
-            <button className="btn-secondary" onClick={() => { this.props.changeView('list'); }}>Go Back to Lists</button>
-            <button className="btn-secondary" onClick={() => { this.props.changeView('ownReviews'); }}>Go Back to My Reviews</button>
+          <h2>{this.props.listName}</h2>
+          <button className="btn-secondary" onClick={() => { this.props.changeView('list'); }}>Go Back to Lists</button>
+          <div className="row mt-3">
+            <p>No movies in list</p>
           </div>
         </div>
       </>);

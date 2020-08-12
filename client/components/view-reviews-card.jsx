@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardText, CardBody, CardTitle } from 'reactstrap';
+import { Card, CardText, CardBody } from 'reactstrap';
 
 class ViewReviewsCard extends React.Component {
 
@@ -9,14 +9,12 @@ class ViewReviewsCard extends React.Component {
 
       <Card>
         <CardBody>
-
-          <CardTitle>{'something'}</CardTitle>
-
-          <CardText>{this.props.reviews}</CardText>
-
-          <button className="btn-secondary" onClick={() => this.props.changeView('review')}>Edit Review</button>
-
-          <button className='btn-danger' onClick={() => this.props.changeView('listContent')}>Delete Review</button>
+          <CardText>
+            {this.props.item.content}
+            {this.props.item.rating}
+          </CardText>
+          <button className="btn-secondary" onClick={() => this.props.editReview()}>Edit Review</button>
+          <button className='btn-danger' onClick={() => this.props.deleteReview(this.props.item.reviewId)}>Delete Review</button>
         </CardBody>
       </Card>
     );

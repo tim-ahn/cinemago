@@ -4,13 +4,19 @@ import ViewReviewsCard from './view-reviews-card';
 class ViewReviewsPage extends React.Component {
 
   render() {
-    // eslint-disable-next-line no-console
-    console.log(this.props.reviews);
     return (<>
       <div className="container">
         <div className="row mt-1">
-          <ViewReviewsCard
-            changeView={this.props.changeView}/>
+          {this.props.reviews.map((item, index) => {
+            return (
+              <ViewReviewsCard
+                key={index}
+                deleteReview={this.props.deleteReview}
+                editReview={this.props.editReview}
+                changeView={this.props.changeView}
+                item={item} />);
+          })}
+
         </div>
 
       </div>

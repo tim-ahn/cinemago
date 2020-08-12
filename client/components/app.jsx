@@ -52,7 +52,11 @@ export default class App extends React.Component {
     this.sendMessage = this.sendMessage.bind(this);
     this.deleteMessage = this.deleteMessage.bind(this);
     this.postReview = this.postReview.bind(this);
+    this.viewReviews = this.viewReviews.bind(this);
+    this.editReview = this.editReview.bind(this);
+    this.deleteReview = this.deleteReview.bind(this);
     this.changeCurrentMovieToReview = this.changeCurrentMovieToReview.bind(this);
+
   }
 
   logIn(email, password) {
@@ -279,14 +283,6 @@ export default class App extends React.Component {
       });
   }
 
-  viewReviews(reviewId, content) {
-    fetch(`/api/reviews/${this.state.userId}`)
-      .then(res => res.json())
-      .then(data => {
-        this.setState({ reviews: data });
-      });
-  }
-
   getMessages() {
     fetch(`/api/messages/${this.state.userId}`)
       .then(res => res.json())
@@ -334,6 +330,34 @@ export default class App extends React.Component {
       });
   }
 
+  viewReviews() {
+    fetch(`/api/reviews/${this.state.userId}`)
+      .then(res => res.json())
+      .then(data => {
+        this.setState({ reviews: data, view: 'ownReviews' });
+      });
+  }
+
+  editReview(movieId, content, rating) {
+    fetch('/api/reviews', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content: content, rating: rating, userId: this.state.userId, movieId: movieId })
+    })
+      .then(response => response.json())
+      .then(review => {
+        this.changeView('ownReviews');
+      });
+  }
+
+  deleteReview(reviewId) {
+    fetch(`/api/reviews/${reviewId}`, {
+      method: 'DELETE'
+    })
+      .then(res => res.json())
+      .then(data => this.viewReviews());
+  }
+
   changeCurrentMovieToReview(movieId) {
     this.setState({ movieToReview: movieId });
   }
@@ -362,6 +386,7 @@ export default class App extends React.Component {
         addItemToList={this.addItemToList}
         getMovieDetails={this.getMovieDetails}
         lists={this.state.lists}
+        changeView={this.changeView}
         searchUsers={this.searchUsers}
         otherUsers={this.state.otherUsers}
         sendMessage={this.sendMessage} />;
@@ -391,7 +416,8 @@ export default class App extends React.Component {
       pageView =
       <UserProfile
         userId={this.state.userId}
-        changeView={this.changeView} />;
+        changeView={this.changeView}
+        viewReviews={this.viewReviews}/>;
 
     } else if (this.state.view === 'listContent') {
       pageView =
@@ -421,7 +447,12 @@ export default class App extends React.Component {
       pageView =
       <ViewReviewsPage
         userId={this.state.userId}
-        viewReviews={this.state.viewReviews}
+
+        viewReviews={this.viewReviews}
+
+        editReview={this.editReview}
+        deleteReview={this.deleteReview}
+
         reviews={this.state.reviews}
         changeView={this.changeView}
       />;
@@ -439,12 +470,9 @@ export default class App extends React.Component {
           signUp={this.signUp} />);
     } else {
       return <>
-        <Header
-          logOut={this.logOut} />
+        <Header logOut={this.logOut} />
         {pageView}
-
-        <Navbar
-          changeView={this.changeView} />
+        <Navbar changeView={this.changeView} />
       </>;
     }
   }

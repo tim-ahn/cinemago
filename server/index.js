@@ -107,27 +107,30 @@ app.get('/api/details/:movieId', (req, res, next) => {
       .then(res => res.json())
   ])
     .then(data => {
-      res.json(data);
+      const sql = `
+        select "rating", "content", "name" as "author"
+        from "reviews"
+        join "users" using ("userId")
+        where "movieId" = $1
+      `;
+
+      const params = [movieId];
+      db.query(sql, params)
+        .then(result => {
+          const review = result.rows;
+          if (!review || !Array.isArray(review)) {
+            return [];
+          } else {
+            return review;
+          }
+        }).then(data2 => {
+          data[0].results = [...data2, ...data[0].results];
+          res.json(data);
+        })
+        .catch(error => next(error));
     })
     .catch(error => next(error));
 
-  // const sql = `
-  //     select "rating", "content"
-  //     from "reviews"
-  //     where "movieId" = $1
-  //   `;
-
-  // const params = [movieId];
-  // db.query(sql, params)
-  //   .then(result => {
-  //     const review = result.rows[0];
-  //     if (!review) {
-  //       next(new ClientError('No reviews currently exist', 404));
-  //     } else {
-  //       res.status(200).json(review);
-  //     }
-  //   })
-  //   .catch(error => next(error));
 });
 // end feature: user-can-view-details
 
@@ -193,7 +196,7 @@ app.post('/api/users/image/:userId', upload.single('image'), (req, res, next) =>
   // image refers to the name of the file-input on user-profile
   const userId = req.params.userId;
   const tempPath = req.file.path;
-  const targetPath = path.join(__dirname, `public/images/user-images/${userId}${path.extname(req.file.originalname)}`);
+  const targetPath = path.join(__dirname, `public/images/user-images/${req.file.originalname}`);
 
   fs.rename(tempPath, targetPath, err => {
     if (err) throw (new ClientError('fs error', 500));
@@ -204,9 +207,10 @@ app.post('/api/users/image/:userId', upload.single('image'), (req, res, next) =>
       set "imageURL" = $2
       where "userId" = $1
       `;
-  const params = [userId, `../images/user-images/${userId}${path.extname(req.file.originalname)}`];
+  const imageURL = `../images/user-images/${req.file.originalname}`;
+  const params = [userId, imageURL];
   db.query(sql, params)
-    .then(result => res.sendStatus(201))
+    .then(result => res.status(201).json({ imageURL: imageURL }))
     .catch(err => next(err));
 
 });
@@ -249,6 +253,28 @@ app.post('/api/reviews', (req, res, next) => {
     });
 });
 
+// GET request for User Can View Self/Other User Reviews
+app.get('/api/reviews/:userId', (req, res, next) => {
+  const userId = req.params.userId;
+  const sql = `
+  select *
+    from "reviews"
+    where "userId" = $1
+  `;
+  const params = [userId];
+  db.query(sql, params)
+    .then(result => {
+      // eslint-disable-next-line no-console
+      console.log(result.rows);
+      if (result.rows.length < 1) {
+        res.json([]);
+      } else {
+        res.status(200).json(result.rows);
+      }
+    })
+    .catch(err => next(err));
+}); // end of GET request for User Can View Self/Other User Reviews
+
 // PATCH request for User Can Edit Own Review
 app.patch('/api/reviews/:reviewId', (req, res, next) => {
   const reviewId = req.params.reviewId;
@@ -278,25 +304,24 @@ app.patch('/api/reviews/:reviewId', (req, res, next) => {
     .catch(err => next(err));
 }); // end of PATCH request for User Can Edit Own Review
 
-// GET request for User Can View Self/Other User Reviews
-app.get('/api/reviews/:userId', (req, res, next) => {
-  const userId = req.params.userId;
+// user can delete review
+app.delete('/api/reviews/:reviewId', (req, res, next) => {
+  const reviewId = req.params.reviewId;
   const sql = `
-  select *
-    from "reviews"
-    where "userId" = $1
+    delete from "reviews" where "reviewId" = $1
+    returning *
   `;
-  const params = [userId];
+  const params = [reviewId];
   db.query(sql, params)
     .then(result => {
       if (result.rows.length < 1) {
-        res.json([]);
+        next(new ClientError('no items in list'), 404);
       } else {
-        res.status(200).json(result.rows);
+        res.json(result.rows);
       }
     })
-    .catch(err => next(err));
-}); // end of GET request for User Can View Self/Other User Reviews
+    .catch(error => next(error));
+}); // end of user can delete review
 
 app.get('/api/lists/:userId', (req, res, next) => {
   const id = req.params.userId;
@@ -549,25 +574,6 @@ app.get('/api/search/users/:userId', (req, res, next) => {
       }
     })
     .catch(err => next(err));
-});
-
-// delete reviews
-app.delete('/api/reviews/:reviewId', (req, res, next) => {
-  const reviewId = req.params.reviewId;
-  const sql = `
-    delete from "reviews" where "reviewId" = $1
-    returning *
-  `;
-  const params = [reviewId];
-  db.query(sql, params)
-    .then(result => {
-      if (result.rows.length < 1) {
-        next(new ClientError('no items in list'), 404);
-      } else {
-        res.json(result.rows);
-      }
-    })
-    .catch(error => next(error));
 });
 
 // get all messages where sentId is equal to userId
