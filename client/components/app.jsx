@@ -418,7 +418,7 @@ export default class App extends React.Component {
         lists={this.state.lists}
         listId={this.state.currentListId}
         getMovieDetails={this.getMovieDetails}
-        changeView = {this.changeCurrentMovieToReview}/>;
+        changeCurrentMovieToReview={this.changeCurrentMovieToReview}/>;
 
     } else if (this.state.view === 'user') {
       pageView =

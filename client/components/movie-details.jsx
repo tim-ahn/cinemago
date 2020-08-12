@@ -19,6 +19,7 @@ export default class MovieDetails extends React.Component {
     this.addRemoveMovieToList = this.addRemoveMovieToList.bind(this);
     this.addModal = this.addModal.bind(this);
     this.addMovieToCustomList = this.addMovieToCustomList.bind(this);
+    this.handleClickReview = this.handleClickReview.bind(this);
   }
 
   componentDidMount() {
@@ -49,6 +50,11 @@ export default class MovieDetails extends React.Component {
 
   handleClick(event) {
     this.props.changeView('search');
+  }
+
+  handleClickReview(event) {
+    this.props.changeView('review');
+    this.props.changeCurrentMovieToReview(this.props.details[0].id);
   }
 
   addModal() {
@@ -135,7 +141,7 @@ export default class MovieDetails extends React.Component {
       reviews =
       <>
         <div className="row reviews">
-          <h2>Reviews <img onClick={() => { this.props.changeCurrentMovieToReview(this.props.details[0].id); this.props.changeView('review'); }} src="../images/plus-sign-icon.png" /></h2>
+          <h2>Reviews <img onClick={() => { this.handleClickReview(); }} src="../images/plus-sign-icon.png" /></h2>
         </div>
         <div className="row">
           <p>No Reviews</p>
@@ -145,7 +151,7 @@ export default class MovieDetails extends React.Component {
       reviews =
         <>
           <div className="row reviews">
-            <h2>Reviews <img src="../images/plus-sign-icon.png"/></h2>
+            <h2>Reviews <img onClick={() => { this.handleClickReview(); }} src="../images/plus-sign-icon.png"/></h2>
           </div>
           <CarouselProvider
             naturalSlideWidth={100}
