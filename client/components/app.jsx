@@ -13,6 +13,7 @@ import Header from './header';
 import ViewReviewsPage from './view-reviews-page';
 import UserMessages from './user-messages';
 import OtherProfile from './other-profile';
+import Transition from './transition-component';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -493,7 +494,9 @@ export default class App extends React.Component {
     } else {
       return <>
         <Header logOut={this.logOut} />
-        {pageView}
+        <Transition key={this.state.view}>
+          {pageView}
+        </Transition>
         <Navbar changeView={this.changeView} />
       </>;
     }

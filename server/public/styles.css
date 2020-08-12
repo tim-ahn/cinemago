@@ -108,3 +108,13 @@ button.focus,button:active.focus,button.active.focus {
   .card-text {font-size:1.0rem;}
   .listButton {font-size: 1rem;} /*1rem = 16px*/
 }
+
+
+.transition-appear {
+  opacity: 0.01;
+}
+
+.transition-appear.transition-appear-active {
+  opacity: 1;
+  transition: opacity 0.5s ;
+}
