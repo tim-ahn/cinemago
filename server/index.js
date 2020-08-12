@@ -253,6 +253,28 @@ app.post('/api/reviews', (req, res, next) => {
     });
 });
 
+// GET request for User Can View Self/Other User Reviews
+app.get('/api/reviews/:userId', (req, res, next) => {
+  const userId = req.params.userId;
+  const sql = `
+  select *
+    from "reviews"
+    where "userId" = $1
+  `;
+  const params = [userId];
+  db.query(sql, params)
+    .then(result => {
+      // eslint-disable-next-line no-console
+      console.log(result.rows);
+      if (result.rows.length < 1) {
+        res.json([]);
+      } else {
+        res.status(200).json(result.rows);
+      }
+    })
+    .catch(err => next(err));
+}); // end of GET request for User Can View Self/Other User Reviews
+
 // PATCH request for User Can Edit Own Review
 app.patch('/api/reviews/:reviewId', (req, res, next) => {
   const reviewId = req.params.reviewId;
@@ -282,25 +304,24 @@ app.patch('/api/reviews/:reviewId', (req, res, next) => {
     .catch(err => next(err));
 }); // end of PATCH request for User Can Edit Own Review
 
-// GET request for User Can View Self/Other User Reviews
-app.get('/api/reviews/:userId', (req, res, next) => {
-  const userId = req.params.userId;
+// user can delete review
+app.delete('/api/reviews/:reviewId', (req, res, next) => {
+  const reviewId = req.params.reviewId;
   const sql = `
-  select *
-    from "reviews"
-    where "userId" = $1
+    delete from "reviews" where "reviewId" = $1
+    returning *
   `;
-  const params = [userId];
+  const params = [reviewId];
   db.query(sql, params)
     .then(result => {
       if (result.rows.length < 1) {
-        res.json([]);
+        next(new ClientError('no items in list'), 404);
       } else {
-        res.status(200).json(result.rows);
+        res.json(result.rows);
       }
     })
-    .catch(err => next(err));
-}); // end of GET request for User Can View Self/Other User Reviews
+    .catch(error => next(error));
+}); // end of user can delete review
 
 app.get('/api/lists/:userId', (req, res, next) => {
   const id = req.params.userId;
@@ -553,25 +574,6 @@ app.get('/api/search/users/:userId', (req, res, next) => {
       }
     })
     .catch(err => next(err));
-});
-
-// delete reviews
-app.delete('/api/reviews/:reviewId', (req, res, next) => {
-  const reviewId = req.params.reviewId;
-  const sql = `
-    delete from "reviews" where "reviewId" = $1
-    returning *
-  `;
-  const params = [reviewId];
-  db.query(sql, params)
-    .then(result => {
-      if (result.rows.length < 1) {
-        next(new ClientError('no items in list'), 404);
-      } else {
-        res.json(result.rows);
-      }
-    })
-    .catch(error => next(error));
 });
 
 // get all messages where sentId is equal to userId
