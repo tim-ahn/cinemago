@@ -225,23 +225,6 @@ export default class MovieDetails extends React.Component {
           {reviews}
           {usersAlsoLiked}
 
-          <Modal isOpen={this.state.addModalShow} toggle={() => this.addModal()} >
-            <ModalBody>
-
-              <label htmlFor="lists">Which list would you like to add to?</label>
-
-              <select name="lists" id="userLists" onChange={() => this.setState({ listId: parseInt(event.target.value) })}>
-                {this.props.lists.map(item => {
-                  return <option key={item.listId} value={item.listId}> {item.name}</option>;
-                })}
-              </select>
-            </ModalBody>
-            <ModalFooter>
-              <Button color="secondary" onClick={() => this.addModal()}>Cancel</Button>
-              <Button color="primary" onClick={() => this.addMovieToCustomList()}>Add to List</Button>
-            </ModalFooter>
-          </Modal>
-
         </div>
       </>
     );
