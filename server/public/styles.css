@@ -81,6 +81,10 @@ button.focus,button:active.focus,button.active.focus {
   font-size: 0.6rem;
 }
 
+.backdrop-poster {
+  box-shadow:  5px 5px 5px 5px #ccc
+}
+
 .listButton {
   font-size: 0.8rem;
 }
