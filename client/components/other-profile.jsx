@@ -5,9 +5,11 @@ class OtherProfile extends React.Component {
     super(props);
     this.state = {
       loading: true,
-      profile: {}
+      profile: {},
+      reviews: []
     };
     this.goBack = this.goBack.bind(this);
+    // this.getOtherUserReviews = this.getOtherUserReviews.bind(this);
   }
 
   componentDidMount() {
@@ -25,7 +27,25 @@ class OtherProfile extends React.Component {
           });
         }
       ).catch(err => console.error(err));
+
+    const userReviewsPath = '/api/reviews/' + this.props.userId;
+    fetch(userReviewsPath)
+      .then(result => result.json())
+      .then(result => {
+        this.setState({ reviews: result });
+      })
+      .catch(err => console.error(err));
   }
+
+  // getOtherUserReviews() {
+  //   const userReviewsPath = '/api/reviews/' + this.props.userId;
+  //   fetch(userReviewsPath)
+  //     .then(result => result.json())
+  //     .then(result => {
+  //       this.setState({ reviews: result });
+  //     })
+  //     .catch(err => console.error(err));
+  // }
 
   goBack() {
     this.props.changeView('search');
@@ -53,6 +73,7 @@ class OtherProfile extends React.Component {
             </div>
             <div className="border border-secondary p-2 w-50 mx-auto mt-3 white">
               <p className="font-weight-bold">Reviews:</p>
+              <button className="btn btn-outline-dark" onClick={() => this.props.changeView('otherReviews')}>Reviews</button>
             </div>
 
           </div>

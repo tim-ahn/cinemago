@@ -11,6 +11,7 @@ import LoginPage from './login-page';
 import CreateAccount from './create-account';
 import Header from './header';
 import ViewReviewsPage from './view-reviews-page';
+import ViewOtherReviewsPage from './view-other-reviews-page';
 import UserMessages from './user-messages';
 import OtherProfile from './other-profile';
 
@@ -455,6 +456,16 @@ export default class App extends React.Component {
       pageView =
         <ViewReviewsPage
           userId={this.state.userId}
+          viewReviews={this.viewReviews}
+          editReview={this.editReview}
+          deleteReview={this.deleteReview}
+          reviews={this.state.reviews}
+          changeView={this.changeView}
+        />;
+    } else if (this.state.view === 'otherReviews') {
+      pageView =
+        <ViewOtherReviewsPage
+          // otherUserId={this.state.userViewed}
           viewReviews={this.viewReviews}
           editReview={this.editReview}
           deleteReview={this.deleteReview}
