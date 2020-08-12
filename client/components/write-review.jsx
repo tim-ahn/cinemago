@@ -15,7 +15,7 @@ class WriteReview extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    this.props.postReview(this.props.movieToReview, this.state.content, this.state.rating);
+    this.props.postReview(this.props.movieToReview, this.state.content, this.state.rating, this.props.movieTitleToReview);
   }
 
   handleText(event) {
@@ -23,58 +23,48 @@ class WriteReview extends React.Component {
   }
 
   render() {
-    let posterURL;
-    if (this.props.poster_path !== null) {
-      posterURL = `https://image.tmdb.org/t/p/w500${this.props.poster_path}`;
-    } else {
-      posterURL = '../images/image_placeholder.png';
-    }
 
-    return (
-
-      <form onSubmit={this.handleSubmit} className="container mb-5">
+    return (<>
+      <div className="container">
 
         <h2>Write a Review</h2>
 
-        <div className="movieReviewCard">
+        <div >
           <div className="row">
-            <div className="col">
-              <img src={posterURL} className="card-img" styles=""></img>
-            </div>
-            <div className="col">
-              <h6 className="card-title"></h6>
-              <h6 className="card-subtitle">Rating:{this.props.rating}</h6>
-              <h6 className="card-subtitle">Release Year:{this.props.releaseYear}</h6>
-              <p className="card-text">{'something'}</p>
-            </div>
+            <h3 className="text-center">{this.props.movieTitleToReview}</h3>
           </div>
         </div>
         <br></br>
 
-        <StarRatingComponent
-          name="rate1"
-          starCount={5}
-          value={this.state.rating}
-          style={{ justifyContent: 'center' }}
-          onStarClick={this.onStarClick.bind(this)}
-        />
-        <br></br>
-        <textarea
-          placeholder="Write a review here"
-          name="content"
-          id="content"
-          cols="30"
-          rows="10"
-          style={{ color: 'lightgrey', width: '40%' }}
-          onChange={this.handleText}>
-        </textarea>
-        <br></br>
-        <div className="button-container">
-          <button className="btn btn-secondary" onClick={() => this.props.changeView('listContent')}>Cancel</button>
-          <button className="btn btn-primary" onClick={() => this.props.postReview({ content: this.state.content, rating: this.state.rating })}>Submit</button>
-        </div>
+        <form onSubmit={this.handleSubmit} className="container mb-5">
 
-      </form>
+          <StarRatingComponent
+            name="rate1"
+            starCount={5}
+            value={this.state.rating}
+            style={{ justifyContent: 'center' }}
+            onStarClick={this.onStarClick.bind(this)}
+          />
+          <br></br>
+          <textarea
+            placeholder="Write a review here"
+            name="content"
+            id="content"
+            cols="30"
+            rows="10"
+            style={{ color: 'lightgrey', width: '40%' }}
+            onChange={this.handleText}>
+          </textarea>
+          <br></br>
+          <div className="button-container">
+            <button className="btn btn-secondary" onClick={() => this.props.changeView('listContent')}>Cancel</button>
+            <button className="btn btn-primary" type="submit">Submit</button>
+          </div>
+
+        </form>
+      </div>
+
+    </>
 
     );
   }

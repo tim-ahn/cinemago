@@ -36,6 +36,7 @@ class ViewReviewsCard extends React.Component {
       <>
         <div className="row m-2 border container white">
           <div className="col m-2">
+            <p>{this.props.item.title}</p>
             <p>Content: {this.props.item.content}</p>
             <p>Rating:{this.props.item.rating}</p>
           </div>
