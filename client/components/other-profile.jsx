@@ -6,10 +6,12 @@ class OtherProfile extends React.Component {
     this.state = {
       loading: true,
       profile: {},
+      reviews: [],
       lists: [],
       favorites: []
     };
     this.goBack = this.goBack.bind(this);
+    this.getOtherUserReviews = this.getOtherUserReviews.bind(this);
   }
 
   componentDidMount() {
@@ -44,6 +46,18 @@ class OtherProfile extends React.Component {
               );
           });
       }).catch(err => console.error(err));
+  }
+
+  getOtherUserReviews(userId) {
+    fetch(`/api/reviews/${userId}`)
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          this.setState({ reviews: data });
+          this.props.getOtherUserReviews(data);
+        }
+      })
+      .then(data => this.props.changeView('otherReviews'));
   }
 
   goBack() {
@@ -89,6 +103,7 @@ class OtherProfile extends React.Component {
             </div>
             <div className="border border-secondary p-2 w-50 mx-auto mt-3 white">
               <p className="font-weight-bold">Reviews:</p>
+              <button className="btn btn-outline-dark" onClick={() => this.getOtherUserReviews(this.props.userId)}>Reviews</button>
             </div>
 
           </div>
@@ -117,6 +132,7 @@ class OtherProfile extends React.Component {
             </div>
             <div className="border border-secondary p-2 w-50 mx-auto mt-3 white">
               <p className="font-weight-bold">Reviews:</p>
+              <button className="btn btn-outline-dark" onClick={() => this.getOtherUserReviews(this.props.userId)}>Reviews</button>
             </div>
 
           </div>
