@@ -340,15 +340,14 @@ export default class App extends React.Component {
       });
   }
 
-  editReview(movieId, content, rating) {
-    fetch('/api/reviews', {
+  editReview(reviewId, content, rating) {
+    fetch(`/api/reviews/${reviewId}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ content: content, rating: rating, userId: this.state.userId, movieId: movieId })
+      body: JSON.stringify({ content: content, rating: rating, reviewId: reviewId })
     })
-      .then(response => response.json())
-      .then(review => {
-        this.changeView('ownReviews');
+      .then(data => {
+        this.viewReviews();
       });
   }
 
