@@ -26,10 +26,14 @@ export default class ListCard extends React.Component {
     if (this.props.item.type === 'custom') {
       return (<>
         <div className="col-11 m-2 border white">
-          <h3>{this.props.item.name}</h3>
+          <h3 className="mt-2">{this.props.item.name}</h3>
           <div>
-            <Button color="secondary" onClick={() => this.searchModal()} className="m-2">Add To list</Button>
-            <Modal isOpen={this.state.searchModalShow} toggle={() => this.searchModal()} >
+            <div className="form-row flex-nowrap">
+              <Button outline={true} color="secondary" onClick={() => this.searchModal()} className="dynamicButton m-2">Add To list</Button>
+              <button className="dynamicButton btn btn-outline-secondary m-2" onClick={() => { this.props.getItemsInList(this.props.item.listId); }}>View List Content</button>
+              <Button outline={true} color="danger" className="dynamicButton m-2" onClick={() => this.deleteModal()}>Delete List</Button>
+            </div>
+            <Modal isOpen={this.state.searchModalShow} toggle={() => this.searchModal()} centered={true}>
               <ModalBody>
                 Leave this page and search for movies?
               </ModalBody>
@@ -39,10 +43,8 @@ export default class ListCard extends React.Component {
               </ModalFooter>
             </Modal>
           </div>
-          <button className="btn btn-secondary m-2" onClick={() => { this.props.getItemsInList(this.props.item.listId); }}>View List Content</button>
           <div>
-            <Button color="danger" className="m-2" onClick={() => this.deleteModal()}>Delete List</Button>
-            <Modal isOpen={this.state.deleteModalShow} toggle={() => this.deleteModal()} >
+            <Modal isOpen={this.state.deleteModalShow} toggle={() => this.deleteModal()} centered={true}>
               <ModalBody>
                 Are you sure you want to delete this list?
               </ModalBody>
@@ -58,10 +60,13 @@ export default class ListCard extends React.Component {
       return (<>
 
         <div className="col-11 m-2 border white">
-          <h3>{this.props.item.name}</h3>
+          <h3 className="mt-2">{this.props.item.name}</h3>
           <div>
-            <Button color="secondary" onClick={() => this.searchModal()} className="m-2">Add To list</Button>
-            <Modal isOpen={this.state.searchModalShow} toggle={() => this.searchModal()} >
+            <div className="form-row flex-nowrap">
+              <Button outline={true} color="secondary" onClick={() => this.searchModal()} className="dynamicButton m-2">Add To list</Button>
+              <button className="dynamicButton btn btn-outline-secondary m-2" onClick={() => { this.props.getItemsInList(this.props.item.listId, this.props.item.name); }}>View List Content</button>
+            </div>
+            <Modal isOpen={this.state.searchModalShow} toggle={() => this.searchModal()} centered={true}>
               <ModalBody>
                 Leave this page and search for movies?
               </ModalBody>
@@ -71,7 +76,6 @@ export default class ListCard extends React.Component {
               </ModalFooter>
             </Modal>
           </div>
-          <button className="btn btn-secondary m-2" onClick={() => { this.props.getItemsInList(this.props.item.listId, this.props.item.name); }}>View List Content</button>
         </div>
 
       </>);

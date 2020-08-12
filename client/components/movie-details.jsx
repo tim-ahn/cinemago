@@ -1,5 +1,7 @@
 import React from 'react';
 import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
+import { CarouselProvider, Slider, Slide, ButtonBack, ButtonNext } from 'pure-react-carousel';
+import 'pure-react-carousel/dist/react-carousel.es.css';
 
 export default class MovieDetails extends React.Component {
   constructor(props) {
@@ -93,16 +95,7 @@ export default class MovieDetails extends React.Component {
     this.addModal();
   }
 
-  // first need to create a modal to add movies to existing lists
-  // then option to create your own list
-  // addMovieToCustomList() {
-  //   const modalToggleOn = this.state.modalToggleOn;
-
-  //   this.props.addItemToList(this.props.lists[])
-  // }
-
   render() {
-    let modal = null;
     const backDropPath = this.props.details[1].backdrop_path;
     const posterPath = this.props.details[1].poster_path;
     let youtubeURL = null;
@@ -116,27 +109,6 @@ export default class MovieDetails extends React.Component {
     const reviewsArray = this.props.details[0].results;
 
     const newMoviesArray = recommendedMoviesArray.filter((movies, index) => index < 3);
-    const newReviewsArray = reviewsArray.filter((reviews, index) => index < 2);
-    if (this.state.modalToggleOn === true) {
-      modal = <>
-        <Modal isOpen={this.state.addModalShow} toggle={() => this.addModal()}>
-          <ModalBody>
-
-            <label htmlFor="lists">Which list would you like to add to?</label>
-
-            <select name="lists" id="userLists" onChange={() => this.setState({ listId: parseInt(event.target.value) })}>
-              {this.props.lists.map(item => {
-                return <option key={item.listId} value={item.listId}> {item.name}</option>;
-              })}
-            </select>
-          </ModalBody>
-          <ModalFooter>
-            <Button color="secondary" onClick={() => this.addModal()}>Cancel</Button>
-            <Button color="primary" onClick={() => { this.add(); }}>Add to List</Button>{' '}
-          </ModalFooter>
-        </Modal>
-      </>;
-    }
 
     if (newMoviesArray < 1) {
       usersAlsoLiked = <>
@@ -159,12 +131,10 @@ export default class MovieDetails extends React.Component {
         </>;
     }
 
-    if (newReviewsArray < 1) {
+    if (reviewsArray.length < 1) {
       reviews = <>
+        <h2>Reviews <img src="../images/plus-sign-icon.png" /></h2>
         <div className="row reviews">
-          <h2>Reviews <img src="../images/plus-sign-icon.png"></img> </h2>
-        </div>
-        <div className="row">
           <p>No Reviews</p>
         </div>
       </>;
@@ -172,16 +142,27 @@ export default class MovieDetails extends React.Component {
       reviews =
         <>
           <div className="row reviews">
-            <h2>Reviews <img src="../images/plus-sign-icon.png"></img> </h2>
+            <h2>Reviews <img src="../images/plus-sign-icon.png" /></h2>
           </div>
-          <div className="row">
-            {newReviewsArray.map((item, index) => {
-              return (<div key={index} className="col-6 border">
-                <p>{item.author}</p>
-                <p>{item.content}</p>
-              </div>);
-            })}
-          </div>
+          <CarouselProvider
+            naturalSlideWidth={100}
+            naturalSlideHeight={100}
+            totalSlides={reviewsArray.length}
+          >
+            <ButtonBack>Back</ButtonBack>
+            <ButtonNext>Next</ButtonNext>
+            <Slider>
+              {reviewsArray.map((item, index) => {
+                return (
+                  <Slide className="border border-dark" key={index} index={index}>
+                    <p className="p-1">User: {item.author}</p>
+                    <p className="p-1">{item.content}</p>
+                  </Slide>
+                );
+              })}
+            </Slider>
+          </CarouselProvider>
+
         </>;
     }
 
@@ -215,7 +196,7 @@ export default class MovieDetails extends React.Component {
                 <i className="far fa-list-alt fa-3x" onClick={() => this.addModal()} value="list" ></i>
               </div>
 
-              <Modal isOpen={this.state.addModalShow} toggle={() => this.addModal()} >
+              <Modal isOpen={this.state.addModalShow} toggle={() => this.addModal()} centered={true}>
                 <ModalBody>
 
                   <label htmlFor="lists">Which list would you like to add to?</label>
@@ -241,10 +222,9 @@ export default class MovieDetails extends React.Component {
           </div>
 
           <p>{this.props.details[1].overview}</p>
-
           {reviews}
           {usersAlsoLiked}
-          {modal}
+
         </div>
       </>
     );

@@ -53,12 +53,12 @@ class MovieLongCard extends React.Component {
             <h4 className="card-subtitle mb-2 text-muted">Release Year:{year}</h4>
             <p className="card-text">{this.props.fullInfo.overview}</p>
             <div className="form-row flex-nowrap">
-              <Button color="light" className="dynamicButton m-2" onClick={() => this.handleClick(event)}>View Details</Button>
-              <Button color="secondary" onClick={() => this.addModal()} className="dynamicButton m-2">Add To list</Button>
+              <Button outline={true} color="info" className="dynamicButton m-2" onClick={() => this.handleClick(event)}>View Details</Button>
+              <Button outline={true} color="success" onClick={() => this.addModal()} className="dynamicButton m-2">Add To list</Button>
             </div>
             <div>
 
-              <Modal isOpen={this.state.addModalShow} toggle={() => this.addModal()} >
+              <Modal isOpen={this.state.addModalShow} toggle={() => this.addModal()} centered={true}>
                 <ModalBody>
 
                   <label htmlFor="lists">Which list would you like to add to?</label>

@@ -46,10 +46,10 @@ export default class ListItemCard extends React.Component {
             <h4 className="card-subtitle mb-2 text-muted">Release Year:{year}</h4>
             <p className="card-text">{this.props.fullInfo.description}</p>
             <div className="form-row flex-nowrap">
-              <button className="dynamicButton btn btn-light m-2" onClick={() => { this.props.changeCurrentMovieToReview(this.props.fullInfo.movieId); this.props.changeView('review'); }} >Write a Review</button>
-              <Button color="danger" onClick={() => this.removeModal()} className="dynamicButton m-2">Remove</Button>
+              <button className="dynamicButton btn btn-outline-secondary m-2" onClick={() => { this.props.changeCurrentMovieToReview(this.props.fullInfo.movieId); this.props.changeView('review'); }} >Write a Review</button>
+              <Button outline={true} color="danger" onClick={() => this.removeModal()} className="dynamicButton m-2">Remove</Button>
             </div>
-            <Modal isOpen={this.state.removeModalShow} toggle={() => this.removeModal()} >
+            <Modal isOpen={this.state.removeModalShow} toggle={() => this.removeModal()} centered={true}>
               <ModalBody>
                 Are you sure you want to remove this movie?
               </ModalBody>

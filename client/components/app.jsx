@@ -12,6 +12,7 @@ import CreateAccount from './create-account';
 import Header from './header';
 import ViewReviewsPage from './view-reviews-page';
 import UserMessages from './user-messages';
+import OtherProfile from './other-profile';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -29,7 +30,8 @@ export default class App extends React.Component {
       userId: 1, // Hardcoded for now, will be set after user logs in and will be helpful in fetching to backend
       reviews: [],
       messages: [],
-      movieToReview: null
+      movieToReview: null,
+      userViewed: null
     };
     this.searchResults = this.searchResults.bind(this);
     this.searchFilteredResults = this.searchFilteredResults.bind(this);
@@ -362,8 +364,13 @@ export default class App extends React.Component {
     this.setState({ movieToReview: movieId });
   }
 
-  changeView(newPage) {
-    this.setState({ view: newPage });
+  changeView(newPage, userId) {
+    // userId = (typeof userId !== 'undefined') ? userId : 'undefined'
+    if (typeof userId === 'undefined') {
+      this.setState({ view: newPage });
+    } else {
+      this.setState({ view: newPage, userViewed: userId });
+    }
   }
 
   render() {
@@ -447,15 +454,19 @@ export default class App extends React.Component {
       pageView =
       <ViewReviewsPage
         userId={this.state.userId}
-
         viewReviews={this.viewReviews}
-
         editReview={this.editReview}
         deleteReview={this.deleteReview}
-
         reviews={this.state.reviews}
         changeView={this.changeView}
       />;
+
+    } else if (this.state.view === 'otherProfile') {
+      pageView =
+        <OtherProfile
+          changeView={this.changeView}
+          sendMessage={this.sendMessage}
+          userId={this.state.userViewed}/>;
     }
 
     if (this.state.view === 'login') {
