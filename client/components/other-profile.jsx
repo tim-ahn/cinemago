@@ -11,7 +11,6 @@ class OtherProfile extends React.Component {
       favorites: []
     };
 
-    this.goBack = this.goBack.bind(this);
     this.getOtherUserReviews = this.getOtherUserReviews.bind(this);
 
   }
@@ -60,10 +59,6 @@ class OtherProfile extends React.Component {
         }
       })
       .then(data => this.props.changeView('otherReviews'));
-  }
-
-  goBack() {
-    this.props.changeView('search');
   }
 
   render() {
