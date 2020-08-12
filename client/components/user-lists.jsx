@@ -1,6 +1,7 @@
 import React from 'react';
 import ListCard from './list-card';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { CSSTransitionGroup } from 'react-transition-group';
 
 export default class UserLists extends React.Component {
   constructor(props) {
@@ -50,16 +51,25 @@ export default class UserLists extends React.Component {
             </ModalFooter>
           </Modal>
         </div>
-        {this.props.lists.map(item => (
-          <ListCard
-            getMovieDetails={this.props.getMovieDetails}
-            key={item.listId}
-            id={item.listId}
-            item={item}
-            deleteList={this.props.deleteList}
-            changeView={this.props.changeView}
-            getItemsInList={this.props.getItemsInList} />
-        ))}
+        <CSSTransitionGroup
+          key={'my-lists'}
+          transitionName="example"
+          transitionAppear={false}
+          transitionAppearTimeout={500}
+          transitionEnter={true}
+          transitionLeave={true}>
+          {this.props.lists.map(item => (
+            <ListCard
+              getMovieDetails={this.props.getMovieDetails}
+              key={item.listId}
+              id={item.listId}
+              item={item}
+              deleteList={this.props.deleteList}
+              changeView={this.props.changeView}
+              getItemsInList={this.props.getItemsInList} />
+          ))}
+        </CSSTransitionGroup>
+
       </div>
 
     </>);
