@@ -72,17 +72,17 @@ class OtherProfile extends React.Component {
           <div className="d-flex flex-column justify-content-center">
             <h3 className='text-center'>{this.state.profile.name}</h3>
             <img className='profile-img rounded mx-auto d-block' src={(this.state.profile.imageURL === null) ? '../images/image_placeholder.png' : this.state.profile.imageURL}></img>
-            <div className="border border-secondary p-2 w-50 mx-auto mt-3 white">
+            <div className="border border-secondary p-2 w-100 mx-auto mt-3 white">
               <div className="row justify-content-between px-3">
                 <p className="font-weight-bold">Bio:</p>
               </div>
               <p className="text-muted px-1">{this.state.profile.bio}</p>
             </div>
-            <div className="border border-secondary p-2 w-50 mx-auto mt-3 white">
+            <div className="border border-secondary p-2 w-100 mx-auto mt-3 white">
               <p className="font-weight-bold">Favorite Movies:</p>
               <MovieSlide getMovieDetails={this.props.getMovieDetails} movies={this.state.favorites}/>
             </div>
-            <div className="border border-secondary p-2 w-50 mx-auto mt-3 white">
+            <div className="border border-secondary p-2 w-100 mx-auto mt-3 white">
               <p className="font-weight-bold">Reviews:</p>
               <button className="btn btn-outline-dark" onClick={() => this.getOtherUserReviews(this.props.userId)}>Reviews</button>
             </div>

@@ -378,7 +378,6 @@ export default class App extends React.Component {
   }
 
   changeView(newPage, userId) {
-    // userId = (typeof userId !== 'undefined') ? userId : 'undefined'
     const lastView = (newPage === this.state.view) ? this.state.lastPage : this.state.view;
     if (typeof userId === 'undefined') {
       this.setState({ view: newPage, lastPage: lastView });
