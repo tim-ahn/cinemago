@@ -50,7 +50,6 @@ class OtherProfile extends React.Component {
       }).catch(err => console.error(err));
   }
 
-
   getOtherUserReviews(userId) {
     fetch(`/api/reviews/${userId}`)
       .then(res => res.json())
