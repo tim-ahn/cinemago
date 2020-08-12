@@ -80,10 +80,15 @@ button.focus,button:active.focus,button.active.focus {
   box-shadow:  5px 5px 5px 5px #ccc
 }
 
+.listButton {
+  font-size: 0.8rem;
+}
+
 @media (min-width: 544px) {
   .card-title {font-size:2rem;}
   .card-subtitle, .dynamicButton {font-size:0.8rem;}
-  .card-text {font-size:0.8rem;}/*1rem = 16px*/
+  .card-text {font-size:0.8rem;}
+  .listButton {font-size: 0.8rem;}/*1rem = 16px*/
 }
 
 /* /* Medium devices (tablets, 768px and up) */
@@ -104,5 +109,16 @@ button.focus,button:active.focus,button.active.focus {
 @media (min-width: 1200px) {
   .card-title {font-size:3.5rem;}
   .card-subtitle, .dynamicButton {font-size:1.5rem;}
-  .card-text {font-size:1.0rem;} /*1rem = 16px*/
+  .card-text {font-size:1.0rem;}
+  .listButton {font-size: 1rem;} /*1rem = 16px*/
+}
+
+
+.transition-appear {
+  opacity: 0.01;
+}
+
+.transition-appear.transition-appear-active {
+  opacity: 1;
+  transition: opacity 0.5s ;
 }
