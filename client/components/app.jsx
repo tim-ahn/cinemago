@@ -412,15 +412,15 @@ export default class App extends React.Component {
 
     } else if (this.state.view === 'details') {
       pageView =
-      <MovieDetails
-        changeView={this.changeView}
-        details={this.state.details}
-        addItemToList={this.addItemToList}
-        removeItemsInListMovieDetails={this.removeItemsInListMovieDetails}
-        lists={this.state.lists}
-        listId={this.state.currentListId}
-        getMovieDetails={this.getMovieDetails}
-        changeCurrentMovieToReview={this.changeCurrentMovieToReview}/>;
+        <MovieDetails
+          changeView={this.changeView}
+          details={this.state.details}
+          addItemToList={this.addItemToList}
+          removeItemsInListMovieDetails={this.removeItemsInListMovieDetails}
+          lists={this.state.lists}
+          listId={this.state.currentListId}
+          getMovieDetails={this.getMovieDetails}
+          changeCurrentMovieToReview={this.changeCurrentMovieToReview} />;
 
     } else if (this.state.view === 'user') {
       pageView =
@@ -483,6 +483,11 @@ export default class App extends React.Component {
         <CreateAccount
           changeView={this.changeView}
           signUp={this.signUp} />);
+    } else if (this.state.view === 'details') {
+      return <>
+        {pageView}
+        <Navbar changeView={this.changeView} />
+      </>;
     } else {
       return <>
         <Header logOut={this.logOut} />
