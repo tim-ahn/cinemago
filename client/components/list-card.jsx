@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import MovieCard from './movie-card';
+
 import MovieSlide from './movie-slide';
 export default class ListCard extends React.Component {
   constructor(props) {
