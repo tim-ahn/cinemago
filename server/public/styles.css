@@ -15,6 +15,11 @@ body {
   overflow-x: auto;
   width:95%
 }
+
+.profile-img{
+  max-height: 400px;
+}
+
 body::-webkit-scrollbar,.movie-slide::-webkit-scrollbar {
     width: 1em;
 }

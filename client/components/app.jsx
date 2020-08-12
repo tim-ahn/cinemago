@@ -35,7 +35,9 @@ export default class App extends React.Component {
       movieToReview: null,
       movieTitleToReview: '',
       userViewed: null,
+      lastPage: null,
       otherUserReviews: []
+
     };
     this.searchResults = this.searchResults.bind(this);
     this.searchFilteredResults = this.searchFilteredResults.bind(this);
@@ -62,7 +64,9 @@ export default class App extends React.Component {
     this.editReview = this.editReview.bind(this);
     this.deleteReview = this.deleteReview.bind(this);
     this.changeCurrentMovieToReview = this.changeCurrentMovieToReview.bind(this);
+    this.goBack = this.goBack.bind(this);
     this.getOtherUserReviews = this.getOtherUserReviews.bind(this);
+
   }
 
   logIn(email, password) {
@@ -122,7 +126,8 @@ export default class App extends React.Component {
       details: [],
       viewListItems: [],
       currentListName: '',
-      messages: []
+      messages: [],
+      lastPage: null
     });
   }
 
@@ -235,8 +240,7 @@ export default class App extends React.Component {
       .then(res => res.json())
       .then(data => {
         this.setState({ details: data });
-      })
-      .then(data => this.changeView('details'));
+      }).then(data => this.changeView('details'));
   }
 
   addItemToList(listId, movieDetails) {
@@ -375,11 +379,18 @@ export default class App extends React.Component {
 
   changeView(newPage, userId) {
     // userId = (typeof userId !== 'undefined') ? userId : 'undefined'
+    const lastView = this.state.view;
     if (typeof userId === 'undefined') {
-      this.setState({ view: newPage });
+      this.setState({ view: newPage, lastPage: lastView });
     } else {
-      this.setState({ view: newPage, userViewed: userId });
+      this.setState({ view: newPage, userViewed: userId, lastPage: lastView });
     }
+  }
+
+  goBack() {
+    this.setState(prevState => {
+      return { view: prevState.lastPage, lastPage: prevState.view };
+    });
   }
 
   render() {
@@ -391,7 +402,9 @@ export default class App extends React.Component {
           getTrending={this.getTrending}
           results={this.state.trending}
           getMovieDetails={this.getMovieDetails}
-          getUserLists={this.getUserLists} />;
+          getUserLists={this.getUserLists}
+
+        />;
 
     } else if (this.state.view === 'search') {
       pageView =
@@ -406,6 +419,7 @@ export default class App extends React.Component {
           searchUsers={this.searchUsers}
           otherUsers={this.state.otherUsers}
           sendMessage={this.sendMessage}
+
         />;
 
     } else if (this.state.view === 'list') {
@@ -417,7 +431,8 @@ export default class App extends React.Component {
           createNewList={this.createNewList}
           deleteList={this.deleteList}
           changeView={this.changeView}
-          getItemsInList={this.getItemsInList} />;
+          getItemsInList={this.getItemsInList}
+        />;
 
     } else if (this.state.view === 'details') {
       pageView =
@@ -429,7 +444,9 @@ export default class App extends React.Component {
           lists={this.state.lists}
           listId={this.state.currentListId}
           getMovieDetails={this.getMovieDetails}
-          changeCurrentMovieToReview={this.changeCurrentMovieToReview} />;
+          changeCurrentMovieToReview={this.changeCurrentMovieToReview}
+          goBack={this.goBack}
+        />;
 
     } else if (this.state.view === 'user') {
       pageView =
@@ -486,6 +503,7 @@ export default class App extends React.Component {
           changeView={this.changeView}
           sendMessage={this.sendMessage}
           userId={this.state.userViewed}
+          goBack={this.goBack} 
           getOtherUserReviews={this.getOtherUserReviews} />;
     }
 
@@ -505,18 +523,22 @@ export default class App extends React.Component {
         </Transition>);
     } else if (this.state.view === 'details') {
       return <>
+
         <Transition key={this.state.view}>
           {pageView}
         </Transition>;
-        <Navbar changeView={this.changeView} />
+        <Navbar current={this.state.view} changeView={this.changeView} />
+
       </>;
     } else {
       return <>
         <Header logOut={this.logOut} />
+
         <Transition key={this.state.view}>
           {pageView}
         </Transition>
-        <Navbar changeView={this.changeView} />
+        <Navbar current={this.state.view} changeView={this.changeView} />
+
       </>;
     }
   }

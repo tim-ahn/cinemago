@@ -6,7 +6,6 @@ export default class ListCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = { deleteModalShow: false, searchModalShow: false, listMovies: [] };
-    this.handleClick = this.handleClick.bind(this);
     this.deleteModal = this.deleteModal.bind(this);
     this.searchModal = this.searchModal.bind(this);
   }
@@ -17,10 +16,6 @@ export default class ListCard extends React.Component {
       .then(result => result.json())
       .then(data => this.setState({ listMovies: data }))
       .catch(err => console.error(err));
-  }
-
-  handleClick(event) {
-
   }
 
   deleteModal() {

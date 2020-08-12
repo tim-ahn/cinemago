@@ -7,6 +7,7 @@ class MovieCard extends React.Component {
   }
 
   handleClick(event) {
+    event.preventDefault();
     this.props.getMovieDetails(this.props.movieCardId);
   }
 
