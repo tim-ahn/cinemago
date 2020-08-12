@@ -23,12 +23,12 @@ class WriteReview extends React.Component {
   }
 
   render() {
-    // let posterURL;
-    // if (this.props.poster_path !== null) {
-    //   posterURL = `https://image.tmdb.org/t/p/w500${this.props.poster_path}`;
-    // } else {
-    //   posterURL = '../images/image_placeholder.png';
-    // }
+    let posterURL;
+    if (this.props.poster_path !== null) {
+      posterURL = `https://image.tmdb.org/t/p/w500${this.props.poster_path}`;
+    } else {
+      posterURL = '../images/image_placeholder.png';
+    }
 
     return (
 
@@ -38,13 +38,13 @@ class WriteReview extends React.Component {
 
         <div className="movieReviewCard">
           <div className="row">
-            {/* <div className="col">
+            <div className="col">
               <img src={posterURL} className="card-img" styles=""></img>
-            </div> */}
+            </div>
             <div className="col">
               <h6 className="card-title"></h6>
-              {/* <h6 className="card-subtitle">Rating:{this.props.rating}</h6>
-              <h6 className="card-subtitle">Release Year:{this.props.releaseYear}</h6> */}
+              <h6 className="card-subtitle">Rating:{this.props.rating}</h6>
+              <h6 className="card-subtitle">Release Year:{this.props.releaseYear}</h6>
               <p className="card-text">{'something'}</p>
             </div>
           </div>
@@ -71,7 +71,7 @@ class WriteReview extends React.Component {
         <br></br>
         <div className="button-container">
           <button className="btn btn-secondary" onClick={() => this.props.changeView('listContent')}>Cancel</button>
-          <button className="btn btn-primary" onClick={() => this.handleSubmit(event)}>Submit</button>
+          <button className="btn btn-primary" onClick={() => this.props.postReview({ content: this.state.content, rating: this.state.rating })}>Submit</button>
         </div>
 
       </form>
