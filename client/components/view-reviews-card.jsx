@@ -6,17 +6,18 @@ class ViewReviewsCard extends React.Component {
   render() {
 
     return (
+      <div className="row m-2 border container white">
+        <div className="col m-2">
+          <p>Content: {this.props.item.content}</p>
+          <p>Rating:{this.props.item.rating}</p>
+        </div>
+        <div>
+          <button className="btn btn-outline-secondary m-2" onClick={() => this.props.editReview()}>Edit Review</button>
+          <button className='btn btn-outline-danger m-2' onClick={() => this.props.deleteReview(this.props.item.reviewId)}>Delete Review</button>
+        </div>
 
-      <Card>
-        <CardBody>
-          <CardText>
-            {this.props.item.content}
-            {this.props.item.rating}
-          </CardText>
-          <button className="btn-secondary" onClick={() => this.props.editReview()}>Edit Review</button>
-          <button className='btn-danger' onClick={() => this.props.deleteReview(this.props.item.reviewId)}>Delete Review</button>
-        </CardBody>
-      </Card>
+      </div >
+
     );
 
   }
