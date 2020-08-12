@@ -33,7 +33,8 @@ export default class App extends React.Component {
       messages: [],
       movieToReview: null,
       movieTitleToReview: '',
-      userViewed: null
+      userViewed: null,
+      otherUserReviews: []
     };
     this.searchResults = this.searchResults.bind(this);
     this.searchFilteredResults = this.searchFilteredResults.bind(this);
@@ -60,7 +61,7 @@ export default class App extends React.Component {
     this.editReview = this.editReview.bind(this);
     this.deleteReview = this.deleteReview.bind(this);
     this.changeCurrentMovieToReview = this.changeCurrentMovieToReview.bind(this);
-
+    this.getOtherUserReviews = this.getOtherUserReviews.bind(this);
   }
 
   logIn(email, password) {
@@ -367,6 +368,10 @@ export default class App extends React.Component {
     this.setState({ movieToReview: movieId, movieTitleToReview: movieTitle });
   }
 
+  getOtherUserReviews(data) {
+    this.setState({ otherUserReviews: data });
+  }
+
   changeView(newPage, userId) {
     // userId = (typeof userId !== 'undefined') ? userId : 'undefined'
     if (typeof userId === 'undefined') {
@@ -470,12 +475,8 @@ export default class App extends React.Component {
     } else if (this.state.view === 'otherReviews') {
       pageView =
         <ViewOtherReviewsPage
-          // otherUserId={this.state.userViewed}
-          viewReviews={this.viewReviews}
-          editReview={this.editReview}
-          deleteReview={this.deleteReview}
-          reviews={this.state.reviews}
           changeView={this.changeView}
+          otherReviews={this.state.otherUserReviews}
         />;
 
     } else if (this.state.view === 'otherProfile') {
@@ -483,7 +484,8 @@ export default class App extends React.Component {
         <OtherProfile
           changeView={this.changeView}
           sendMessage={this.sendMessage}
-          userId={this.state.userViewed} />;
+          userId={this.state.userViewed}
+          getOtherUserReviews={this.getOtherUserReviews} />;
     }
 
     if (this.state.view === 'login') {
