@@ -147,7 +147,7 @@ CREATE TABLE public.movies (
     title text NOT NULL,
     "movieId" integer NOT NULL,
     description text NOT NULL,
-    "posterURL" text NOT NULL,
+    "posterURL" text ,
     reviews json NOT NULL,
     "releaseDate" text NOT NULL
 );
@@ -265,6 +265,12 @@ COPY public."listItems" ("listId", "movieId") FROM stdin;
 1	27205
 56	64956
 56	10923
+3	296828
+3	299537
+3	24428
+3	299536
+3	299534
+3	99861
 \.
 
 
@@ -330,6 +336,9 @@ Lake Placid vs. Anaconda	336560	A giant alligator goes head to head with a giant
 The Secret Garden	521034	Mary Lennox is born in India to wealthy British parents who never wanted her. When her parents suddenly die, she is sent back to England to live with her uncle. She meets her sickly cousin, and the two children find a wondrous secret garden lost in the grounds of Misselthwaite Manor.	/qqcRtoy5aqYGmEOOWE1DzT4uTc9.jpg	{"reviews":"not yet"}	2020-07-08
 Black Water: Abyss	522444	An adventure-loving couple convince their friends to explore a remote, uncharted cave system in the forests of Northern Australia. With a tropical storm approaching, they abseil into the mouth of the cave, but when the caves start to flood, tensions rise as oxygen levels fall and the friends find themselves trapped. Unknown to them, the storm has also brought in a pack of dangerous and hungry crocodiles.	/ysFxqlf0qjPxt4c8BRvLfuQqsAK.jpg	{"reviews":"not yet"}	2020-07-09
 Agent Cody Banks	10923	Recruited by the U.S. government to be a special agent, nerdy teenager Cody Banks must get closer to cute classmate Natalie in order to learn about an evil plan hatched by her father. But despite the agent persona, Cody struggles with teen angst.	/fhK0mqqirPsckxkNisvi32A4lf6.jpg	{"reviews":"not yet"}	2003-03-14
+Captain Marvel	299537	The story follows Carol Danvers as she becomes one of the universe’s most powerful heroes when Earth is caught in the middle of a galactic war between two alien races. Set in the 1990s, Captain Marvel is an all-new adventure from a previously unseen period in the history of the Marvel Cinematic Universe.	/AtsgWhDnHTq68L0lLsUrCnM7TjG.jpg	{"reviews":"not yet"}	2019-03-06
+The Avengers	24428	When an unexpected enemy emerges and threatens global safety and security, Nick Fury, director of the international peacekeeping agency known as S.H.I.E.L.D., finds himself in need of a team to pull the world back from the brink of disaster. Spanning the globe, a daring recruitment effort begins!	/RYMX2wcKCBAr24UyPD7xwmjaTn.jpg	{"reviews":"not yet"}	2012-04-25
+Avengers: Age of Ultron	99861	When Tony Stark tries to jumpstart a dormant peacekeeping program, things go awry and Earth’s Mightiest Heroes are put to the ultimate test as the fate of the planet hangs in the balance. As the villainous Ultron emerges, it is up to The Avengers to stop him from enacting his terrible plans, and soon uneasy alliances and unexpected action pave the way for an epic and unique global adventure.	/4ssDuvEDkSArWEdyBl2X5EHvYKU.jpg	{"reviews":"not yet"}	2015-04-22
 \.
 
 
@@ -393,4 +402,3 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 --
 -- PostgreSQL database dump complete
 --
-

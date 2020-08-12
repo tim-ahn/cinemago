@@ -506,7 +506,8 @@ export default class App extends React.Component {
           sendMessage={this.sendMessage}
           userId={this.state.userViewed}
           goBack={this.goBack}
-          getOtherUserReviews={this.getOtherUserReviews} />;
+          getOtherUserReviews={this.getOtherUserReviews}
+          getMovieDetails={this.getMovieDetails} />;
     }
 
     if (this.state.view === 'login') {
