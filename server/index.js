@@ -265,7 +265,6 @@ app.get('/api/reviews/:userId', (req, res, next) => {
   db.query(sql, params)
     .then(result => {
       // eslint-disable-next-line no-console
-      console.log(result.rows);
       if (result.rows.length < 1) {
         res.json([]);
       } else {
