@@ -144,7 +144,9 @@ export default class App extends React.Component {
           });
         } else {
           data.sort(function (a, b) {
-            return parseInt(b.release_date.substr(0, 4)) - parseInt(a.release_date.substr(0, 4));
+            if (a.release_date && b.release_date) {
+              return parseInt(b.release_date.substr(0, 4)) - parseInt(a.release_date.substr(0, 4));
+            }
           });
         }
         this.setState({ results: data });
