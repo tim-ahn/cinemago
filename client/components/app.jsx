@@ -11,8 +11,10 @@ import LoginPage from './login-page';
 import CreateAccount from './create-account';
 import Header from './header';
 import ViewReviewsPage from './view-reviews-page';
+import ViewOtherReviewsPage from './view-other-reviews-page';
 import UserMessages from './user-messages';
 import OtherProfile from './other-profile';
+import Transition from './transition-component';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -33,7 +35,9 @@ export default class App extends React.Component {
       movieToReview: null,
       movieTitleToReview: '',
       userViewed: null,
-      lastPage: null
+      lastPage: null,
+      otherUserReviews: []
+
     };
     this.searchResults = this.searchResults.bind(this);
     this.searchFilteredResults = this.searchFilteredResults.bind(this);
@@ -61,6 +65,8 @@ export default class App extends React.Component {
     this.deleteReview = this.deleteReview.bind(this);
     this.changeCurrentMovieToReview = this.changeCurrentMovieToReview.bind(this);
     this.goBack = this.goBack.bind(this);
+    this.getOtherUserReviews = this.getOtherUserReviews.bind(this);
+
   }
 
   logIn(email, password) {
@@ -367,6 +373,10 @@ export default class App extends React.Component {
     this.setState({ movieToReview: movieId, movieTitleToReview: movieTitle });
   }
 
+  getOtherUserReviews(data) {
+    this.setState({ otherUserReviews: data });
+  }
+
   changeView(newPage, userId) {
     // userId = (typeof userId !== 'undefined') ? userId : 'undefined'
     const lastView = this.state.view;
@@ -480,6 +490,12 @@ export default class App extends React.Component {
           reviews={this.state.reviews}
           changeView={this.changeView}
         />;
+    } else if (this.state.view === 'otherReviews') {
+      pageView =
+        <ViewOtherReviewsPage
+          changeView={this.changeView}
+          otherReviews={this.state.otherUserReviews}
+        />;
 
     } else if (this.state.view === 'otherProfile') {
       pageView =
@@ -487,29 +503,42 @@ export default class App extends React.Component {
           changeView={this.changeView}
           sendMessage={this.sendMessage}
           userId={this.state.userViewed}
-          goBack={this.goBack} />;
+          goBack={this.goBack} 
+          getOtherUserReviews={this.getOtherUserReviews} />;
     }
 
     if (this.state.view === 'login') {
       return (
-        <LoginPage
-          logIn={this.logIn}
-          changeView={this.changeView} />);
+        <Transition key={this.state.view}>
+          <LoginPage
+            logIn={this.logIn}
+            changeView={this.changeView} />
+        </Transition>);
     } else if (this.state.view === 'signUp') {
       return (
-        <CreateAccount
-          changeView={this.changeView}
-          signUp={this.signUp} />);
+        <Transition key={this.state.view}>
+          <CreateAccount
+            changeView={this.changeView}
+            signUp={this.signUp} />
+        </Transition>);
     } else if (this.state.view === 'details') {
       return <>
-        {pageView}
+
+        <Transition key={this.state.view}>
+          {pageView}
+        </Transition>;
         <Navbar current={this.state.view} changeView={this.changeView} />
+
       </>;
     } else {
       return <>
         <Header logOut={this.logOut} />
-        {pageView}
-        <Navbar current={this.state.view}changeView={this.changeView} />
+
+        <Transition key={this.state.view}>
+          {pageView}
+        </Transition>
+        <Navbar current={this.state.view} changeView={this.changeView} />
+
       </>;
     }
   }
