@@ -147,7 +147,7 @@ CREATE TABLE public.movies (
     title text NOT NULL,
     "movieId" integer NOT NULL,
     description text NOT NULL,
-    "posterURL" text NOT NULL,
+    "posterURL" text ,
     reviews json NOT NULL,
     "releaseDate" text NOT NULL
 );
@@ -393,4 +393,3 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 --
 -- PostgreSQL database dump complete
 --
-
