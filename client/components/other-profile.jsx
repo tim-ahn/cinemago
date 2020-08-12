@@ -51,7 +51,7 @@ class OtherProfile extends React.Component {
     } else if (this.state.favorites.length > 0) {
       return <>
         <div className="container mb-5">
-          <button className="btn btn-secondary" onClick={this.props.goBack}>Go Back</button>
+          <button className="btn btn-outline-danger" onClick={this.props.goBack}>Go Back</button>
           <div className="d-flex flex-column justify-content-center">
             <h3 className='text-center'>{this.state.profile.name}</h3>
             <img className='profile-img rounded mx-auto d-block' src={(this.state.profile.imageURL === null) ? '../images/image_placeholder.png' : this.state.profile.imageURL}></img>

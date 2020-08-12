@@ -174,10 +174,10 @@ export default class MovieDetails extends React.Component {
     return (
       <>
         <div className="container mb-5">
-          <div className="row">
-            <button onClick={this.props.goBack} className="btn btn-outline-secondary">&#60;Go Back</button>
+          <div className="row align-items-end">
+            <button onClick={this.props.goBack} className="btn btn-outline-danger">&#60;Go Back</button>
 
-            <img src={(backDropPath === null) ? '../images/image_placeholder.png' : `https://image.tmdb.org/t/p/w500${backDropPath}`} style={{ width: '100%', height: '100%' }}></img>
+            <img className="m-auto" src={(backDropPath === null) ? '../images/image_placeholder.png' : `https://image.tmdb.org/t/p/w500${backDropPath}`} style={{ height: '200px' }}></img>
 
           </div>
 
