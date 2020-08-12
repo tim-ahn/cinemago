@@ -4,7 +4,7 @@ import MovieCard from './movie-card';
 class MovieSlide extends React.Component {
 
   render() {
-
+    // todo: custom moviecard view for viewing from list
     return (<>
       <div className="row flex-nowrap movie-slide px-3 m-auto">
         {this.props.movies.map(movie =>
