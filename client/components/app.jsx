@@ -385,6 +385,7 @@ export default class App extends React.Component {
     } else {
       this.setState({ view: newPage, userViewed: userId, lastPage: lastView });
     }
+    window.scrollTo(0, 0);
   }
 
   goBack() {
@@ -501,7 +502,7 @@ export default class App extends React.Component {
       pageView =
         <OtherProfile
           changeView={this.changeView}
-          sendMessage={this.sendMessage}
+          sendMessage={this.senMessage}
           userId={this.tate.userViewed}
           goBack={this.goBack}
           getOtherUserReviews={this.getOtherUserReviews} />;
