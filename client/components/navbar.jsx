@@ -4,7 +4,6 @@ class Navbar extends React.Component {
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
-    this.state = { current: 'home' };
   }
 
   handleClick(event) {
@@ -19,15 +18,15 @@ class Navbar extends React.Component {
     var heartColor = 'text-white';
     var userColor = 'text-white';
     var messageColor = 'text-white';
-    if (this.state.current === 'home') {
+    if (this.props.current === 'home') {
       homeColor = 'text-primary';
-    } else if (this.state.current === 'search') {
+    } else if (this.props.current === 'search') {
       searchColor = 'text-success';
-    } else if (this.state.current === 'list') {
+    } else if (this.props.current === 'list') {
       heartColor = 'text-danger';
-    } else if (this.state.current === 'user') {
+    } else if (this.props.current === 'user') {
       userColor = 'text-warning';
-    } else if (this.state.current === 'messages') {
+    } else if (this.props.current === 'messages') {
       messageColor = 'text-info';
     }
     return (<>

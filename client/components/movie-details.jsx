@@ -16,7 +16,6 @@ export default class MovieDetails extends React.Component {
       listIconColor: '',
       listId: null
     };
-    this.handleClick = this.handleClick.bind(this);
     this.addRemoveMovieToList = this.addRemoveMovieToList.bind(this);
     this.addModal = this.addModal.bind(this);
     this.addMovieToCustomList = this.addMovieToCustomList.bind(this);
@@ -47,10 +46,6 @@ export default class MovieDetails extends React.Component {
         }
       });
     this.setState({ listId: this.props.lists[0].listId });
-  }
-
-  handleClick(event) {
-    this.props.changeView('search');
   }
 
   handleClickReview(event) {
@@ -179,11 +174,10 @@ export default class MovieDetails extends React.Component {
     return (
       <>
         <div className="container mb-5">
-          <div className="row">
-            <div>
-              <img className="position-absolute" onClick={() => this.handleClick()} src="../images/less-than-icon.png" ></img>
-              <img className="backdrop-poster" src={(backDropPath === null) ? '../images/image_placeholder.png' : `https://image.tmdb.org/t/p/original${backDropPath}`} style={{ width: '100%', height: '100%' }}></img>
-            </div>
+          <div className="row align-items-end">
+            <button onClick={this.props.goBack} className="btn btn-outline-danger">&#60;Go Back</button>
+            <img className="m-auto backdrop-poster" src={(backDropPath === null) ? '../images/image_placeholder.png' : `https://image.tmdb.org/t/p/w500${backDropPath}`} style={{ height: '200px' }}></img>
+
           </div>
 
           <div className="row pt-1">
