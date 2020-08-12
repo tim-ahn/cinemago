@@ -133,9 +133,14 @@ export default class MovieDetails extends React.Component {
 
     if (reviewsArray.length < 1) {
       reviews =
+      <>
+        <div className="row reviews">
+          <h2>Reviews <img src="../images/plus-sign-icon.png" /></h2>
+        </div>
         <div className="row">
           <p>No Reviews</p>
-        </div>;
+        </div>
+      </>;
     } else {
       reviews =
         <>
