@@ -54,7 +54,7 @@ export default class MovieDetails extends React.Component {
 
   handleClickReview(event) {
     this.props.changeView('review');
-    this.props.changeCurrentMovieToReview(this.props.details[0].id);
+    this.props.changeCurrentMovieToReview(this.props.details[0].id, this.props.details[1].title);
   }
 
   addModal() {

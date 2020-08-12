@@ -6,6 +6,7 @@ class ViewReviewsPage extends React.Component {
   render() {
     return (<>
       <div className="container">
+        <h1>My Reviews</h1>
         <div className="row mt-1">
           {this.props.reviews.map((item, index) => {
             return (

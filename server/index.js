@@ -220,24 +220,25 @@ app.post('/api/reviews', (req, res, next) => {
   const userId = req.body.userId;
   const rating = req.body.rating;
   const content = req.body.content;
+  const title = req.body.title;
 
   if (movieId < 1 || isNaN(movieId)) {
     res.status(400).json({ error: 'invalid id' });
     return;
   }
 
-  if (!userId || !rating || !content) {
+  if (!userId || rating < 0 || !content) {
     res.status(400).json({ error: 'missing content' });
     return;
   }
 
   const sql = `
-    insert into "reviews" ("userId", "rating", "content", "movieId" )
-    values ($1, $2, $3, $4)
+    insert into "reviews" ("userId", "rating", "content", "movieId", "title" )
+    values ($1, $2, $3, $4, $5)
     returning *;
   `;
 
-  const params = [userId, rating, content, movieId];
+  const params = [userId, rating, content, movieId, title];
 
   db.query(sql, params)
     .then(response => {
@@ -265,7 +266,6 @@ app.get('/api/reviews/:userId', (req, res, next) => {
   db.query(sql, params)
     .then(result => {
       // eslint-disable-next-line no-console
-      console.log(result.rows);
       if (result.rows.length < 1) {
         res.json([]);
       } else {
