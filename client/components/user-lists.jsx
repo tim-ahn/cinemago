@@ -51,7 +51,14 @@ export default class UserLists extends React.Component {
           </Modal>
         </div>
         {this.props.lists.map(item => (
-          <ListCard key={item.listId} id={item.listId} item={item} deleteList={this.props.deleteList} changeView={this.props.changeView} getItemsInList={this.props.getItemsInList} />
+          <ListCard
+            getMovieDetails={this.props.getMovieDetails}
+            key={item.listId}
+            id={item.listId}
+            item={item}
+            deleteList={this.props.deleteList}
+            changeView={this.props.changeView}
+            getItemsInList={this.props.getItemsInList} />
         ))}
       </div>
 

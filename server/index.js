@@ -447,11 +447,7 @@ app.get('/api/listItems/:listId', (req, res, next) => {
   const params = [id];
   db.query(sql, params)
     .then(result => {
-      if (result.rows.length < 1) {
-        next(new ClientError('no items in list', 404));
-      } else {
-        res.json(result.rows);
-      }
+      res.json(result.rows);
     })
     .catch(err => next(err));
 });

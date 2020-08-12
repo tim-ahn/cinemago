@@ -1,13 +1,22 @@
 import React from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 
+import MovieSlide from './movie-slide';
 export default class ListCard extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { deleteModalShow: false, searchModalShow: false };
+    this.state = { deleteModalShow: false, searchModalShow: false, listMovies: [] };
     this.handleClick = this.handleClick.bind(this);
     this.deleteModal = this.deleteModal.bind(this);
     this.searchModal = this.searchModal.bind(this);
+  }
+
+  componentDidMount() {
+    const fetchURL = '/api/listItems/' + this.props.item.listId;
+    fetch(fetchURL)
+      .then(result => result.json())
+      .then(data => this.setState({ listMovies: data }))
+      .catch(err => console.error(err));
   }
 
   handleClick(event) {
@@ -33,6 +42,7 @@ export default class ListCard extends React.Component {
               <button className="dynamicButton btn btn-outline-secondary m-2" onClick={() => { this.props.getItemsInList(this.props.item.listId); }}>View List Content</button>
               <Button outline={true} color="danger" className="dynamicButton m-2" onClick={() => this.deleteModal()}>Delete List</Button>
             </div>
+            <MovieSlide getMovieDetails={this.props.getMovieDetails} movies={this.state.listMovies} />
             <Modal isOpen={this.state.searchModalShow} toggle={() => this.searchModal()} centered={true}>
               <ModalBody>
                 Leave this page and search for movies?
@@ -66,6 +76,7 @@ export default class ListCard extends React.Component {
               <Button outline={true} color="secondary" onClick={() => this.searchModal()} className="dynamicButton m-2">Add To list</Button>
               <button className="dynamicButton btn btn-outline-secondary m-2" onClick={() => { this.props.getItemsInList(this.props.item.listId, this.props.item.name); }}>View List Content</button>
             </div>
+            <MovieSlide getMovieDetails={this.props.getMovieDetails} movies={this.state.listMovies} />
             <Modal isOpen={this.state.searchModalShow} toggle={() => this.searchModal()} centered={true}>
               <ModalBody>
                 Leave this page and search for movies?

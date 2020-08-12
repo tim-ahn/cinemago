@@ -145,7 +145,9 @@ export default class App extends React.Component {
           });
         } else {
           data.sort(function (a, b) {
-            return parseInt(b.release_date.substr(0, 4)) - parseInt(a.release_date.substr(0, 4));
+            if (a.release_date && b.release_date) {
+              return parseInt(b.release_date.substr(0, 4)) - parseInt(a.release_date.substr(0, 4));
+            }
           });
         }
         this.setState({ results: data });
@@ -397,11 +399,13 @@ export default class App extends React.Component {
           changeView={this.changeView}
           searchUsers={this.searchUsers}
           otherUsers={this.state.otherUsers}
-          sendMessage={this.sendMessage} />;
+          sendMessage={this.sendMessage}
+        />;
 
     } else if (this.state.view === 'list') {
       pageView =
         <UserLists
+          getMovieDetails={this.getMovieDetails}
           getUserLists={this.getUserLists}
           lists={this.state.lists}
           createNewList={this.createNewList}
@@ -418,7 +422,8 @@ export default class App extends React.Component {
           removeItemsInListMovieDetails={this.removeItemsInListMovieDetails}
           lists={this.state.lists}
           listId={this.state.currentListId}
-          getMovieDetails={this.getMovieDetails} />;
+          getMovieDetails={this.getMovieDetails}
+          changeCurrentMovieToReview={this.changeCurrentMovieToReview} />;
 
     } else if (this.state.view === 'user') {
       pageView =
@@ -491,6 +496,11 @@ export default class App extends React.Component {
         <CreateAccount
           changeView={this.changeView}
           signUp={this.signUp} />);
+    } else if (this.state.view === 'details') {
+      return <>
+        {pageView}
+        <Navbar changeView={this.changeView} />
+      </>;
     } else {
       return <>
         <Header logOut={this.logOut} />
