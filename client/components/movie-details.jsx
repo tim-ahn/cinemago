@@ -3,6 +3,7 @@ import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
 import { CarouselProvider, Slider, Slide, ButtonBack, ButtonNext } from 'pure-react-carousel';
 import 'pure-react-carousel/dist/react-carousel.es.css';
 
+// add pointer class to line 146 for the icon when addreview is finished
 export default class MovieDetails extends React.Component {
   constructor(props) {
     super(props);
@@ -192,7 +193,7 @@ export default class MovieDetails extends React.Component {
 
               <div className="d-flex justify-content-between">
                 <button>
-                  <a href={`https://www.youtube.com/watch?v=${youtubeURL}`}> <img src="../images/play-icon.png"></img>Trailer </a>
+                  <a href={`https://www.youtube.com/watch?v=${youtubeURL}`} target="_blank" rel='noopener noreferrer'> <img src="../images/play-icon.png"></img>Trailer </a>
                 </button>
                 <div className="pt-2">
                   {this.props.details[1].runtime} mins
@@ -200,9 +201,9 @@ export default class MovieDetails extends React.Component {
               </div>
 
               <div>
-                <i className={`far fa-heart fa-3x ${this.state.heartIconColor}`} onClick={() => this.addRemoveMovieToList(event)} value="heart"></i>
-                <i className={`far fa-eye fa-3x ${this.state.eyeIconColor}`} onClick={() => this.addRemoveMovieToList(event)} value="eye"></i>
-                <i className="far fa-list-alt fa-3x" onClick={() => this.addModal()} value="list" ></i>
+                <i className={`pointer far fa-heart fa-3x ${this.state.heartIconColor}`} onClick={() => this.addRemoveMovieToList(event)} value="heart"></i>
+                <i className={`pointer far fa-eye fa-3x ${this.state.eyeIconColor}`} onClick={() => this.addRemoveMovieToList(event)} value="eye"></i>
+                <i className="pointer far fa-list-alt fa-3x" onClick={() => this.addModal()} value="list" ></i>
               </div>
 
               <Modal isOpen={this.state.addModalShow} toggle={() => this.addModal()} centered={true}>
