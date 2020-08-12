@@ -226,7 +226,7 @@ app.post('/api/reviews', (req, res, next) => {
     return;
   }
 
-  if (!userId || !rating || !content) {
+  if (!userId || rating < 0 || !content) {
     res.status(400).json({ error: 'missing content' });
     return;
   }

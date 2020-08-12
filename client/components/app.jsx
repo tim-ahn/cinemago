@@ -329,7 +329,7 @@ export default class App extends React.Component {
       .then(response => response.json())
       .then(review => {
         this.changeView('listContent');
-      });
+      }).then(data => this.viewReviews());
   }
 
   viewReviews() {
@@ -378,95 +378,95 @@ export default class App extends React.Component {
     let pageView;
     if (this.state.view === 'home') {
       pageView =
-      <HomePage
-        getTrending={this.getTrending}
-        results={this.state.trending}
-        getMovieDetails={this.getMovieDetails}
-        getUserLists={this.getUserLists} />;
+        <HomePage
+          getTrending={this.getTrending}
+          results={this.state.trending}
+          getMovieDetails={this.getMovieDetails}
+          getUserLists={this.getUserLists} />;
 
     } else if (this.state.view === 'search') {
       pageView =
-      <HomeSearch
-        searchResults={this.searchResults}
-        searchFilteredResults={this.searchFilteredResults}
-        results={this.state.results}
-        addItemToList={this.addItemToList}
-        getMovieDetails={this.getMovieDetails}
-        lists={this.state.lists}
-        changeView={this.changeView}
-        searchUsers={this.searchUsers}
-        otherUsers={this.state.otherUsers}
-        sendMessage={this.sendMessage} />;
+        <HomeSearch
+          searchResults={this.searchResults}
+          searchFilteredResults={this.searchFilteredResults}
+          results={this.state.results}
+          addItemToList={this.addItemToList}
+          getMovieDetails={this.getMovieDetails}
+          lists={this.state.lists}
+          changeView={this.changeView}
+          searchUsers={this.searchUsers}
+          otherUsers={this.state.otherUsers}
+          sendMessage={this.sendMessage} />;
 
     } else if (this.state.view === 'list') {
       pageView =
-      <UserLists
-        getUserLists={this.getUserLists}
-        lists={this.state.lists}
-        createNewList={this.createNewList}
-        deleteList={this.deleteList}
-        changeView={this.changeView}
-        getItemsInList={this.getItemsInList} />;
+        <UserLists
+          getUserLists={this.getUserLists}
+          lists={this.state.lists}
+          createNewList={this.createNewList}
+          deleteList={this.deleteList}
+          changeView={this.changeView}
+          getItemsInList={this.getItemsInList} />;
 
     } else if (this.state.view === 'details') {
       pageView =
-      <MovieDetails
-        changeView={this.changeView}
-        details={this.state.details}
-        addItemToList={this.addItemToList}
-        removeItemsInListMovieDetails={this.removeItemsInListMovieDetails}
-        lists={this.state.lists}
-        listId={this.state.currentListId}
-        getMovieDetails={this.getMovieDetails} />;
+        <MovieDetails
+          changeView={this.changeView}
+          details={this.state.details}
+          addItemToList={this.addItemToList}
+          removeItemsInListMovieDetails={this.removeItemsInListMovieDetails}
+          lists={this.state.lists}
+          listId={this.state.currentListId}
+          getMovieDetails={this.getMovieDetails} />;
 
     } else if (this.state.view === 'user') {
       pageView =
-      <UserProfile
-        userId={this.state.userId}
-        changeView={this.changeView}
-        viewReviews={this.viewReviews}/>;
+        <UserProfile
+          userId={this.state.userId}
+          changeView={this.changeView}
+          viewReviews={this.viewReviews} />;
 
     } else if (this.state.view === 'listContent') {
       pageView =
-      <ListItems
-        viewListItems={this.state.viewListItems}
-        listName={this.state.currentListName}
-        listId={this.state.currentListId}
-        changeView={this.changeView}
-        removeItemsInList={this.removeItemsInList}
-        changeCurrentMovieToReview={this.changeCurrentMovieToReview} />;
+        <ListItems
+          viewListItems={this.state.viewListItems}
+          listName={this.state.currentListName}
+          listId={this.state.currentListId}
+          changeView={this.changeView}
+          removeItemsInList={this.removeItemsInList}
+          changeCurrentMovieToReview={this.changeCurrentMovieToReview} />;
 
     } else if (this.state.view === 'review') {
       pageView =
-      <WriteReview
-        changeView={this.changeView}
-        postReview={this.postReview}
-        movieToReview={this.state.movieToReview} />;
+        <WriteReview
+          changeView={this.changeView}
+          postReview={this.postReview}
+          movieToReview={this.state.movieToReview} />;
 
     } else if (this.state.view === 'messages') {
       pageView =
-      <UserMessages
-        messages={this.state.messages}
-        getMessages={this.getMessages}
-        deleteMessage={this.deleteMessage.bind(this)} />;
+        <UserMessages
+          messages={this.state.messages}
+          getMessages={this.getMessages}
+          deleteMessage={this.deleteMessage.bind(this)} />;
 
     } else if (this.state.view === 'ownReviews') {
       pageView =
-      <ViewReviewsPage
-        userId={this.state.userId}
-        viewReviews={this.viewReviews}
-        editReview={this.editReview}
-        deleteReview={this.deleteReview}
-        reviews={this.state.reviews}
-        changeView={this.changeView}
-      />;
+        <ViewReviewsPage
+          userId={this.state.userId}
+          viewReviews={this.viewReviews}
+          editReview={this.editReview}
+          deleteReview={this.deleteReview}
+          reviews={this.state.reviews}
+          changeView={this.changeView}
+        />;
 
     } else if (this.state.view === 'otherProfile') {
       pageView =
         <OtherProfile
           changeView={this.changeView}
           sendMessage={this.sendMessage}
-          userId={this.state.userViewed}/>;
+          userId={this.state.userViewed} />;
     }
 
     if (this.state.view === 'login') {
