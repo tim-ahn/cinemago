@@ -8,7 +8,7 @@ class MovieSlide extends React.Component {
     return (<>
       <div className="row flex-nowrap movie-slide px-3 m-auto">
         {this.props.movies.map(movie =>
-          <MovieCard key={movie.movieId} movieCardId={movie.movieId} poster_path={movie.posterURL} getMovieDetails={this.props.getMovieDetails}/>)}
+          <MovieCard key={movie.movieId} movieCardId={movie.movieId} poster_path={movie.posterURL} getMovieDetails={this.props.getMovieDetails} />)}
       </div>
     </>);
 
