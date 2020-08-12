@@ -395,11 +395,13 @@ export default class App extends React.Component {
           changeView={this.changeView}
           searchUsers={this.searchUsers}
           otherUsers={this.state.otherUsers}
-          sendMessage={this.sendMessage} />;
+          sendMessage={this.sendMessage}
+        />;
 
     } else if (this.state.view === 'list') {
       pageView =
         <UserLists
+          getMovieDetails={this.getMovieDetails}
           getUserLists={this.getUserLists}
           lists={this.state.lists}
           createNewList={this.createNewList}
