@@ -56,6 +56,10 @@ button.focus,button:active.focus,button.active.focus {
   font-size: 0.6rem;
 }
 
+.backdrop-poster {
+  box-shadow:  5px 5px 5px 5px #ccc
+}
+
 @media (min-width: 544px) {
   .card-title {font-size:2rem;}
   .card-subtitle, .dynamicButton {font-size:0.8rem;}

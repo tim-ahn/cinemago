@@ -179,48 +179,31 @@ export default class MovieDetails extends React.Component {
       <>
         <div className="container mb-5">
           <div className="row">
-            <div onClick={() => this.handleClick()}>
-              <img className="position-absolute" src="../images/less-than-icon.png" ></img>
-              <img src={(backDropPath === null) ? '../images/image_placeholder.png' : `https://image.tmdb.org/t/p/w500${backDropPath}`} style={{ width: '100%', height: '100%' }}></img>
+            <div>
+              <img className="position-absolute" onClick={() => this.handleClick()} src="../images/less-than-icon.png" ></img>
+              <img className="backdrop-poster" src={(backDropPath === null) ? '../images/image_placeholder.png' : `https://image.tmdb.org/t/p/original${backDropPath}`} style={{ width: '100%', height: '100%' }}></img>
             </div>
           </div>
 
-          <div className="row">
-            <div className="col-6">
-              <h2 className="title">{this.props.details[1].title}</h2>
-              <p>Average Rating: {this.props.details[1].vote_average}</p>
+          <div className="row pt-1">
+            <div className="col-6 align-items-end">
+              <h2 className="title" style={{ fontWeight: 'bold', textAlign: 'center' }}>{this.props.details[1].title}</h2>
+              <p style={{ fontWeight: 'bold' }}>Average Rating: {this.props.details[1].vote_average}</p>
 
               <div className="d-flex justify-content-between">
                 <button>
                   <a href={`https://www.youtube.com/watch?v=${youtubeURL}`}> <img src="../images/play-icon.png"></img>Trailer </a>
                 </button>
-                <div className="pt-2">
-                  {this.props.details[1].runtime} mins
+                <div className="mt-2">
+                  <span style={{ fontWeight: 'bold' }}>{this.props.details[1].runtime} mins</span>
                 </div>
               </div>
 
-              <div>
-                <i className={`far fa-heart fa-3x ${this.state.heartIconColor}`} onClick={() => this.addRemoveMovieToList(event)} value="heart"></i>
-                <i className={`far fa-eye fa-3x ${this.state.eyeIconColor}`} onClick={() => this.addRemoveMovieToList(event)} value="eye"></i>
-                <i className="far fa-list-alt fa-3x" onClick={() => this.addModal()} value="list" ></i>
+              <div className="pt-2">
+                <i className={`far fa-heart fa-3x p-1 ${this.state.heartIconColor}`} onClick={() => this.addRemoveMovieToList(event)} value="heart"></i>
+                <i className={`far fa-eye fa-3x p-1 ${this.state.eyeIconColor}`} onClick={() => this.addRemoveMovieToList(event)} value="eye"></i>
+                <i className="far fa-list-alt fa-3x p-1" onClick={() => this.addModal()} value="list" ></i>
               </div>
-
-              <Modal isOpen={this.state.addModalShow} toggle={() => this.addModal()} centered={true}>
-                <ModalBody>
-
-                  <label htmlFor="lists">Which list would you like to add to?</label>
-
-                  <select name="lists" id="userLists" onChange={() => this.setState({ listId: parseInt(event.target.value) })}>
-                    {this.props.lists.map(item => {
-                      return <option key={item.listId} value={item.listId}> {item.name}</option>;
-                    })}
-                  </select>
-                </ModalBody>
-                <ModalFooter>
-                  <Button color="secondary" onClick={() => this.addModal()}>Cancel</Button>
-                  <Button color="primary" onClick={() => this.addMovieToCustomList()}>Add to List</Button>
-                </ModalFooter>
-              </Modal>
 
             </div>
 
@@ -233,6 +216,23 @@ export default class MovieDetails extends React.Component {
           <p>{this.props.details[1].overview}</p>
           {reviews}
           {usersAlsoLiked}
+
+          <Modal isOpen={this.state.addModalShow} toggle={() => this.addModal()} centered={true}>
+            <ModalBody>
+
+              <label htmlFor="lists">Which list would you like to add to?</label>
+
+              <select name="lists" id="userLists" onChange={() => this.setState({ listId: parseInt(event.target.value) })}>
+                {this.props.lists.map(item => {
+                  return <option key={item.listId} value={item.listId}> {item.name}</option>;
+                })}
+              </select>
+            </ModalBody>
+            <ModalFooter>
+              <Button color="secondary" onClick={() => this.addModal()}>Cancel</Button>
+              <Button color="primary" onClick={() => this.addMovieToCustomList()}>Add to List</Button>
+            </ModalFooter>
+          </Modal>
 
         </div>
       </>
