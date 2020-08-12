@@ -31,6 +31,7 @@ export default class App extends React.Component {
       reviews: [],
       messages: [],
       movieToReview: null,
+      movieTitleToReview: '',
       userViewed: null
     };
     this.searchResults = this.searchResults.bind(this);
@@ -320,11 +321,11 @@ export default class App extends React.Component {
       });
   }
 
-  postReview(movieId, content, rating) {
+  postReview(movieId, content, rating, title) {
     fetch('/api/reviews', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ content: content, rating: rating, userId: this.state.userId, movieId: movieId })
+      body: JSON.stringify({ content: content, rating: rating, userId: this.state.userId, movieId: movieId, title: title })
     })
       .then(response => response.json())
       .then(review => {
@@ -359,8 +360,8 @@ export default class App extends React.Component {
       .then(data => this.viewReviews());
   }
 
-  changeCurrentMovieToReview(movieId) {
-    this.setState({ movieToReview: movieId });
+  changeCurrentMovieToReview(movieId, movieTitle) {
+    this.setState({ movieToReview: movieId, movieTitleToReview: movieTitle });
   }
 
   changeView(newPage, userId) {
@@ -440,7 +441,8 @@ export default class App extends React.Component {
         <WriteReview
           changeView={this.changeView}
           postReview={this.postReview}
-          movieToReview={this.state.movieToReview} />;
+          movieToReview={this.state.movieToReview}
+          movieTitleToReview={this.state.movieTitleToReview} />;
 
     } else if (this.state.view === 'messages') {
       pageView =

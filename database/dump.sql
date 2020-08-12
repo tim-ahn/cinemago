@@ -162,7 +162,8 @@ CREATE TABLE public.reviews (
     "reviewId" integer NOT NULL,
     rating integer NOT NULL,
     content text,
-    "movieId" integer NOT NULL
+    "movieId" integer NOT NULL,
+    title text
 );
 
 
@@ -257,12 +258,13 @@ COPY public."listItems" ("listId", "movieId") FROM stdin;
 3	15016
 30	27205
 35	27205
-2	64956
-1	616445
-47	15016
 51	38575
 48	299534
 55	299536
+47	336560
+1	27205
+56	64956
+56	10923
 \.
 
 
@@ -296,6 +298,8 @@ COPY public.lists ("userId", "listId", type, name) FROM stdin;
 17	53	favorites	My Favorites List
 17	54	watch	My Watch List
 17	55	custom	Cool Movies
+1	56	custom	code
+1	57	custom	Cool Movies
 \.
 
 
@@ -304,6 +308,9 @@ COPY public.lists ("userId", "listId", type, name) FROM stdin;
 --
 
 COPY public.messages ("senderId", "recipientId", content, "sentAt", "messageId") FROM stdin;
+1	2	hey there I 	\N	5
+2	1	ffffffffggggg	\N	6
+2	1	test1	\N	7
 \.
 
 
@@ -319,6 +326,10 @@ Barbie of Swan Lake	15016	Barbie as Odette, the young daughter of a baker, follo
 Inception: The Cobol Job	64956	The Cobol Job is a fourteen-minute animated prequel to Christopher Nolan’s award-winning movie: Inception, detailing the heist on Mr. Kaneda's mind by Nash, Cobb, Arthur, and several Cobol Engineering thugs.	/sNxqwtyHMNQwKWoFYDqcYTui5Ok.jpg	{"reviews":"not yet"}	2010-12-07
 Inception: Jump right into the action	616445	Blu-Ray extra of the making of Inception. Join filmmaker Christopher Nolan and his cast and crew as they reveal the secrets of Inception, its development, characters, performances, story and jaw-dropping special effects in this solid 14-segments piece.	/yEy9UJtuzWwUUKO463gGl4qisxt.jpg	{"reviews":"not yet"}	2010-12-07
 The Karate Kid	38575	12-year-old Dre Parker could have been the most popular kid in Detroit, but his mother's latest career move has landed him in China. Dre immediately falls for his classmate Mei Ying but the cultural differences make such a friendship impossible. Even worse, Dre's feelings make him an enemy of the class bully, Cheng. With no friends in a strange land, Dre has nowhere to turn but maintenance man Mr. Han, who is a kung fu master. As Han teaches Dre that kung fu is not about punches and parries, but maturity and calm, Dre realizes that facing down the bullies will be the fight of his life.	/tAMQREOoztvluqrfHiGHFVfB04B.jpg	{"reviews":"not yet"}	2010-06-10
+Lake Placid vs. Anaconda	336560	A giant alligator goes head to head with a giant Anaconda. The town sheriff must find a way to destroy the two monsters before they kill the whole town.	/vWTTolhnR1yW7z1YAIC5vrTn4s8.jpg	{"reviews":"not yet"}	2015-04-25
+The Secret Garden	521034	Mary Lennox is born in India to wealthy British parents who never wanted her. When her parents suddenly die, she is sent back to England to live with her uncle. She meets her sickly cousin, and the two children find a wondrous secret garden lost in the grounds of Misselthwaite Manor.	/qqcRtoy5aqYGmEOOWE1DzT4uTc9.jpg	{"reviews":"not yet"}	2020-07-08
+Black Water: Abyss	522444	An adventure-loving couple convince their friends to explore a remote, uncharted cave system in the forests of Northern Australia. With a tropical storm approaching, they abseil into the mouth of the cave, but when the caves start to flood, tensions rise as oxygen levels fall and the friends find themselves trapped. Unknown to them, the storm has also brought in a pack of dangerous and hungry crocodiles.	/ysFxqlf0qjPxt4c8BRvLfuQqsAK.jpg	{"reviews":"not yet"}	2020-07-09
+Agent Cody Banks	10923	Recruited by the U.S. government to be a special agent, nerdy teenager Cody Banks must get closer to cute classmate Natalie in order to learn about an evil plan hatched by her father. But despite the agent persona, Cody struggles with teen angst.	/fhK0mqqirPsckxkNisvi32A4lf6.jpg	{"reviews":"not yet"}	2003-03-14
 \.
 
 
@@ -326,7 +337,7 @@ The Karate Kid	38575	12-year-old Dre Parker could have been the most popular kid
 -- Data for Name: reviews; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.reviews ("userId", "reviewId", rating, content, "movieId") FROM stdin;
+COPY public.reviews ("userId", "reviewId", rating, content, "movieId", title) FROM stdin;
 \.
 
 
@@ -335,12 +346,12 @@ COPY public.reviews ("userId", "reviewId", rating, content, "movieId") FROM stdi
 --
 
 COPY public.users ("userId", name, password, bio, "imageURL", email) FROM stdin;
-1	Uzair	anime	I like anime and fast cars. nuff said.	../images/user-images/1.png	uzair@gmail.com
 2	Cody	coding	I like coding and teaching. nuff said	\N	cody@gmail.com
 13	ddd	aaa	\N	\N	sss
 14	ddd	ddd	\N	\N	ddd
 15	rrr	rrr	\N	\N	rrr
 16	cccc	xx	I'm cccc	\N	xx
+1	Uzair	anime	I like anime and fast cars. nuff said.  ggg	../images/user-images/1.png	uzair@gmail.com
 \.
 
 
@@ -348,21 +359,21 @@ COPY public.users ("userId", name, password, bio, "imageURL", email) FROM stdin;
 -- Name: lists_listId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."lists_listId_seq"', 55, true);
+SELECT pg_catalog.setval('public."lists_listId_seq"', 57, true);
 
 
 --
 -- Name: messages_messageId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."messages_messageId_seq"', 1, false);
+SELECT pg_catalog.setval('public."messages_messageId_seq"', 7, true);
 
 
 --
 -- Name: reviews_reviewId_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public."reviews_reviewId_seq"', 1, false);
+SELECT pg_catalog.setval('public."reviews_reviewId_seq"', 12, true);
 
 
 --

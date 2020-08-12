@@ -22,6 +22,7 @@ export default class ListItemCard extends React.Component {
   }
 
   render() {
+    console.log(this.props.fullInfo);
     let posterURL;
     if (this.props.poster_path !== null) {
       posterURL = `https://image.tmdb.org/t/p/w500${this.props.poster_path}`;
@@ -46,7 +47,7 @@ export default class ListItemCard extends React.Component {
             <h4 className="card-subtitle mb-2 text-muted">Release Year:{year}</h4>
             <p className="card-text">{this.props.fullInfo.description}</p>
             <div className="form-row flex-nowrap">
-              <button className="dynamicButton btn btn-outline-secondary m-2" onClick={() => { this.props.changeCurrentMovieToReview(this.props.fullInfo.movieId); this.props.changeView('review'); }} >Write a Review</button>
+              <button className="dynamicButton btn btn-outline-secondary m-2" onClick={() => { this.props.changeCurrentMovieToReview(this.props.fullInfo.movieId, this.props.fullInfo.title); this.props.changeView('review'); }} >Write a Review</button>
               <Button outline={true} color="danger" onClick={() => this.removeModal()} className="dynamicButton m-2">Remove</Button>
             </div>
             <Modal isOpen={this.state.removeModalShow} toggle={() => this.removeModal()} centered={true}>

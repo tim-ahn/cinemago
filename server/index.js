@@ -220,6 +220,7 @@ app.post('/api/reviews', (req, res, next) => {
   const userId = req.body.userId;
   const rating = req.body.rating;
   const content = req.body.content;
+  const title = req.body.title;
 
   if (movieId < 1 || isNaN(movieId)) {
     res.status(400).json({ error: 'invalid id' });
@@ -232,12 +233,12 @@ app.post('/api/reviews', (req, res, next) => {
   }
 
   const sql = `
-    insert into "reviews" ("userId", "rating", "content", "movieId" )
-    values ($1, $2, $3, $4)
+    insert into "reviews" ("userId", "rating", "content", "movieId", "title" )
+    values ($1, $2, $3, $4, $5)
     returning *;
   `;
 
-  const params = [userId, rating, content, movieId];
+  const params = [userId, rating, content, movieId, title];
 
   db.query(sql, params)
     .then(response => {
