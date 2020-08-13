@@ -127,15 +127,18 @@ class UserProfile extends React.Component {
               <h3 className="text-center">{this.state.profile.name}</h3>
             </div>
             <img className='rounded mx-auto d-block' src={(this.state.profile.imageURL === null) ? '../images/image_placeholder.png' : this.state.profile.imageURL}></img>
-            <div className="border  p-2 w-50 mx-auto mt-3 white">
+            <div className="border  p-2 w-75 mx-auto mt-3 white">
               <div className="row justify-content-between px-3">
                 <p className="font-weight-bold">Bio:</p>
                 <p onClick={this.openBioEdit} className="mini-text text-muted pointer"><u>Edit</u></p>
               </div>
               {bio}
             </div>
-            <div className="border border-secondary p-2 w-50 mx-auto mt-3 white">
+            <div className="border p-2 w-75 mx-auto mt-3 white">
               <button className="btn btn-outline-dark" onClick={() => this.props.viewReviews()}>My reviews</button>
+
+            </div>
+            <div className="border p-2 w-75 mx-auto mt-3 white">
               <button onClick={this.toggleUploadOption} className="btn btn-outline-dark">Update Profile Image</button>
               <Collapse isOpen={this.state.fileOptionOpen}>
                 <Card>
@@ -151,7 +154,6 @@ class UserProfile extends React.Component {
                   </CardBody>
                 </Card>
               </Collapse>
-
             </div>
           </div>
 
