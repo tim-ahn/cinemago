@@ -35,7 +35,7 @@ export default class UserCard extends React.Component {
     return (<>
       <div className="row m-2 border container white">
         <div className="col m-2">
-          <img className='rounded mx-auto d-block' src={(this.props.item.imageURL === null) ? '../images/image_placeholder.png' : this.props.item.imageURL}></img>
+          <img className='rounded mx-auto d-block profile-img' src={(this.props.item.imageURL === null) ? '../images/image_placeholder.png' : this.props.item.imageURL}></img>
         </div>
         <div className="col m-4">
           <h1>{this.props.item.name}</h1>

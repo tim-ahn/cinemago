@@ -18,6 +18,8 @@ body {
 
 .profile-img{
   max-height: 300px;
+  max-width: 400px;
+  object-fit: cover;
 }
 
 body::-webkit-scrollbar,.movie-slide::-webkit-scrollbar {
@@ -91,11 +93,16 @@ button.focus,button:active.focus,button.active.focus {
   font-size: 0.8rem;
 }
 
-@media (min-width: 544px) {
+@media (max-width: 544px) {
   .card-title {font-size:2rem;}
   .card-subtitle, .dynamicButton {font-size:0.8rem;}
   .card-text {font-size:0.8rem;}
   .listButton {font-size: 0.8rem;}/*1rem = 16px*/
+  .profile-img{
+    max-height: 200px;
+    max-width:300px;
+    object-fit: cover;
+}
 }
 
 /* /* Medium devices (tablets, 768px and up) */
