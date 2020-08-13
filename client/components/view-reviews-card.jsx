@@ -41,8 +41,8 @@ class ViewReviewsCard extends React.Component {
               <StarRatingComponent
                 name="userRating"
                 starCount={5}
-                value={this.state.rating}
-              /></p>
+                value={this.state.rating}/>
+            </p>
             <p>{'"' + this.props.item.content + '"'}</p>
           </div>
           <div>

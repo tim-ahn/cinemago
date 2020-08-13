@@ -9,9 +9,8 @@ class ViewOtherReviewsPage extends React.Component {
       return (<>
         <div className="container">
           <div>
-            <button className="btn btn-outline-danger position-absolute" onClick={this.props.goBack}>Go Back</button>
+            <button className="btn btn-outline-danger position-relative" onClick={this.props.goBack}>Go Back</button>
           </div>
-          <br></br>
           <div>
             <h1 style={{ textAlign: 'center' }}>Reviews</h1>
           </div>

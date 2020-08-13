@@ -66,7 +66,7 @@ export default class App extends React.Component {
     this.changeCurrentMovieToReview = this.changeCurrentMovieToReview.bind(this);
     this.goBack = this.goBack.bind(this);
     this.getOtherUserReviews = this.getOtherUserReviews.bind(this);
-
+    this.backToProfile = this.backToProfile.bind(this);
   }
 
   logIn(email, password) {
@@ -387,6 +387,10 @@ export default class App extends React.Component {
     window.scrollTo(0, 0);
   }
 
+  backToProfile() {
+    this.setState({ view: 'user' });
+  }
+
   goBack() {
     this.setState(prevState => {
       return { view: prevState.lastPage, lastPage: prevState.view };
@@ -489,7 +493,9 @@ export default class App extends React.Component {
           deleteReview={this.deleteReview}
           reviews={this.state.reviews}
           changeView={this.changeView}
+          backToProfile={this.backToProfile}
         />;
+
     } else if (this.state.view === 'otherReviews') {
       pageView =
         <ViewOtherReviewsPage
