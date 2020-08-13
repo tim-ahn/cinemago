@@ -8,7 +8,14 @@ class ViewOtherReviewsPage extends React.Component {
     if (this.props.otherReviews.length > 0) {
       return (<>
         <div className="container">
-          <h1>Reviews</h1>
+          <div>
+            <button className="btn btn-outline-danger position-absolute" onClick={this.props.goBack}>Go Back</button>
+          </div>
+          <br></br>
+          <div>
+            <h1 style={{ textAlign: 'center' }}>Reviews</h1>
+          </div>
+
           <div className="row mt-1">
             {this.props.otherReviews.map((item, index) => {
               return (
@@ -23,8 +30,13 @@ class ViewOtherReviewsPage extends React.Component {
         </div>
       </>);
     } else {
-      return (
+      return (<>
+        <div>
+          <button className="btn btn-outline-danger position-absolute" onClick={this.props.goBack}>Go Back</button>
+        </div>
+        <br></br>
         <div style={{ textAlign: 'center' }}> No Reviews Found</div>
+      </>
       );
     }
   }
