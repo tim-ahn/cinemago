@@ -126,7 +126,7 @@ class UserProfile extends React.Component {
             <div className="w-50 mx-auto">
               <h3 className="text-center">{this.state.profile.name}</h3>
             </div>
-            <img className='rounded mx-auto d-block' src={(this.state.profile.imageURL === null) ? '../images/image_placeholder.png' : this.state.profile.imageURL}></img>
+            <img className='profile-img rounded mx-auto d-block' src={(this.state.profile.imageURL === null) ? '../images/image_placeholder.png' : this.state.profile.imageURL}></img>
             <div className="border  p-2 w-75 mx-auto mt-3 white">
               <div className="row justify-content-between px-3">
                 <p className="font-weight-bold">Bio:</p>
@@ -145,7 +145,7 @@ class UserProfile extends React.Component {
                   <CardBody>
                     {this.state.fileError && <p className="text-danger">{this.state.fileError}</p>}
                     <form onSubmit={this.uploadImage}>
-                      <div className="row flex-nowrap mt-2">
+                      <div className="row mt-2">
                         <input type="file" name="image" onChange={this.onImageSelect}></input>
                         <button className="btn btn-success">Upload</button>
                       </div>

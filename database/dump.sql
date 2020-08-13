@@ -147,7 +147,7 @@ CREATE TABLE public.movies (
     title text NOT NULL,
     "movieId" integer NOT NULL,
     description text NOT NULL,
-    "posterURL" text ,
+    "posterURL" text,
     reviews json NOT NULL,
     "releaseDate" text NOT NULL
 );
@@ -262,7 +262,6 @@ COPY public."listItems" ("listId", "movieId") FROM stdin;
 48	299534
 55	299536
 47	336560
-1	27205
 56	64956
 56	10923
 3	296828
@@ -271,6 +270,17 @@ COPY public."listItems" ("listId", "movieId") FROM stdin;
 3	299536
 3	299534
 3	99861
+1	604605
+1	372058
+1	36865
+1	483439
+1	566452
+1	566460
+1	129
+1	8392
+1	553600
+1	20986
+1	378064
 \.
 
 
@@ -339,6 +349,17 @@ Agent Cody Banks	10923	Recruited by the U.S. government to be a special agent, n
 Captain Marvel	299537	The story follows Carol Danvers as she becomes one of the universe’s most powerful heroes when Earth is caught in the middle of a galactic war between two alien races. Set in the 1990s, Captain Marvel is an all-new adventure from a previously unseen period in the history of the Marvel Cinematic Universe.	/AtsgWhDnHTq68L0lLsUrCnM7TjG.jpg	{"reviews":"not yet"}	2019-03-06
 The Avengers	24428	When an unexpected enemy emerges and threatens global safety and security, Nick Fury, director of the international peacekeeping agency known as S.H.I.E.L.D., finds himself in need of a team to pull the world back from the brink of disaster. Spanning the globe, a daring recruitment effort begins!	/RYMX2wcKCBAr24UyPD7xwmjaTn.jpg	{"reviews":"not yet"}	2012-04-25
 Avengers: Age of Ultron	99861	When Tony Stark tries to jumpstart a dormant peacekeeping program, things go awry and Earth’s Mightiest Heroes are put to the ultimate test as the fate of the planet hangs in the balance. As the villainous Ultron emerges, it is up to The Avengers to stop him from enacting his terrible plans, and soon uneasy alliances and unexpected action pave the way for an epic and unique global adventure.	/4ssDuvEDkSArWEdyBl2X5EHvYKU.jpg	{"reviews":"not yet"}	2015-04-22
+Hello World	604605	Year 2027, The city of Kyoto has undergone tremendous advancement. Within the city lives Naomi Katagaki, an introvert and Ruri Ichigyou, a girl with a cold personality. Both shares love for reading books. Despite having similar interests, Naomi is afraid to approach Ruri due to her unfriendly nature.  One day, as Naomi goes out for a walk, a crimson aurora pierces through the sky for a brief moment. Shortly after, he sees a three-legged crow and a mysterious man who reveals himself to be Naomi from 10 years in the future, explaining that he has come to change a tragic event that happens to Ruri shortly after they start dating. Naomi follows his future self's instructions and starts getting closer to Ruri, determined to save her.  With the help of his future self, Naomi begins his preparations to save Ruri. Will he be able to change the future?	/r6BWky420eJQ0KbtUTlY06ZzFwU.jpg	{"reviews":"not yet"}	2019-09-20
+Your Name.	372058	High schoolers Mitsuha and Taki are complete strangers living separate lives. But one night, they suddenly switch places. Mitsuha wakes up in Taki’s body, and he in hers. This bizarre occurrence continues to happen randomly, and the two must adjust their lives around each other.	/q719jXXEzOoYaps6babgKnONONX.jpg	{"reviews":"not yet"}	2016-08-26
+The Disappearance of Haruhi Suzumiya	36865	It is mid-december, and SOS Brigade chief Haruhi Suzumiya announces that the Brigade is going to hold a Christmas party in their clubroom, with Japanese hotpot for dinner. The brigade members Kyon, Yuki Nagato, Mikuru Asahina and Itsuki Koizumi start preparing everything for the party, such as costumes and decorations. But a couple of days later, Kyon arrives at school only to find that Haruhi is missing. Not only that, but Mikuru claims she has never known Kyon before, Koizumi is also missing, and Yuki has become the sole member of the literature club. The SOS Brigade seems to have never existed, nor has Haruhi Suzumiya. No one in the school has ever heard about her… except for Kyon.	/iWu5Gq49UTOltiAhP0oJfPnZQuQ.jpg	{"reviews":"not yet"}	2010-02-05
+The Symphony of Haruhi Suzumiya	483439	The Symphony of Haruhi Suzumiya or The String Performance of Haruhi Suzumiya (涼宮ハルヒの弦奏 Suzumiya Haruhi no Gensou), was an event featuring several songs and background music used in the The Melancholy of Haruhi Suzumiya anime. All of the songs are performed by the Tokyo Philharmonic Orchestra, and conducted by Phillip Chu, on April 29, 2009.	/aVuRXDbVxD89dwp4RAzoBMIU3R1.jpg	{"reviews":"not yet"}	2009-04-29
+K-On!: Live House!	566452	Houkago Tea Time performs live on New Year's Eve.	/jjnbpiym29NCXLXEKd7zMi1LS1J.jpg	{"reviews":"not yet"}	2010-01-19
+K-On!!: Keikaku!	566460	A special episode of K-ON!! released in the ninth volume of Blu-ray and DVD. The girls plan a trip abroad and go to the passport office to apply for passports.	/cV8RHPwwdZ2J7obpcmVcDWEtuK0.jpg	{"reviews":"not yet"}	2011-03-16
+Spirited Away	129	A young girl, Chihiro, becomes trapped in a strange new world of spirits. When her parents undergo a mysterious transformation, she must call upon the courage she never knew she had to free her family.	/2TeJfUZMGolfDdW6DKhfIWqvq8y.jpg	{"reviews":"not yet"}	2001-07-20
+My Neighbor Totoro	8392	Two sisters move to the country with their father in order to be closer to their hospitalized mother, and discover the surrounding trees are inhabited by Totoros, magical spirits of the forest. When the youngest runs away from home, the older sister seeks help from the spirits to find her.	/rtGDOeG9LzoerkDGZF9dnVeLppL.jpg	{"reviews":"not yet"}	1988-04-16
+Promare	553600	Galo and the Burning Rescue Fire Department face off against BURNISH, a group of mutants who are able to control and wield flames, and the fire disaster they have unleashed on Earth.	/wBkrkL7mztyK1df3NBJKBiASNIY.jpg	{"reviews":"not yet"}	2019-05-24
+Gurren Lagann The Movie: Childhood's End	20986	Simon and Kamina live in an underground city monitored by the village chief. When Simon stumbles upon an artifact and beastmen invade from the surface, Simon and Kamina rebel against them.	/nNjFlv4mJlkGLzfnLoU68YSy9KH.jpg	{"reviews":"not yet"}	2008-09-06
+A Silent Voice	378064	Shouya Ishida starts bullying the new girl in class, Shouko Nishimiya, because she is deaf. But as the teasing continues, the rest of the class starts to turn on Shouya for his lack of compassion. When they leave elementary school, Shouko and Shouya do not speak to each other again... until an older, wiser Shouya, tormented by his past behaviour, decides he must see Shouko once more. He wants to atone for his sins, but is it already too late...?	/drlyoSKDOPnxzJFrRWGqzDsyJvR.jpg	{"reviews":"not yet"}	2016-09-17
 \.
 
 
@@ -355,12 +376,12 @@ COPY public.reviews ("userId", "reviewId", rating, content, "movieId", title) FR
 --
 
 COPY public.users ("userId", name, password, bio, "imageURL", email) FROM stdin;
-2	Cody	coding	I like coding and teaching. nuff said	\N	cody@gmail.com
 13	ddd	aaa	\N	\N	sss
 14	ddd	ddd	\N	\N	ddd
 15	rrr	rrr	\N	\N	rrr
 16	cccc	xx	I'm cccc	\N	xx
-1	Uzair	anime	I like anime and fast cars. nuff said.  ggg	../images/user-images/1.png	uzair@gmail.com
+2	Cody	coding	I like coding and teaching. nuff said	../images/user-images/bearded-dragon-1.jpg	cody@gmail.com
+1	Uzair	anime	I like anime and fast cars. nuff said.  ggg	../images/user-images/newgame-nene.png	uzair@gmail.com
 \.
 
 
@@ -402,3 +423,4 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 --
 -- PostgreSQL database dump complete
 --
+
