@@ -40,7 +40,7 @@ export default class LoginPage extends React.Component {
               placeholder="email"
               value={this.state.email}
               onChange={this.handleChange}
-              className="border-0 m-1"
+              className="border-0 m-1 w-100"
               name="email"
             />
             <input
@@ -48,13 +48,13 @@ export default class LoginPage extends React.Component {
               placeholder="password"
               value={this.state.password}
               onChange={this.handleChange}
-              className="border-0 m-1"
+              className="border-0 m-1 w-100"
               name="password"
             />
-            <input className="btn btn-secondary m-1" type="submit" value="Sign In"></input>
+            <input className="btn btn-secondary m-1 w-100" type="submit" value="Sign In"></input>
           </form>
-          <div className="center2">
-            <button className="btn btn-secondary m-1" onClick={() => this.props.changeView('signUp')}>Create Account</button>
+          <div>
+            <button className="btn btn-secondary m-1 w-100" onClick={() => this.props.changeView('signUp')}>Create Account</button>
           </div>
         </div>
       </div>
