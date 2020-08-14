@@ -214,7 +214,8 @@ app.post('/api/users/image/:userId', upload.single('image'), (req, res, next) =>
     .catch(err => next(err));
 
 });
-// POST request for user can write review
+
+// POST method handler
 app.post('/api/reviews', (req, res, next) => {
   const movieId = req.body.movieId;
   const userId = req.body.userId;
@@ -254,7 +255,7 @@ app.post('/api/reviews', (req, res, next) => {
     });
 });
 
-// GET request for User Can View Self/Other User Reviews
+// GET method handler
 app.get('/api/reviews/:userId', (req, res, next) => {
   const userId = req.params.userId;
   const sql = `
@@ -273,9 +274,9 @@ app.get('/api/reviews/:userId', (req, res, next) => {
       }
     })
     .catch(err => next(err));
-}); // end of GET request for User Can View Self/Other User Reviews
+});
 
-// PATCH request for User Can Edit Own Review
+// PATCH method handler
 app.patch('/api/reviews/:reviewId', (req, res, next) => {
   const reviewId = req.params.reviewId;
   const rating = req.body.rating;
@@ -302,9 +303,9 @@ app.patch('/api/reviews/:reviewId', (req, res, next) => {
   db.query(sql, params)
     .then(result => res.sendStatus(200))
     .catch(err => next(err));
-}); // end of PATCH request for User Can Edit Own Review
+});
 
-// user can delete review
+// Delete method handler
 app.delete('/api/reviews/:reviewId', (req, res, next) => {
   const reviewId = req.params.reviewId;
   const sql = `
