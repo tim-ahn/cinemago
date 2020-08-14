@@ -6,11 +6,11 @@ class ViewReviewsPage extends React.Component {
 
   render() {
     return (<>
-      <div style={{ paddingLeft: '22px', paddingBottom: '22px' }}>
-        <button className="btn btn-outline-danger position-relative" onClick={() => this.props.backToProfile()}>Go Back</button>
+      <div className="pl-4">
+        <button className="btn btn-outline-danger" onClick={() => this.props.backToProfile()}>Go Back</button>
       </div>
-      <div className="container">
-        <h1 style={{ paddingLeft: '5px' }}>My Reviews</h1>
+      <div className="container pt-2 pb-5">
+        <h1 className="pl-3 pt-2">My Reviews</h1>
         <div className="row container mt-1">
           <CSSTransitionGroup
             key={'my-reviews'}
@@ -19,7 +19,7 @@ class ViewReviewsPage extends React.Component {
             transitionAppearTimeout={500}
             transitionEnter={true}
             transitionLeave={true}
-            style={{ width: '100%' }}>
+            className="w-100">
             {this.props.reviews.map((item, index) => {
               return (
                 <ViewReviewsCard
@@ -36,7 +36,5 @@ class ViewReviewsPage extends React.Component {
       </div>
     </>);
   }
-
 }
-
 export default ViewReviewsPage;
