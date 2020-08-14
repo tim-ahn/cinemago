@@ -155,3 +155,15 @@ button.focus,button:active.focus,button.active.focus {
   opacity: 0.01;
   transition: opacity 300ms ease-in;
 }
+
+.centered {
+  height: 100vh; /* Magic here */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.center2 {
+  flex-basis: 50%;
+}
