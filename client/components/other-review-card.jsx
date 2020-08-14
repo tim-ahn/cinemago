@@ -11,18 +11,21 @@ class ViewOtherReviewsCard extends React.Component {
   render() {
     return (
       <>
-        <div className="row m-2 border container white">
-          <div className="col m-2">
-            <h5>{this.props.item.title}</h5>
-            <p style={{ alignItems: 'baseline-position' }}>Rating:
+        <div className="pl-2">
+          <div className="row pl-2 m-2 border container white">
+            <div className="col container m-2">
+              <h3 className="pl-0 pt-4">{this.props.item.title}</h3>
+
               <StarRatingComponent
                 name="userRating"
                 starCount={5}
                 value={this.state.rating}
-              /></p>
-            <p>{'"' + this.props.item.content + '"'}</p>
-          </div>
-        </div >
+              />
+              <p>{'"' + this.props.item.content + '"'}</p>
+            </div>
+          </div >
+        </div>
+
       </>
 
     );
