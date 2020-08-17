@@ -1,2 +1,4 @@
 # Movify
-A dynamic web application for movie enthusiasts who want to journal, track and categorize their movie interests. 
+A dynamic social networking web application for movie enthusiasts who want to journal, share and categorize their movie interests. 
+
+Website: https://movify.brandonktran.com/
