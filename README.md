@@ -10,7 +10,7 @@ Try the live site here: https://movify.brandonktran.com/
 Node.js<br/>
 Express.js<br/>
 React.js <br>
-PostgresQL
+PostgresQL <br/>
 Bootstrap<br/>
 reactstrap <br/>
 Webpack<br/> 
