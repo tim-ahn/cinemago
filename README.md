@@ -1,7 +1,6 @@
 # cinemago
 A dynamic social networking web application for movie enthusiasts who want to journal, share and categorize their movie interests. 
 
-Website: https://movify.brandonktran.com/
 
 ## Live Site
 Try the live site here: https://movify.brandonktran.com/
