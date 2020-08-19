@@ -1,5 +1,5 @@
 # cinemago
-A dynamic, mobile-first, social networking web application for movie enthusiasts who want to journal, share and categorize their movie interests. 
+A dynamic mobile-first social networking web application for movie enthusiasts who want to journal, share and categorize their movie interests. 
 
 
 ## Live Site
