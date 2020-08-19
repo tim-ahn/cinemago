@@ -19,16 +19,16 @@ multer <br/>
 
 
 ## Main Features
-User can search for movies or users of the app. <br/>
-User can view the details of a movie (incuding synopsis, reviews, similar movies) <br/>
-User can view, create or delete a custom list. <br/>
-User can add or delete movie from a custom list. <br/>
-User can view, add or delete movies from their favorites or watch list. <br/>
-User can view, create, delete, or update their reviews of a movie. <br/>
-User can view, send, and delete messages from other users. <br/>
-User can edit and view their own and other users' profiles. <br/>
-User can sign in, create an account, and log out. <br/>
-User can sort and filter movies by different genres & categories <br/>
+1. User can search for movies or users of the app. <br/>
+2. User can view the details of a movie (incuding synopsis, reviews, similar movies) <br/>
+3. User can view, create or delete a custom list. <br/>
+4. User can add or delete movie from a custom list. <br/>
+5. User can view, add or delete movies from their favorites or watch list. <br/>
+6. User can view, create, delete, or update their reviews of a movie. <br/>
+7. User can view, send, and delete messages from other users. <br/>
+8. User can edit and view their own and other users' profiles. <br/>
+9. User can sign in, create an account, and log out. <br/>
+10. User can sort and filter movies by different genres & categories <br/>
 
 
 <br/>
