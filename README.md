@@ -7,15 +7,18 @@ Try the live site here: https://movify.brandonktran.com/
 
 
 ## Technologies Used
+React.js <br>
 Node.js<br/>
 Express.js<br/>
-React.js <br>
 PostgresQL <br/>
 Bootstrap<br/>
 reactstrap <br/>
 Webpack<br/> 
 Babel<br/>
+HTML <br/>
+CSS <br/>
 multer <br/>
+AWS EC2 <br/>
 
 
 ## Main Features
