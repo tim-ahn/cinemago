@@ -67,7 +67,7 @@ Create the database
 createdb cinemago
 ```
 
-Copy of .env.example and update with your PostgresQL credentials
+Copy of .env.example and update with your PostgreSQL credentials
 ```console
 cp .env.example .env
 ```
