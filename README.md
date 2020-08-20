@@ -7,18 +7,18 @@ Try the live site here: https://cinemago.brandonktran.com/
 
 
 ## Technologies Used
-React.js <br>
-Node.js<br/>
-Express.js<br/>
-PostgresQL <br/>
-Bootstrap<br/>
-reactstrap <br/>
-Webpack<br/> 
-Babel<br/>
-HTML <br/>
-CSS <br/>
-multer <br/>
-AWS EC2 <br/>
+<li>React.js</li>
+<li>Node.js</li>
+<li>Express.js</li>
+<li>PostgresQL</li>
+<li>Bootstrap</li>
+<li>reactstrap</li>
+<li>Webpack</li>
+<li>Babel</li>
+<li>HTML</li>
+<li>CSS</li>
+<li>multer</li>
+<li>AWS EC2</li>
 
 
 ## Main Features
