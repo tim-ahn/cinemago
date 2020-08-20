@@ -57,6 +57,26 @@ Install all dependencies with NPM.
 npm install
 ```
 
+Start PostgreSQL server
+```console
+sudo service postgresql start
+```
+
+Create the database
+```console
+createdb cinemago
+```
+
+Copy of .env.example and update with your PostgreSQL credentials
+```console
+cp .env.example .env
+```
+
+Import the schema
+```console
+npm run db:import
+```
+
 Start the project.
 ```console
 npm run dev
