@@ -31,7 +31,7 @@ class Navbar extends React.Component {
     }
     return (<>
 
-      <nav className="navbar fixed-bottom navbar-dark bg-dark p-2" id="navbar">
+      <nav className="navbar fixed-bottom navbar-dark bg-dark p-3" id="navbar">
         <div className="w-100 row justify-content-around">
           <i onClick={this.handleClick} className={`fas fa-home ${homeColor} pointer`} value="home"></i>
           <i onClick={this.handleClick} className={`fas fa-search ${searchColor} pointer`} value="search"></i>
