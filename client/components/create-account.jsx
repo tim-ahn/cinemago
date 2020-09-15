@@ -32,8 +32,8 @@ export default class CreateAccount extends React.Component {
   render() {
     return (<>
       <div className="container centered">
-        <div className="center2 mb-4">
-          <h1 className="loginTitle">MOVIFY</h1>
+        <div className="center2 mb-4 border p-5 bg-white">
+          <h1 className="loginTitle">CINEMAGO</h1>
           <h3 className="loginTitle">Create an Account</h3>
           <div className="login my-auto">
             <form className="form-login" onSubmit={this.handleSubmit}>
@@ -42,24 +42,27 @@ export default class CreateAccount extends React.Component {
                 placeholder="name"
                 value={this.state.name}
                 onChange={this.handleChange}
-                className="border-0 m-1"
+                className="m-1 w-100 border"
                 name="name"
+                style={{ backgroundColor: 'rgb(250, 250, 250)' }}
               />
               <input
                 type="text"
                 placeholder="email"
                 value={this.state.email}
                 onChange={this.handleChange}
-                className="border-0 m-1"
+                className="m-1 w-100 border"
                 name="email"
+                style={{ backgroundColor: 'rgb(250, 250, 250)' }}
               />
               <input
                 type="password"
                 placeholder="password"
                 value={this.state.password}
                 onChange={this.handleChange}
-                className="border-0 m-1"
+                className="m-1 w-100 border"
                 name="password"
+                style={{ backgroundColor: 'rgb(250, 250, 250)' }}
               />
               <button className="btn btn-secondary m-1" >sign-up</button>
             </form>

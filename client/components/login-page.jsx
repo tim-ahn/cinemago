@@ -30,24 +30,26 @@ export default class LoginPage extends React.Component {
   render() {
     return (<>
       <div className="container centered">
-        <div className="center2 mb-4">
-          <h1 className="loginTitle" >MOVIFY</h1>
+        <div className="center2 mb-4 border p-5 bg-white">
+          <h1 className="loginTitle" >CINEMAGO</h1>
           <form className="form-login" onSubmit={this.handleSubmit}>
             <input
               type="text"
               placeholder="email"
               value={this.state.email}
               onChange={this.handleChange}
-              className="border-0 m-1 w-100"
+              className="m-1 w-100 border"
               name="email"
+              style={{ backgroundColor: 'rgb(250, 250, 250)' }}
             />
             <input
               type="password"
               placeholder="password"
               value={this.state.password}
               onChange={this.handleChange}
-              className="border-0 m-1 w-100"
+              className="m-1 w-100 border"
               name="password"
+              style={{ backgroundColor: 'rgb(250, 250, 250)' }}
             />
             <input className="btn btn-secondary m-1 w-100" type="submit" value="Sign In"></input>
           </form>

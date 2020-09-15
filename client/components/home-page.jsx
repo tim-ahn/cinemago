@@ -30,8 +30,7 @@ class HomePage extends React.Component {
     }
 
     return (<>
-      <div className="container ">
-        <h1>Home Page</h1>
+      <div className="container mt-3">
         <ul className="nav nav-tabs">
           <li className="nav-item">
             <button className={link1} onClick={() => this.switchTab('trending')} >Trending Today</button>
