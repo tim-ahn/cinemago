@@ -3,7 +3,7 @@ A dynamic mobile-first social networking web application for movie enthusiasts w
 
 
 ## Live Site
-Try the live site here: https://cinemago.brandonktran.com/
+
 
 
 ## Technologies Used
