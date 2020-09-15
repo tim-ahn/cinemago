@@ -3,9 +3,7 @@ import ViewOtherReviewsCard from './other-review-card';
 import { CSSTransitionGroup } from 'react-transition-group';
 
 class ViewOtherReviewsPage extends React.Component {
-
   render() {
-
     if (this.props.otherReviews.length > 0) {
       return (<>
         <div className="container pb-5">
@@ -15,7 +13,6 @@ class ViewOtherReviewsPage extends React.Component {
           <div className="pl-4 pt-2">
             <h1 >Reviews</h1>
           </div>
-
           <div className="row container mt-1">
             <CSSTransitionGroup
               key={'my-reviews'}
@@ -26,16 +23,13 @@ class ViewOtherReviewsPage extends React.Component {
               transitionLeave={true}
               className="w-100" ></CSSTransitionGroup>
             {this.props.otherReviews.map((item, index) => {
-
               return (
                 <ViewOtherReviewsCard
                   key={index}
                   changeView={this.props.changeView}
                   item={item} />);
             })}
-
           </div>
-
         </div>
       </>);
     } else {
@@ -48,12 +42,9 @@ class ViewOtherReviewsPage extends React.Component {
             <h3 style={{ textAlign: 'center' }}> No Reviews Found</h3>
           </div>
         </div>
-
       </>
       );
     }
   }
-
 }
-
 export default ViewOtherReviewsPage;

@@ -11,27 +11,22 @@ class OtherProfile extends React.Component {
       lists: [],
       favorites: []
     };
-
     this.getOtherUserReviews = this.getOtherUserReviews.bind(this);
-
   }
 
   componentDidMount() {
-    // fetch user profile endpoint
-    // todo: fetch movies and reviews
     const fetchURL = '/api/users/' + this.props.userId;
     fetch(fetchURL)
+      .then(result => result.json())
       .then(
-        result => result.json()
-      ).then(
         result => {
           this.setState({
             loading: false,
             profile: result
           });
           return result;
-        }
-      ).then(data => {
+        })
+      .then(data => {
         fetch(`/api/lists/${data.userId}`)
           .then(res => res.json())
           .then(data => {
@@ -80,20 +75,16 @@ class OtherProfile extends React.Component {
             </div>
             <div className="border border-secondary p-2 w-100 mx-auto mt-3 white">
               <p className="font-weight-bold">Favorite Movies:</p>
-              <MovieSlide getMovieDetails={this.props.getMovieDetails} movies={this.state.favorites}/>
+              <MovieSlide getMovieDetails={this.props.getMovieDetails} movies={this.state.favorites} />
             </div>
             <div className="border border-secondary p-2 w-100 mx-auto mt-3 white">
               <p className="font-weight-bold">Reviews:</p>
               <button className="btn btn-outline-dark" onClick={() => this.getOtherUserReviews(this.props.userId)}>Reviews</button>
             </div>
-
           </div>
-
         </div>
-
       </>;
     }
   }
 }
-
 export default OtherProfile;

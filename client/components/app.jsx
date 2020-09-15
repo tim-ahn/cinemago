@@ -20,7 +20,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      view: 'login', // change to login if want to use login page,
+      view: 'login',
       results: [],
       otherUsers: [],
       trending: [],
@@ -29,7 +29,7 @@ export default class App extends React.Component {
       viewListItems: [],
       currentListName: '',
       currentListId: null,
-      userId: 1, // Hardcoded for now, will be set after user logs in and will be helpful in fetching to backend
+      userId: 1,
       reviews: [],
       messages: [],
       movieToReview: null,
@@ -132,7 +132,7 @@ export default class App extends React.Component {
   }
 
   searchResults(query, category) {
-    this.setState({ results: [] }); // clear search results on new search
+    this.setState({ results: [] });
     fetch('api/search', {
       method: 'POST',
       headers: {
@@ -279,7 +279,6 @@ export default class App extends React.Component {
       .then(data => this.getItemsInList(listId, this.state.currentListName));
   }
 
-  // same as removeItemsInList without calling this.getItemsInList
   removeItemsInListMovieDetails(listId, movieId) {
     fetch(`/api/listItems/${listId}/${movieId}`, {
       method: 'DELETE'
@@ -407,9 +406,7 @@ export default class App extends React.Component {
           results={this.state.trending}
           getMovieDetails={this.getMovieDetails}
           getUserLists={this.getUserLists}
-
         />;
-
     } else if (this.state.view === 'search') {
       pageView =
         <HomeSearch
@@ -423,9 +420,7 @@ export default class App extends React.Component {
           searchUsers={this.searchUsers}
           otherUsers={this.state.otherUsers}
           sendMessage={this.sendMessage}
-
         />;
-
     } else if (this.state.view === 'list') {
       pageView =
         <UserLists
@@ -437,7 +432,6 @@ export default class App extends React.Component {
           changeView={this.changeView}
           getItemsInList={this.getItemsInList}
         />;
-
     } else if (this.state.view === 'details') {
       pageView =
         <MovieDetails
@@ -451,14 +445,12 @@ export default class App extends React.Component {
           changeCurrentMovieToReview={this.changeCurrentMovieToReview}
           goBack={this.goBack}
         />;
-
     } else if (this.state.view === 'user') {
       pageView =
         <UserProfile
           userId={this.state.userId}
           changeView={this.changeView}
           viewReviews={this.viewReviews} />;
-
     } else if (this.state.view === 'listContent') {
       pageView =
         <ListItems
@@ -468,7 +460,6 @@ export default class App extends React.Component {
           changeView={this.changeView}
           removeItemsInList={this.removeItemsInList}
           changeCurrentMovieToReview={this.changeCurrentMovieToReview} />;
-
     } else if (this.state.view === 'review') {
       pageView =
         <WriteReview
@@ -476,14 +467,12 @@ export default class App extends React.Component {
           postReview={this.postReview}
           movieToReview={this.state.movieToReview}
           movieTitleToReview={this.state.movieTitleToReview} />;
-
     } else if (this.state.view === 'messages') {
       pageView =
         <UserMessages
           messages={this.state.messages}
           getMessages={this.getMessages}
           deleteMessage={this.deleteMessage.bind(this)} />;
-
     } else if (this.state.view === 'ownReviews') {
       pageView =
         <ViewReviewsPage
@@ -495,7 +484,6 @@ export default class App extends React.Component {
           changeView={this.changeView}
           backToProfile={this.backToProfile}
         />;
-
     } else if (this.state.view === 'otherReviews') {
       pageView =
         <ViewOtherReviewsPage
@@ -503,7 +491,6 @@ export default class App extends React.Component {
           otherReviews={this.state.otherUserReviews}
           goBack={this.goBack}
         />;
-
     } else if (this.state.view === 'otherProfile') {
       pageView =
         <OtherProfile
@@ -514,7 +501,6 @@ export default class App extends React.Component {
           getOtherUserReviews={this.getOtherUserReviews}
           getMovieDetails={this.getMovieDetails} />;
     }
-
     if (this.state.view === 'login') {
       return (
         <Transition key={this.state.view}>
@@ -531,22 +517,18 @@ export default class App extends React.Component {
         </Transition>);
     } else if (this.state.view === 'details') {
       return <>
-
         <Transition key={this.state.view}>
           {pageView}
         </Transition>;
         <Navbar current={this.state.view} changeView={this.changeView} />
-
       </>;
     } else {
       return <>
         <Header logOut={this.logOut} />
-
         <Transition key={this.state.view}>
           {pageView}
         </Transition>
         <Navbar current={this.state.view} changeView={this.changeView} />
-
       </>;
     }
   }

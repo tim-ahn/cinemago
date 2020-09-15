@@ -27,7 +27,6 @@ export default class UserCard extends React.Component {
   }
 
   viewProfile() {
-    // change view to other profile and pass in the userId of target user
     this.props.changeView('otherProfile', this.props.item.userId);
   }
 
@@ -56,7 +55,6 @@ export default class UserCard extends React.Component {
           </ModalFooter>
         </Modal>
       </div>
-
     </>);
   }
 }

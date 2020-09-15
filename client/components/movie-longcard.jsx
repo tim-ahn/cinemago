@@ -57,12 +57,9 @@ class MovieLongCard extends React.Component {
               <Button outline={true} color="success" onClick={() => this.addModal()} className="dynamicButton m-2">Add To list</Button>
             </div>
             <div>
-
               <Modal isOpen={this.state.addModalShow} toggle={() => this.addModal()} centered={true}>
                 <ModalBody>
-
                   <label htmlFor="lists">Which list would you like to add to?</label>
-
                   <select name="lists" id="userLists" onChange={() => this.setState({ listId: parseInt(event.target.value) })}>
                     {this.props.lists.map(item => {
                       return <option key={item.listId} value={item.listId}> {item.name}</option>;
@@ -74,18 +71,11 @@ class MovieLongCard extends React.Component {
                   <Button color="primary" onClick={() => { this.add(); }}>Add to List</Button>{' '}
                 </ModalFooter>
               </Modal>
-
             </div>
-            {/* <button className="btn btn-secondary" onClick={() => { this.props.addItemToList(1, this.props.fullInfo); }}>
-              Add item to list
-            </button> */}
           </div>
         </div>
-
       </div>
-
     </>);
   }
 }
-
 export default MovieLongCard;

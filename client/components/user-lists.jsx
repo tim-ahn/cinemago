@@ -32,7 +32,6 @@ export default class UserLists extends React.Component {
   }
 
   render() {
-
     return (<>
       <div className="container mt-2 justify-content-center mb-5">
         <h1>My Lists</h1>
@@ -69,9 +68,7 @@ export default class UserLists extends React.Component {
               getItemsInList={this.props.getItemsInList} />
           ))}
         </CSSTransitionGroup>
-
       </div>
-
     </>);
   }
 }

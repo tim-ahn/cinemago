@@ -23,7 +23,6 @@ class WriteReview extends React.Component {
   }
 
   render() {
-
     return (<>
       <div className="container pt-5">
         <h2 className="text-center mb-4">Write a Review</h2>
@@ -32,14 +31,12 @@ class WriteReview extends React.Component {
         </div>
         <div className="justify-content-center row ">
           <form onSubmit={this.handleSubmit} className="mb-5">
-
             <StarRatingComponent
               name="rate1"
               starCount={5}
               value={this.state.rating}
               style={{ justifyContent: 'center' }}
-              onStarClick={this.onStarClick.bind(this)}
-            />
+              onStarClick={this.onStarClick.bind(this)}/>
             <br></br>
             <textarea
               placeholder="Write a review here"
@@ -55,14 +52,10 @@ class WriteReview extends React.Component {
               <button className="btn btn-secondary" onClick={() => this.props.changeView('listContent')}>Cancel</button>
               <button className="btn btn-primary" type="submit">Submit</button>
             </div>
-
           </form>
         </div>
-
       </div>
-
     </>
-
     );
   }
 }

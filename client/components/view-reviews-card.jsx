@@ -49,7 +49,6 @@ class ViewReviewsCard extends React.Component {
           <button className='btn btn-outline-danger m-2 ml-4' onClick={() => this.props.deleteReview(this.props.item.reviewId)}>Delete Review</button>
         </div>
       </div >
-
       <Modal isOpen={this.state.modalShow} toggle={() => this.toggleModal()} centered={true}>
         <ModalHeader toggle={() => this.toggleModal()}>update your review</ModalHeader>
         <ModalBody>

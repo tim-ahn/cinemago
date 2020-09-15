@@ -2,11 +2,9 @@ import React from 'react';
 import ListItemCard from './list-item-card';
 
 export default class ListItems extends React.Component {
-
   render() {
     if (this.props.viewListItems.length > 0) {
       return (<>
-
         <div className="container mb-5">
           <h2>{this.props.listName}</h2>
           <button className="btn-secondary" onClick={() => { this.props.changeView('list'); }}>Go Back to Lists</button>

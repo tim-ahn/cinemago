@@ -11,12 +11,10 @@ const app = express();
 
 const apiKey = '9dbf824ef684a8b724b9b0e090bb97d9';
 
-// bottom four constants are used in image uploading for user profile
 const path = require('path');
 const multer = require('multer');
 const upload = multer({
   dest: path.join(__dirname, 'public/images/user-images/')
-  //, limits: { fileSize: 2 * 1000 * 1000 } // image upload limit for 2MB
 });
 const fs = require('fs');
 
@@ -26,40 +24,30 @@ app.use(sessionMiddleware);
 app.use(express.json());
 
 app.post('/api/search', (req, res, next) => {
-
   fetch(`https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&query=${req.body.query}&page=1&include_adult=false`)
-    .then(result => result.json()
-    )
+    .then(result => result.json())
     .then(data => {
-
       return res.json(data.results);
     })
     .catch(error => next(error));
-
 });
 
-// post request for search by genre
 app.post('/api/search/genre', (req, res, next) => {
-  // when the query results returned from the api
-  // filter through (maxPage) of results returned until maxPage is reached or results reach 20
-  // page limit(maxPages) is in place to prevent long load times
   const results = [];
   const filter = req.body.filter;
-  var page = 0; // page increments before fetch is called, so it starts at 1
+  var page = 0;
   let maxPage;
   if (!req.body.filter) {
     throw (new ClientError('filter is needed in request body', 400));
   } else {
     lookAtPages();
   }
-  // recursive function is used when there aren't enough results and when page limit isn't met
   function lookAtPages() {
     page++;
     fetch(`https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&query=${req.body.query}&page=${page}&include_adult=false`)
-      .then(result => result.json()
-      )
+      .then(result => result.json())
       .then(data => {
-        if (maxPage === undefined) { // decide the max number of pages to search through
+        if (maxPage === undefined) {
           if (data.total_pages <= 14) {
             maxPage = data.total_pages;
           } else {
@@ -90,12 +78,9 @@ app.post('/api/search/genre', (req, res, next) => {
       .catch(error => next(error));
   }
 });
-/* get request for api/details endpoint
-notes: need to include name to reviews too. grab it from users table using userId?
-*/
+
 app.get('/api/details/:movieId', (req, res, next) => {
   const movieId = req.params.movieId;
-
   promise.all([
     fetch(`https://api.themoviedb.org/3/movie/${movieId}/reviews?api_key=${apiKey}&language=en-US&page=1`)
       .then(res => res.json()),
@@ -132,9 +117,7 @@ app.get('/api/details/:movieId', (req, res, next) => {
     .catch(error => next(error));
 
 });
-// end feature: user-can-view-details
 
-// POST request for home page to get trending or top rated movies
 app.post('/api/home', (req, res, next) => {
   if (req.body.category === 'trending') {
     fetch(`https://api.themoviedb.org/3/trending/movie/day?api_key=${apiKey}`)
@@ -151,7 +134,6 @@ app.post('/api/home', (req, res, next) => {
   }
 });
 
-// GET request to get user details
 app.get('/api/users/:userId', (req, res, next) => {
   const id = req.params.userId;
   const sql = `
@@ -174,7 +156,6 @@ app.get('/api/users/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-// PATCH request to update user details
 app.patch('/api/users/:userId', (req, res, next) => {
   const id = req.params.userId;
   if (!req.body.bio) {
@@ -191,9 +172,7 @@ app.patch('/api/users/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-// upload user image and updates the imageurl to the user's data entry
 app.post('/api/users/image/:userId', upload.single('image'), (req, res, next) => {
-  // image refers to the name of the file-input on user-profile
   const userId = req.params.userId;
   const tempPath = req.file.path;
   const targetPath = path.join(__dirname, `public/images/user-images/${req.file.originalname}`);
@@ -201,7 +180,6 @@ app.post('/api/users/image/:userId', upload.single('image'), (req, res, next) =>
   fs.rename(tempPath, targetPath, err => {
     if (err) throw (new ClientError('fs error', 500));
   });
-  // after the file is created send target path to sql
   const sql = `
       update "users"
       set "imageURL" = $2
@@ -214,7 +192,7 @@ app.post('/api/users/image/:userId', upload.single('image'), (req, res, next) =>
     .catch(err => next(err));
 
 });
-// POST request for user can write review
+
 app.post('/api/reviews', (req, res, next) => {
   const movieId = req.body.movieId;
   const userId = req.body.userId;
@@ -226,7 +204,6 @@ app.post('/api/reviews', (req, res, next) => {
     res.status(400).json({ error: 'invalid id' });
     return;
   }
-
   if (!userId || rating < 0 || !content) {
     res.status(400).json({ error: 'missing content' });
     return;
@@ -254,7 +231,6 @@ app.post('/api/reviews', (req, res, next) => {
     });
 });
 
-// GET request for User Can View Self/Other User Reviews
 app.get('/api/reviews/:userId', (req, res, next) => {
   const userId = req.params.userId;
   const sql = `
@@ -265,7 +241,6 @@ app.get('/api/reviews/:userId', (req, res, next) => {
   const params = [userId];
   db.query(sql, params)
     .then(result => {
-      // eslint-disable-next-line no-console
       if (result.rows.length < 1) {
         res.json([]);
       } else {
@@ -273,9 +248,8 @@ app.get('/api/reviews/:userId', (req, res, next) => {
       }
     })
     .catch(err => next(err));
-}); // end of GET request for User Can View Self/Other User Reviews
+});
 
-// PATCH request for User Can Edit Own Review
 app.patch('/api/reviews/:reviewId', (req, res, next) => {
   const reviewId = req.params.reviewId;
   const rating = req.body.rating;
@@ -302,9 +276,8 @@ app.patch('/api/reviews/:reviewId', (req, res, next) => {
   db.query(sql, params)
     .then(result => res.sendStatus(200))
     .catch(err => next(err));
-}); // end of PATCH request for User Can Edit Own Review
+});
 
-// user can delete review
 app.delete('/api/reviews/:reviewId', (req, res, next) => {
   const reviewId = req.params.reviewId;
   const sql = `
@@ -321,7 +294,7 @@ app.delete('/api/reviews/:reviewId', (req, res, next) => {
       }
     })
     .catch(error => next(error));
-}); // end of user can delete review
+});
 
 app.get('/api/lists/:userId', (req, res, next) => {
   const id = req.params.userId;
@@ -342,7 +315,6 @@ app.get('/api/lists/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-// DELETE request to delete a list
 app.delete('/api/lists/:listId', (req, res, next) => {
   const id = req.params.listId;
   const sql = `
@@ -361,7 +333,6 @@ app.delete('/api/lists/:listId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-// POST request to create a new list
 app.post('/api/lists/:userId', (req, res, next) => {
   const id = req.params.userId;
   const name = req.body.name;
@@ -382,7 +353,6 @@ app.post('/api/lists/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-// POST request to add a movie to a list
 app.post('/api/lists/add/:listId', (req, res, next) => {
   const id = req.params.listId;
   const movieId = req.body.movieId;
@@ -407,7 +377,7 @@ app.post('/api/lists/add/:listId', (req, res, next) => {
   returning * `;
 
   const params = [id, movieId];
-  // checks if movie is already in that users list, if it isnt then add to list table
+
   db.query(sql1, params)
     .then(result => {
       if (result.rows.length < 1) {
@@ -416,7 +386,6 @@ app.post('/api/lists/add/:listId', (req, res, next) => {
             if (result2.rows.length < 1) {
               next(new ClientError('some error occurred', 404));
             } else {
-              // checks if movie is already in movies list, if it isnt then add to movies table
               return db.query(sql3, [movieId])
                 .then(result3 => {
                   if (result3.rows.length < 1) {
@@ -435,7 +404,6 @@ app.post('/api/lists/add/:listId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-// GET request to get all movies in a list
 app.get('/api/listItems/:listId', (req, res, next) => {
   const id = req.params.listId;
   const sql = `
@@ -472,7 +440,6 @@ app.delete('/api/listItems/:listId/:movieId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-// User can Login
 app.post('/api/login/', (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -498,7 +465,6 @@ app.post('/api/login/', (req, res, next) => {
     });
 });
 
-// User can sign up
 app.post('/api/signup/', (req, res, next) => {
   const name = req.body.name;
   const email = req.body.email;
@@ -547,12 +513,10 @@ app.post('/api/signup/', (req, res, next) => {
     });
 });
 
-// User can Log Out
 app.post('/api/logOut/', (req, res, next) => {
   req.session.userInfo = null;
 });
 
-// get all other users besides userId (yourself)
 app.get('/api/search/users/:userId', (req, res, next) => {
   const userId = req.params.userId;
   const sql = `
@@ -572,7 +536,6 @@ app.get('/api/search/users/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-// get all messages where sentId is equal to userId
 app.get('/api/messages/:userId', (req, res, next) => {
   const userId = req.params.userId;
   const sql = `
@@ -594,7 +557,6 @@ app.get('/api/messages/:userId', (req, res, next) => {
     .catch(err => next(err));
 });
 
-// send a message from userId (sentId) to recipientId
 app.post('/api/messages/:userId', (req, res, next) => {
   const userId = req.params.userId;
   const recipientId = req.body.recipientId;

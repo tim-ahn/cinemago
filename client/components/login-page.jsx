@@ -28,9 +28,7 @@ export default class LoginPage extends React.Component {
   }
 
   render() {
-
     return (<>
-
       <div className="container centered">
         <div className="center2 mb-4">
           <h1 className="loginTitle" >MOVIFY</h1>

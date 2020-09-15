@@ -63,7 +63,6 @@ export default class ListCard extends React.Component {
       </>);
     } else {
       return (<>
-
         <div className="w-100 p-2 border white">
           <h3 className="mt-2 ml-2">{this.props.item.name}</h3>
           <div>
@@ -83,7 +82,6 @@ export default class ListCard extends React.Component {
             </Modal>
           </div>
         </div>
-
       </>);
     }
   }

@@ -22,9 +22,7 @@ class MovieCard extends React.Component {
       <div className="col-4 p-2" onClick={() => this.handleClick(event)}>
         <img src={posterURL} className="card-img"></img>
       </div>
-
     </>);
   }
 }
-
 export default MovieCard;

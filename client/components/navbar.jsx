@@ -30,7 +30,6 @@ class Navbar extends React.Component {
       messageColor = 'text-info';
     }
     return (<>
-
       <nav className="navbar fixed-bottom navbar-dark bg-dark p-2" id="navbar">
         <div className="w-100 row justify-content-around">
           <i onClick={this.handleClick} className={`fas fa-home ${homeColor} pointer`} value="home"></i>
@@ -40,9 +39,7 @@ class Navbar extends React.Component {
           <i onClick={this.handleClick} className={`fas fa-user ${userColor} pointer`} value="user"></i>
         </div>
       </nav>
-
     </>);
   }
 }
-
 export default Navbar;

@@ -2,12 +2,10 @@ import React from 'react';
 import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
 
 export default class ListItemCard extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
       removeModalShow: false
-
     };
     this.removeModal = this.removeModal.bind(this);
   }
@@ -22,7 +20,6 @@ export default class ListItemCard extends React.Component {
   }
 
   render() {
-    console.log(this.props.fullInfo);
     let posterURL;
     if (this.props.poster_path !== null) {
       posterURL = `https://image.tmdb.org/t/p/w500${this.props.poster_path}`;
@@ -35,7 +32,6 @@ export default class ListItemCard extends React.Component {
     } else {
       year = 'Not Available';
     }
-
     return (<>
       <div >
         <div className="row m-2 border white">
@@ -60,11 +56,8 @@ export default class ListItemCard extends React.Component {
               </ModalFooter>
             </Modal>
           </div>
-
         </div>
-
       </div>
-
     </>);
   }
 }

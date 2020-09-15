@@ -3,7 +3,6 @@ import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
 import { CarouselProvider, Slider, Slide, ButtonBack, ButtonNext } from 'pure-react-carousel';
 import 'pure-react-carousel/dist/react-carousel.es.css';
 
-// add pointer class to line 146 for the icon when addreview is finished
 export default class MovieDetails extends React.Component {
   constructor(props) {
     super(props);
@@ -158,8 +157,7 @@ export default class MovieDetails extends React.Component {
           <CarouselProvider
             naturalSlideWidth={25}
             naturalSlideHeight={25}
-            totalSlides={reviewsArray.length}
-          >
+            totalSlides={reviewsArray.length}>
             <ButtonBack>Back</ButtonBack>
             <ButtonNext>Next</ButtonNext>
             <Slider>
@@ -173,7 +171,6 @@ export default class MovieDetails extends React.Component {
               })}
             </Slider>
           </CarouselProvider>
-
         </>;
     }
 
@@ -187,12 +184,10 @@ export default class MovieDetails extends React.Component {
               <img className="backdrop-poster" src={(backDropPath === null) ? '../images/image_placeholder.png' : `https://image.tmdb.org/t/p/original${backDropPath}`} style={{ width: '100%', height: '100%' }}></img>
             </div>
           </div>
-
           <div className="row pt-2">
             <div className="col-6 justify-content-between">
               <h2 className="title" style={{ fontWeight: 'bold', textAlign: 'center' }}>{this.props.details[1].title}</h2>
               <p style={{ fontWeight: 'bold' }}>Average Rating: {this.props.details[1].vote_average}</p>
-
               <div className="d-flex justify-content-between">
                 <button>
                   <a href={`https://www.youtube.com/watch?v=${youtubeURL}`} target="_blank" rel='noopener noreferrer'> <img src="../images/play-icon.png"></img>Trailer </a>
@@ -201,33 +196,24 @@ export default class MovieDetails extends React.Component {
                   <span style={{ fontWeight: 'bold' }}>{this.props.details[1].runtime} mins</span>
                 </div>
               </div>
-
               <div className="pt-2">
                 <i className={`pointer far fa-heart fa-3x p-1 ${this.state.heartIconColor}`} onClick={() => this.addRemoveMovieToList(event)} value="heart"></i>
                 <i className={`pointer far fa-eye fa-3x p-1 ${this.state.eyeIconColor}`} onClick={() => this.addRemoveMovieToList(event)} value="eye"></i>
                 <i className="pointer far fa-list-alt fa-3x p-1" onClick={() => this.addModal()} value="list" ></i>
               </div>
-
             </div>
-
             <div className="col-6">
               <img src={(posterPath === null) ? '../images/image_placeholder.png' : `https://image.tmdb.org/t/p/w500${posterPath}`} style={{ width: '100%' }}></img>
             </div>
-
           </div>
-
           <div className="row mt-2 p-2">
             <p>{this.props.details[1].overview}</p>
           </div>
-
           {reviews}
           {usersAlsoLiked}
-
           <Modal isOpen={this.state.addModalShow} toggle={() => this.addModal()} centered={true}>
             <ModalBody>
-
               <label htmlFor="lists">Which list would you like to add to?</label>
-
               <select name="lists" id="userLists" onChange={() => this.setState({ listId: parseInt(event.target.value) })}>
                 {this.props.lists.map(item => {
                   return <option key={item.listId} value={item.listId}> {item.name}</option>;
@@ -239,10 +225,8 @@ export default class MovieDetails extends React.Component {
               <Button color="primary" onClick={() => this.addMovieToCustomList()}>Add to List</Button>
             </ModalFooter>
           </Modal>
-
         </div>
       </>
-
     );
   }
 }

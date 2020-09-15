@@ -1,9 +1,7 @@
 import React from 'react';
 
 export default class Header extends React.Component {
-
   render() {
-
     return (<>
       <div className="container">
         <h1 className="loginTitle w-100">
@@ -11,7 +9,6 @@ export default class Header extends React.Component {
         </h1>
       </div>
       <br></br>
-
     </>);
   }
 }

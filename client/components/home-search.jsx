@@ -17,7 +17,6 @@ class HomeSearch extends React.Component {
       tab: '1',
       userText: ''
     };
-
     this.handleText = this.handleText.bind(this);
     this.handleText2 = this.handleText2.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -85,7 +84,7 @@ class HomeSearch extends React.Component {
     if (this.state.dropDownShow) {
       show = 'block';
     }
-    const genreList = require('./genres.json').genres; // from imported genres.json; list of objects {id: x, name, y}
+    const genreList = require('./genres.json').genres;
 
     return (<>
       <div className="container mb-5">
@@ -93,17 +92,13 @@ class HomeSearch extends React.Component {
           <NavItem>
             <NavLink
               className={classnames({ active: this.state.tab === '1' })}
-              onClick={() => { this.switchTab('1'); }}
-            >
-              Movies
+              onClick={() => { this.switchTab('1'); }}>Movies
             </NavLink>
           </NavItem>
           <NavItem>
             <NavLink
               className={classnames({ active: this.state.tab === '2' })}
-              onClick={() => { this.switchTab('2'); }}
-            >
-              Users
+              onClick={() => { this.switchTab('2'); }}>Users
             </NavLink>
           </NavItem>
         </Nav>
@@ -142,7 +137,6 @@ class HomeSearch extends React.Component {
                 </DropdownMenu>
               </ButtonDropdown>
             </div>
-
             <div className="container">
               <div className="row">
                 {this.props.results.map(item => (
@@ -169,5 +163,4 @@ class HomeSearch extends React.Component {
     </>);
   }
 }
-
 export default HomeSearch;

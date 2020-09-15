@@ -21,7 +21,6 @@ class UserProfile extends React.Component {
   }
 
   componentDidMount() {
-    // fetch user profile endpoint
     const fetchURL = '/api/users/' + this.props.userId;
     fetch(fetchURL)
       .then(
@@ -90,7 +89,7 @@ class UserProfile extends React.Component {
 
   onImageSelect(event) {
     const image = event.target.files[0];
-    const maxImageSize = 2 * 1000 * 1000;// 2mb
+    const maxImageSize = 2 * 1000 * 1000;
     if (image.size > maxImageSize) {
       this.setState({ fileError: 'Image size must be less than 2MB', selectedImage: null });
     } else if (!['image/jpeg', 'image/png'].includes(image.type)) {
@@ -102,7 +101,6 @@ class UserProfile extends React.Component {
   }
 
   render() {
-    // todo: change view when clicking reviews, lists, settings
     let bio;
     if (this.state.editBio) {
       bio = <>
@@ -116,7 +114,6 @@ class UserProfile extends React.Component {
     } else {
       bio = <p className="text-muted px-1">{this.state.profile.bio}</p>;
     }
-
     if (this.state.loading) {
       return <h2>Loading...</h2>;
     } else {
@@ -136,7 +133,6 @@ class UserProfile extends React.Component {
             </div>
             <div className="border p-2 w-75 mx-auto mt-3 white">
               <button className="btn btn-outline-dark" onClick={() => this.props.viewReviews()}>My reviews</button>
-
             </div>
             <div className="border p-2 w-75 mx-auto mt-3 white">
               <button onClick={this.toggleUploadOption} className="btn btn-outline-dark">Update Profile Image</button>
@@ -156,12 +152,9 @@ class UserProfile extends React.Component {
               </Collapse>
             </div>
           </div>
-
         </div>
-
       </>;
     }
   }
 }
-
 export default UserProfile;

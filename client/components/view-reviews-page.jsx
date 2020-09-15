@@ -3,7 +3,6 @@ import ViewReviewsCard from './view-reviews-card';
 import { CSSTransitionGroup } from 'react-transition-group';
 
 class ViewReviewsPage extends React.Component {
-
   render() {
     return (<>
       <div className="pl-4">
@@ -30,9 +29,7 @@ class ViewReviewsPage extends React.Component {
                   item={item} />);
             })}
           </CSSTransitionGroup>
-
         </div>
-
       </div>
     </>);
   }
