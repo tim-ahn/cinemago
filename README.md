@@ -48,7 +48,7 @@ Express.js 4 or higher
 ### Getting Started
 Clone the repository.
 ```console
-git clone https://github.com/brandonktran/cinemago.git
+git clone https://github.com/tim-ahn/cinemago.git
 cd cinemago
 ```
 
