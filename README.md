@@ -3,7 +3,7 @@ A dynamic mobile-first social networking web application for movie enthusiasts w
 
 
 ## Live Site
-
+https://cinemago.tim-ahn.com
 
 
 ## Technologies Used
